@@ -23,30 +23,42 @@
                 </div>
                 <div class="product-grid">
                     <!-- Sản phẩm của NJZ -->
-                    <div class="product-item">
-                        <img src="./img/album.png" alt="NJZ Product 1">
-                        <h3>NJZ Album 1</h3>
-                        <p>Giá: $29.99</p>
-                        <button class="buy-button">Mua ngay</button>
-                    </div>
-                    <div class="product-item">
-                        <img src="./img/album.png" alt="NJZ Product 1">
-                        <h3>NJZ Album 1</h3>
-                        <p>Giá: $29.99</p>
-                        <button class="buy-button">Mua ngay</button>
-                    </div>
-                    <div class="product-item">
-                        <img src="./img/album.png" alt="NJZ Product 1">
-                        <h3>NJZ Album 1</h3>
-                        <p>Giá: $29.99</p>
-                        <button class="buy-button">Mua ngay</button>
-                    </div>
-                    <div class="product-item">
-                        <img src="./img/album.png" alt="NJZ Product 1">
-                        <h3>NJZ Album 1</h3>
-                        <p>Giá: $29.99</p>
-                        <button class="buy-button">Mua ngay</button>
-                    </div>
+                    <a href="/product-detail.html?id=1" class="product-item">
+                        <div class="product-image">
+                            <img src="./img/album.png" alt="NJZ Product 1">
+                        </div>
+                        <div class="product-info">
+                            <h3>NJZ Album 1</h3>
+                            <p>Giá: $29.99</p>
+                        </div>
+                    </a>
+                    <a href="/product-detail.html?id=1" class="product-item">
+                        <div class="product-image">
+                            <img src="./img/album.png" alt="NJZ Product 1">
+                        </div>
+                        <div class="product-info">
+                            <h3>NJZ Album 1</h3>
+                            <p>Giá: $29.99</p>
+                        </div>
+                    </a>
+                    <a href="/product-detail.html?id=1" class="product-item">
+                        <div class="product-image">
+                            <img src="./img/album.png" alt="NJZ Product 1">
+                        </div>
+                        <div class="product-info">
+                            <h3>NJZ Album 1</h3>
+                            <p>Giá: $29.99</p>
+                        </div>
+                    </a>
+                    <a href="/product-detail.html?id=1" class="product-item">
+                        <div class="product-image">
+                            <img src="./img/album.png" alt="NJZ Product 1">
+                        </div>
+                        <div class="product-info">
+                            <h3>NJZ Album 1</h3>
+                            <p>Giá: $29.99</p>
+                        </div>
+                    </a>
                     
                     <!-- Thêm các sản phẩm khác của NJZ -->
                 </div>
@@ -58,12 +70,15 @@
                 </div>
                 <div class="product-grid">
                     <!-- Sản phẩm của BIG BANG -->
-                    <div class="product-item">
-                        <img src="./img/album.png" alt="BIG BANG Product 1">
-                        <h3>BIG BANG Album 1</h3>
-                        <p>Giá: $34.99</p>
-                        <button class="buy-button">Mua ngay</button>
-                    </div>
+                    <a href="/product-detail.html?id=1" class="product-item">
+                        <div class="product-image">
+                            <img src="./img/album.png" alt="NJZ Product 1">
+                        </div>
+                        <div class="product-info">
+                            <h3>NJZ Album 1</h3>
+                            <p>Giá: $29.99</p>
+                        </div>
+                    </a>
                     <!-- Thêm các sản phẩm khác của BIG BANG -->
                 </div>
             </div>
@@ -74,12 +89,15 @@
                 </div>
                 <div class="product-grid">
                     <!-- Sản phẩm của IVE -->
-                    <div class="product-item">
-                        <img src="./img/album.png" alt="IVE Product 1">
-                        <h3>IVE Album 1</h3>
-                        <p>Giá: $24.99</p>
-                        <button class="buy-button">Mua ngay</button>
-                    </div>
+                    <a href="/product-detail.html?id=1" class="product-item">
+                        <div class="product-image">
+                            <img src="./img/album.png" alt="NJZ Product 1">
+                        </div>
+                        <div class="product-info">
+                            <h3>NJZ Album 1</h3>
+                            <p>Giá: $29.99</p>
+                        </div>
+                    </a>
                     <!-- Thêm các sản phẩm khác của IVE -->
                 </div>
             </div>
