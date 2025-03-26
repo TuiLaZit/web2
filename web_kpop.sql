@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2025 at 02:14 AM
+-- Generation Time: Mar 26, 2025 at 09:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -95,6 +95,17 @@ CREATE TABLE `khachhang` (
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `khachhang`
+--
+
+INSERT INTO `khachhang` (`IdKH`, `Account`, `Password`, `Name`, `Number`, `Address`, `Status`) VALUES
+('KH001', 'dpt2004', '*6C19D970BC7296B6E44', 'Đinh Phúc Thịnh', 561732554, 'Tân Bình,Tp.HCM', 1),
+('KH002', 'ltt2004', '*6C19D970BC7296B6E44', 'Lương Thanh Tuấn', 561479536, 'Dầu Giây,Đồng Nai', 1),
+('KH003', 'dtv2004', '*6C19D970BC7296B6E44', 'Đặng Thế Vinh', 785425414, 'Tân Phú,Tp.HCM', 1),
+('KH004', 'tdk2004', '*6C19D970BC7296B6E44', 'Trần Đăng Kha', 452178541, 'Dầu Giây,Đồng Nai', 1),
+('KH005', 'ntbv2004', '*6C19D970BC7296B6E44', 'Nguyễn Trần Bội Vỹ', 781022036, 'Long Khánh,Đồng Nai', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -120,12 +131,12 @@ CREATE TABLE `khuyenmai` (
 CREATE TABLE `nhanvien` (
   `IdNV` varchar(10) NOT NULL,
   `Account` varchar(50) NOT NULL,
-  `Password` varchar(20) NOT NULL,
+  `Password` varchar(1000) NOT NULL,
   `Name` varchar(50) NOT NULL,
-  `PNumber` int(10) NOT NULL,
+  `PNumber` char(10) NOT NULL,
   `Address` varchar(200) NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1,
-  `IdPos` varchar(10) NOT NULL
+  `IdPos` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -133,7 +144,7 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`IdNV`, `Account`, `Password`, `Name`, `PNumber`, `Address`, `Status`, `IdPos`) VALUES
-('AD001', 'admin', '*4ACFE3202A5FF5CF467', 'Trần Trung Việt', 937024435, 'block D chung cư Phú Thạnh, 53 Nguyễn Sơn, Phú Thạnh, Tân Phú', 1, 'ADMIN');
+('AD001', 'admin', 'e52Mpw7zHyp7zFVExAxkSg==', 'Trần Trung Việt', '0937024435', '123 Tân Phú, TpHCM', 1, 'ADMIN');
 
 -- --------------------------------------------------------
 
