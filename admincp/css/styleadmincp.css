@@ -1,0 +1,344 @@
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.menu {
+    width: 200px;
+    float: left;
+    background: #333;
+    min-height: 100vh;
+}
+
+.admin-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-menu li a {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+}
+
+.admin-menu li a:hover {
+    background: #444;
+}
+
+/* Style cho dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #444;
+    width: 100%;
+}
+
+.dropdown-menu li a {
+    padding-left: 30px;
+    font-size: 14px;
+    background: #444;
+}
+
+.dropdown-menu li a:hover {
+    background: #555;
+}
+
+/* Hiển thị dropdown khi hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Style cho mũi tên */
+.dropdown-toggle {
+    position: relative;
+}
+
+/* Thêm màu nền khác cho các mục con khi hover */
+.dropdown-menu li a:hover {
+    background: #555;
+    padding-left: 35px;
+    transition: all 0.3s ease;
+}
+
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+.header {
+    background: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    margin-right: 20px;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+}
+
+.admin-title h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.admin-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-info span {
+    color: #333;
+    font-weight: 500;
+}
+
+.logout-btn {
+    background: #dc3545;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background: #c82333;
+}
+
+.footer {
+    background: #333;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    font-size: 14px;
+}
+
+.footer-content p {
+    margin: 0;
+} 
+
+/* Style cho container chứa bảng */
+.staff-list {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Tiêu đề trang */
+.staff-list h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Style cho bảng */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+}
+
+/* Style cho header của bảng */
+.data-table thead th {
+    background: #4a90e2;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #3780d8;
+}
+
+/* Style cho các ô trong bảng */
+.data-table tbody td {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    color: #333;
+}
+
+/* Style cho hàng chẵn */
+.data-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover effect cho hàng */
+.data-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style cho nút thao tác */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit {
+    background: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-delete {
+    background: #f44336;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-view {
+    background: #2196F3;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Hover effect cho các nút */
+.btn-edit:hover {
+    background: #45a049;
+}
+
+.btn-delete:hover {
+    background: #da190b;
+}
+
+.btn-view:hover {
+    background: #0b7dda;
+}
+
+/* Style cho nút thêm mới */
+.btn-add {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.btn-add:hover {
+    background: #45a049;
+}
+
+/* Style cho phân trang nếu có */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.pagination a.active {
+    background: #4a90e2;
+    color: white;
+    border-color: #4a90e2;
+}
+
+.pagination a:hover:not(.active) {
+    background: #f5f5f5;
+}
+
+/* Style cho thông báo không có dữ liệu */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive cho bảng */
+@media screen and (max-width: 768px) {
+    .data-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .staff-list {
+        padding: 10px;
+    }
+    
+    .btn-add {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}
+
+/* Style cho thông báo */
+.message {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.message.success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+.message.error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+.message .close {
+    cursor: pointer;
+    padding: 0 5px;
+}
