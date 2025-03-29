@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2025 at 09:29 AM
+-- Generation Time: Mar 29, 2025 at 02:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `chamsockhachhang` (
-  `IdCSKH` varchar(10) NOT NULL,
-  `IdKH` varchar(10) NOT NULL,
-  `IdNV` varchar(10) NOT NULL,
+  `IdCSKH` int(11) NOT NULL,
+  `IdKH` int(11) NOT NULL,
+  `IdNV` int(11) NOT NULL,
   `INFO` varchar(200) NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -43,8 +43,8 @@ CREATE TABLE `chamsockhachhang` (
 
 CREATE TABLE `chitiethoadon` (
   `IdCTHD` int(11) NOT NULL,
-  `IdHD` varchar(10) NOT NULL,
-  `IdSP` varchar(10) NOT NULL,
+  `IdHD` int(11) NOT NULL,
+  `IdSP` int(11) NOT NULL,
   `Quantity` smallint(6) NOT NULL,
   `Price` int(11) NOT NULL,
   `SumPrice` int(11) DEFAULT NULL,
@@ -58,10 +58,10 @@ CREATE TABLE `chitiethoadon` (
 --
 
 CREATE TABLE `chitietkhuyenmai` (
-  `IdCTKM` int(10) NOT NULL,
-  `IdKM` varchar(10) NOT NULL,
-  `IdSP` varchar(10) NOT NULL,
-  `IdTV` varchar(10) DEFAULT NULL
+  `IdCTKM` int(11) NOT NULL,
+  `IdKM` int(11) NOT NULL,
+  `IdSP` int(11) NOT NULL,
+  `IdTV` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -71,11 +71,13 @@ CREATE TABLE `chitietkhuyenmai` (
 --
 
 CREATE TABLE `hoadon` (
-  `IdHD` varchar(20) NOT NULL,
-  `IdKH` varchar(10) NOT NULL,
-  `IdNV` varchar(10) NOT NULL,
+  `IdHD` int(11) NOT NULL,
+  `IdKH` int(11) NOT NULL,
+  `IdNV` int(11) NOT NULL,
   `Total` int(11) DEFAULT NULL,
+  `IDDVVC` int(11) NOT NULL,
   `Date` date NOT NULL DEFAULT current_timestamp(),
+  `ExpectDate` date NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -86,25 +88,15 @@ CREATE TABLE `hoadon` (
 --
 
 CREATE TABLE `khachhang` (
-  `IdKH` varchar(10) NOT NULL,
+  `IdKH` int(11) NOT NULL,
   `Account` varchar(50) NOT NULL,
+  `Email` varchar(100) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `Number` int(10) NOT NULL,
   `Address` varchar(200) NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `khachhang`
---
-
-INSERT INTO `khachhang` (`IdKH`, `Account`, `Password`, `Name`, `Number`, `Address`, `Status`) VALUES
-('KH001', 'dpt2004', '*6C19D970BC7296B6E44', 'Đinh Phúc Thịnh', 561732554, 'Tân Bình,Tp.HCM', 1),
-('KH002', 'ltt2004', '*6C19D970BC7296B6E44', 'Lương Thanh Tuấn', 561479536, 'Dầu Giây,Đồng Nai', 1),
-('KH003', 'dtv2004', '*6C19D970BC7296B6E44', 'Đặng Thế Vinh', 785425414, 'Tân Phú,Tp.HCM', 1),
-('KH004', 'tdk2004', '*6C19D970BC7296B6E44', 'Trần Đăng Kha', 452178541, 'Dầu Giây,Đồng Nai', 1),
-('KH005', 'ntbv2004', '*6C19D970BC7296B6E44', 'Nguyễn Trần Bội Vỹ', 781022036, 'Long Khánh,Đồng Nai', 1);
 
 -- --------------------------------------------------------
 
@@ -113,8 +105,8 @@ INSERT INTO `khachhang` (`IdKH`, `Account`, `Password`, `Name`, `Number`, `Addre
 --
 
 CREATE TABLE `khuyenmai` (
-  `IdKM` varchar(10) NOT NULL,
-  `IdGRP` varchar(10) NOT NULL,
+  `IdKM` int(11) NOT NULL,
+  `IdGRP` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `DateStart` date NOT NULL,
   `DateEnd` date NOT NULL,
@@ -129,7 +121,7 @@ CREATE TABLE `khuyenmai` (
 --
 
 CREATE TABLE `nhanvien` (
-  `IdNV` varchar(10) NOT NULL,
+  `IdNV` int(11) NOT NULL,
   `Account` varchar(50) NOT NULL,
   `Password` varchar(1000) NOT NULL,
   `Name` varchar(50) NOT NULL,
@@ -144,7 +136,8 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`IdNV`, `Account`, `Password`, `Name`, `PNumber`, `Address`, `Status`, `IdPos`) VALUES
-('AD001', 'admin', 'e52Mpw7zHyp7zFVExAxkSg==', 'Trần Trung Việt', '0937024435', '123 Tân Phú, TpHCM', 1, 'ADMIN');
+(1, 'admin', 'e52Mpw7zHyp7zFVExAxkSg==', 'Trần Trung Việt', '0937024435', '123 Tân Phú, TpHCM', 1, 'ADMIN'),
+(7, 'ahihi', 'KKk/WHKo/vo1GEc23stJvg==', 'Nguyễn Dương Minh Quan', '0969699699', 'San Francislong, Bình Thạnh', 1, 'Nhân Viên');
 
 -- --------------------------------------------------------
 
@@ -153,7 +146,7 @@ INSERT INTO `nhanvien` (`IdNV`, `Account`, `Password`, `Name`, `PNumber`, `Addre
 --
 
 CREATE TABLE `nhom` (
-  `IdGRP` varchar(10) NOT NULL,
+  `IdGRP` int(11) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `Company` varchar(100) DEFAULT NULL,
   `Info` varchar(200) NOT NULL,
@@ -167,9 +160,9 @@ CREATE TABLE `nhom` (
 --
 
 CREATE TABLE `sanpham` (
-  `IdSP` varchar(10) NOT NULL,
-  `IdGRP` varchar(10) NOT NULL,
-  `IdTV` varchar(10) DEFAULT NULL,
+  `IdSP` int(11) NOT NULL,
+  `IdGRP` int(11) NOT NULL,
+  `IdTV` int(11) DEFAULT NULL,
   `Name` varchar(50) NOT NULL,
   `Type` varchar(50) NOT NULL,
   `Price` int(11) NOT NULL,
@@ -185,8 +178,8 @@ CREATE TABLE `sanpham` (
 --
 
 CREATE TABLE `thanhvien` (
-  `IdTV` varchar(10) NOT NULL,
-  `IdGRP` varchar(10) NOT NULL,
+  `IdTV` int(11) NOT NULL,
+  `IdGRP` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `INFO` varchar(200) DEFAULT NULL,
   `IMG` varchar(100) DEFAULT NULL
@@ -199,11 +192,17 @@ CREATE TABLE `thanhvien` (
 --
 
 CREATE TABLE `vanchuyen` (
-  `IDDVVC` varchar(10) NOT NULL,
+  `IDDVVC` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
-  `ExpectDate` date NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vanchuyen`
+--
+
+INSERT INTO `vanchuyen` (`IDDVVC`, `Name`, `Status`) VALUES
+(1, 'Giao Hàng Tiết Kiệm', 1);
 
 -- --------------------------------------------------------
 
@@ -212,10 +211,10 @@ CREATE TABLE `vanchuyen` (
 --
 
 CREATE TABLE `version` (
-  `IdVER` varchar(10) NOT NULL,
+  `IdVER` int(11) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `Date` date NOT NULL,
-  `IdGRP` varchar(10) NOT NULL
+  `IdGRP` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -235,9 +234,9 @@ ALTER TABLE `chamsockhachhang`
 --
 ALTER TABLE `chitiethoadon`
   ADD PRIMARY KEY (`IdCTHD`),
+  ADD KEY `CTHD_CTKM` (`IdCTKM`),
   ADD KEY `CTHD_HD` (`IdHD`),
-  ADD KEY `CTHD_SP` (`IdSP`),
-  ADD KEY `CTHD_CTKM` (`IdCTKM`);
+  ADD KEY `CTHD_SP` (`IdSP`);
 
 --
 -- Indexes for table `chitietkhuyenmai`
@@ -254,7 +253,8 @@ ALTER TABLE `chitietkhuyenmai`
 ALTER TABLE `hoadon`
   ADD PRIMARY KEY (`IdHD`),
   ADD KEY `HD_KH` (`IdKH`),
-  ADD KEY `HD_NV` (`IdNV`);
+  ADD KEY `HD_NV` (`IdNV`),
+  ADD KEY `HD_DVVC` (`IDDVVC`);
 
 --
 -- Indexes for table `khachhang`
@@ -299,6 +299,12 @@ ALTER TABLE `thanhvien`
   ADD KEY `TV_GRP` (`IdGRP`);
 
 --
+-- Indexes for table `vanchuyen`
+--
+ALTER TABLE `vanchuyen`
+  ADD PRIMARY KEY (`IDDVVC`);
+
+--
 -- Indexes for table `version`
 --
 ALTER TABLE `version`
@@ -310,6 +316,12 @@ ALTER TABLE `version`
 --
 
 --
+-- AUTO_INCREMENT for table `chamsockhachhang`
+--
+ALTER TABLE `chamsockhachhang`
+  MODIFY `IdCSKH` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `chitiethoadon`
 --
 ALTER TABLE `chitiethoadon`
@@ -319,7 +331,61 @@ ALTER TABLE `chitiethoadon`
 -- AUTO_INCREMENT for table `chitietkhuyenmai`
 --
 ALTER TABLE `chitietkhuyenmai`
-  MODIFY `IdCTKM` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdCTKM` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `hoadon`
+--
+ALTER TABLE `hoadon`
+  MODIFY `IdHD` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `khachhang`
+--
+ALTER TABLE `khachhang`
+  MODIFY `IdKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `khuyenmai`
+--
+ALTER TABLE `khuyenmai`
+  MODIFY `IdKM` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `nhanvien`
+--
+ALTER TABLE `nhanvien`
+  MODIFY `IdNV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `nhom`
+--
+ALTER TABLE `nhom`
+  MODIFY `IdGRP` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sanpham`
+--
+ALTER TABLE `sanpham`
+  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `thanhvien`
+--
+ALTER TABLE `thanhvien`
+  MODIFY `IdTV` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vanchuyen`
+--
+ALTER TABLE `vanchuyen`
+  MODIFY `IDDVVC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `version`
+--
+ALTER TABLE `version`
+  MODIFY `IdVER` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -352,6 +418,7 @@ ALTER TABLE `chitietkhuyenmai`
 -- Constraints for table `hoadon`
 --
 ALTER TABLE `hoadon`
+  ADD CONSTRAINT `HD_DVVC` FOREIGN KEY (`IDDVVC`) REFERENCES `vanchuyen` (`IDDVVC`),
   ADD CONSTRAINT `HD_KH` FOREIGN KEY (`IdKH`) REFERENCES `khachhang` (`IdKH`),
   ADD CONSTRAINT `HD_NV` FOREIGN KEY (`IdNV`) REFERENCES `nhanvien` (`IdNV`);
 
