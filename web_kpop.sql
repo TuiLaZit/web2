@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2025 at 02:12 AM
+-- Generation Time: Mar 29, 2025 at 07:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,8 +60,7 @@ CREATE TABLE `chitiethoadon` (
 CREATE TABLE `chitietkhuyenmai` (
   `IdCTKM` int(11) NOT NULL,
   `IdKM` int(11) NOT NULL,
-  `IdSP` int(11) NOT NULL,
-  `IdTV` int(11) DEFAULT NULL
+  `IdSP` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -174,20 +173,6 @@ CREATE TABLE `sanpham` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `thanhvien`
---
-
-CREATE TABLE `thanhvien` (
-  `IdTV` int(11) NOT NULL,
-  `IdGRP` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL,
-  `INFO` varchar(200) DEFAULT NULL,
-  `IMG` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `vanchuyen`
 --
 
@@ -203,19 +188,6 @@ CREATE TABLE `vanchuyen` (
 
 INSERT INTO `vanchuyen` (`IDDVVC`, `Name`, `Status`) VALUES
 (1, 'Giao Hàng Tiết Kiệm', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `version`
---
-
-CREATE TABLE `version` (
-  `IdVER` int(11) NOT NULL,
-  `Name` varchar(100) NOT NULL,
-  `Date` date NOT NULL,
-  `IdGRP` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -244,8 +216,7 @@ ALTER TABLE `chitiethoadon`
 ALTER TABLE `chitietkhuyenmai`
   ADD PRIMARY KEY (`IdCTKM`),
   ADD KEY `CTKM_KM` (`IdKM`),
-  ADD KEY `CTKM_SP` (`IdSP`),
-  ADD KEY `CTKM_TV` (`IdTV`);
+  ADD KEY `CTKM_SP` (`IdSP`);
 
 --
 -- Indexes for table `hoadon`
@@ -292,24 +263,10 @@ ALTER TABLE `sanpham`
   ADD KEY `SP_TV` (`IdTV`);
 
 --
--- Indexes for table `thanhvien`
---
-ALTER TABLE `thanhvien`
-  ADD PRIMARY KEY (`IdTV`),
-  ADD KEY `TV_GRP` (`IdGRP`);
-
---
 -- Indexes for table `vanchuyen`
 --
 ALTER TABLE `vanchuyen`
   ADD PRIMARY KEY (`IDDVVC`);
-
---
--- Indexes for table `version`
---
-ALTER TABLE `version`
-  ADD PRIMARY KEY (`IdVER`),
-  ADD KEY `VER_GRP` (`IdGRP`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -370,22 +327,10 @@ ALTER TABLE `sanpham`
   MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `thanhvien`
---
-ALTER TABLE `thanhvien`
-  MODIFY `IdTV` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `vanchuyen`
 --
 ALTER TABLE `vanchuyen`
   MODIFY `IDDVVC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `version`
---
-ALTER TABLE `version`
-  MODIFY `IdVER` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -411,8 +356,7 @@ ALTER TABLE `chitiethoadon`
 --
 ALTER TABLE `chitietkhuyenmai`
   ADD CONSTRAINT `CTKM_KM` FOREIGN KEY (`IdKM`) REFERENCES `khuyenmai` (`IdKM`),
-  ADD CONSTRAINT `CTKM_SP` FOREIGN KEY (`IdSP`) REFERENCES `sanpham` (`IdSP`),
-  ADD CONSTRAINT `CTKM_TV` FOREIGN KEY (`IdTV`) REFERENCES `thanhvien` (`IdTV`);
+  ADD CONSTRAINT `CTKM_SP` FOREIGN KEY (`IdSP`) REFERENCES `sanpham` (`IdSP`);
 
 --
 -- Constraints for table `hoadon`
@@ -434,18 +378,6 @@ ALTER TABLE `khuyenmai`
 ALTER TABLE `sanpham`
   ADD CONSTRAINT `SP_GRP` FOREIGN KEY (`IdGRP`) REFERENCES `nhom` (`IdGRP`),
   ADD CONSTRAINT `SP_TV` FOREIGN KEY (`IdTV`) REFERENCES `thanhvien` (`IdTV`);
-
---
--- Constraints for table `thanhvien`
---
-ALTER TABLE `thanhvien`
-  ADD CONSTRAINT `TV_GRP` FOREIGN KEY (`IdGRP`) REFERENCES `nhom` (`IdGRP`);
-
---
--- Constraints for table `version`
---
-ALTER TABLE `version`
-  ADD CONSTRAINT `VER_GRP` FOREIGN KEY (`IdGRP`) REFERENCES `nhom` (`IdGRP`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
