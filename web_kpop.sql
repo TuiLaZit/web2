@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2025 at 07:23 AM
+-- Generation Time: Mar 31, 2025 at 05:13 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `web_kpop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `banner`
+--
+
+CREATE TABLE `banner` (
+  `IdBN` int(11) NOT NULL,
+  `IdSP` int(11) NOT NULL,
+  `Date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -92,7 +104,7 @@ CREATE TABLE `khachhang` (
   `Email` varchar(100) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `Name` varchar(50) NOT NULL,
-  `Number` int(10) NOT NULL,
+  `PNumber` char(10) NOT NULL,
   `Address` varchar(200) NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -161,7 +173,6 @@ CREATE TABLE `nhom` (
 CREATE TABLE `sanpham` (
   `IdSP` int(11) NOT NULL,
   `IdGRP` int(11) NOT NULL,
-  `IdTV` int(11) DEFAULT NULL,
   `Name` varchar(50) NOT NULL,
   `Type` varchar(50) NOT NULL,
   `Price` int(11) NOT NULL,
@@ -193,6 +204,13 @@ INSERT INTO `vanchuyen` (`IDDVVC`, `Name`, `Status`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `banner`
+--
+ALTER TABLE `banner`
+  ADD PRIMARY KEY (`IdBN`),
+  ADD KEY `BN_SP` (`IdSP`);
 
 --
 -- Indexes for table `chamsockhachhang`
@@ -260,8 +278,7 @@ ALTER TABLE `nhom`
 --
 ALTER TABLE `sanpham`
   ADD PRIMARY KEY (`IdSP`),
-  ADD KEY `SP_GRP` (`IdGRP`),
-  ADD KEY `SP_TV` (`IdTV`);
+  ADD KEY `SP_GRP` (`IdGRP`);
 
 --
 -- Indexes for table `vanchuyen`
@@ -272,6 +289,12 @@ ALTER TABLE `vanchuyen`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `banner`
+--
+ALTER TABLE `banner`
+  MODIFY `IdBN` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `chamsockhachhang`
@@ -338,6 +361,12 @@ ALTER TABLE `vanchuyen`
 --
 
 --
+-- Constraints for table `banner`
+--
+ALTER TABLE `banner`
+  ADD CONSTRAINT `BN_SP` FOREIGN KEY (`IdSP`) REFERENCES `sanpham` (`IdSP`);
+
+--
 -- Constraints for table `chamsockhachhang`
 --
 ALTER TABLE `chamsockhachhang`
@@ -377,8 +406,7 @@ ALTER TABLE `khuyenmai`
 -- Constraints for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  ADD CONSTRAINT `SP_GRP` FOREIGN KEY (`IdGRP`) REFERENCES `nhom` (`IdGRP`),
-  ADD CONSTRAINT `SP_TV` FOREIGN KEY (`IdTV`) REFERENCES `thanhvien` (`IdTV`);
+  ADD CONSTRAINT `SP_GRP` FOREIGN KEY (`IdGRP`) REFERENCES `nhom` (`IdGRP`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
