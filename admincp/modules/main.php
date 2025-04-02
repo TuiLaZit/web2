@@ -38,7 +38,10 @@
             
             // Quản lý sản phẩm
             case 'products':
-                include("modules/products/list.php");
+                include("modules/products/danh-sach-san-pham.php");
+                break;
+            case 'add-product':
+                include("modules/products/them-san-pham.php");
                 break;
             case 'groups':
                 include("modules/groups/list.php");

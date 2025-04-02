@@ -1,5 +1,5 @@
 <?php
-$mysqli = new mysqli("localhost","root","","web_kpop");
+$mysqli = new mysqli("localhost","root","khongrotmon","web_kpop");
 $key = 'matkhauahihi';
 // Check connection
 if ($mysqli->connect_errno) {
