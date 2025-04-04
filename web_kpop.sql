@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 05:13 PM
+-- Generation Time: Apr 04, 2025 at 04:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-use  web_kpop;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,7 +30,8 @@ use  web_kpop;
 CREATE TABLE `banner` (
   `IdBN` int(11) NOT NULL,
   `IdSP` int(11) NOT NULL,
-  `Date` date NOT NULL
+  `Date` date NOT NULL,
+  `Status` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,9 +88,10 @@ CREATE TABLE `hoadon` (
   `IdNV` int(11) NOT NULL,
   `Total` int(11) DEFAULT NULL,
   `IDDVVC` int(11) NOT NULL,
-  `Date` date NOT NULL ,
+  `Date` date NOT NULL,
   `ExpectDate` date NOT NULL,
-  `Status` tinyint(1) NOT NULL DEFAULT 1
+  `Status` tinyint(1) NOT NULL DEFAULT 1,
+  `PTTT` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -162,8 +163,16 @@ CREATE TABLE `nhom` (
   `Name` varchar(100) NOT NULL,
   `Company` varchar(100) DEFAULT NULL,
   `Info` varchar(200) NOT NULL,
-  `IMG` varchar(100) DEFAULT NULL
+  `IMG` varchar(100) DEFAULT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `nhom`
+--
+
+INSERT INTO `nhom` (`IdGRP`, `Name`, `Company`, `Info`, `IMG`, `Status`) VALUES
+(5, 'NJZ', 'không có ', 'NewJeans, còn được gọi là NJZ, là một nhóm nhạc nữ Hàn Quốc. Nhóm bao gồm 5 thành viên: Minji, Hanni, Danielle, Haerin và Hyein.', '250207-njz-group-logo-v0-llgg14o29mhe1.webp', 1);
 
 -- --------------------------------------------------------
 
@@ -180,7 +189,8 @@ CREATE TABLE `sanpham` (
   `IMG` varchar(50) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `Info` varchar(200) NOT NULL,
-  `ReleaseDate` date NOT NULL
+  `ReleaseDate` date NOT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -343,13 +353,13 @@ ALTER TABLE `nhanvien`
 -- AUTO_INCREMENT for table `nhom`
 --
 ALTER TABLE `nhom`
-  MODIFY `IdGRP` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdGRP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `vanchuyen`
