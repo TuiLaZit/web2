@@ -1,5 +1,5 @@
 <?php
-$sql_get_products = "SELECT sp.`IdSP`, sp.`IdGRP`, nh.`name` AS `group_name`, sp.`name`, sp.`type`, sp.`price`, sp.`quantity`, sp.`releaseDate`, sp.`info`, sp.`IMG`
+$sql_get_products = "SELECT sp.`IdSP`, sp.`IdGRP`, nh.`name` AS `group_name`, sp.`name`, sp.`type`, sp.`price`, sp.`quantity`, sp.`releaseDate`, sp.`info`, sp.`IMG`, sp.`status`
 FROM `sanpham` sp
 JOIN `nhom` nh ON sp.`IdGRP` = nh.`IdGRP`";
 $query_get_products = mysqli_query($mysqli, $sql_get_products);
@@ -15,6 +15,11 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
     $nhoms[] = $row;
   }
 }
+
+$listStatus =  [
+  ['id' => 1, 'name' => 'Đang bán'],
+  ['id' => 2, 'name' => 'Ẩn'],
+];
 ?>
 
 <style>
@@ -136,6 +141,7 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
             <th>Giá</th>
             <th>Số lượng</th>
             <th>Thông tin</th>
+            <th>Trạng thái</th>
             <th></th>
           </tr>
 
@@ -163,6 +169,13 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
                 <td><?php echo $row['price'] ?></td>
                 <td><?php echo $row['quantity'] ?></td>
                 <td><?php echo $row['info'] ?></td>
+                <td><?php
+                    foreach ($listStatus as $status) {
+                      if ($status['id'] === (int) $row['status']) {
+                        echo $status['name'];
+                      }
+                    }
+                    ?></td>
                 <td>
                   <div style="display: flex; justify-content: center">
                     <i class="fa-solid fa-eye view-details" data-productid="<?php echo $row['IdSP'] ?>"></i>
@@ -344,6 +357,31 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
           </div>
         </div>
 
+        <div class="model-body" style="margin-bottom: 30px">
+          <label for="status" style="width: 15%; margin-left: 20px">Trạng thái</label>
+          <select
+            name="status"
+            style="
+              border-radius: 5px;
+              margin-left: 40px;
+              padding: 3px;
+              width: 20.5%;
+            ">
+            <?php
+            $listStatus =  [
+              ['id' => 1, 'name' => 'Đang bán'],
+              ['id' => 2, 'name' => 'Ẩn'],
+            ];
+            foreach ($listStatus as $status) {
+              echo "<option value='{$status['id']}'>{$status['name']}</option>";
+            }
+            ?>
+          </select>
+        </div>
+
+        <!-- Rounded switch -->
+
+
         <!-- Model footer -->
         <div class="model-footer">
           <button type="submit" class="confirm-button">Xác nhận</button>
@@ -400,6 +438,18 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
               <div class="product-attribute">
                 <h2 class="attribute-header">Số lượng:</h2>
                 <p class="attribute-body"><?php echo $productFound['quantity']; ?></p>
+              </div>
+              <div class="product-attribute">
+                <h2 class="attribute-header">Trạng thái:</h2>
+                <p class="attribute-body">
+                  <?php
+                  foreach ($listStatus as $status) {
+                    if ($status['id'] === (int) $productFound['status']) {
+                      echo $status['name'];
+                    }
+                  }
+                  ?>
+                </p>
               </div>
               <button class="button-style" id="edit-product" style="margin-top: 10px">
                 <i
@@ -540,6 +590,25 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
                 <p id="image-alert-edit" class="alert"></p>
                 <img src="./img/products/<?php echo $productFound['IMG']; ?>" id="output-image-edit" style="height: 100px; width: 100px" />
               </div>
+            </div>
+
+            <div class="model-body" style="margin-bottom: 30px">
+              <label for="status" style="width: 15%; margin-left: 20px">Trạng thái</label>
+              <select
+                name="status"
+                style="
+              border-radius: 5px;
+              margin-left: 40px;
+              padding: 3px;
+              width: 20.5%;
+            ">
+                <?php
+                foreach ($listStatus as $status) {
+                  $selectedStatus = ($productFound['status'] ?? '') == $status['id'] ? 'selected' : '';
+                  echo "<option value='{$status['id']}' $selectedStatus>{$status['name']}</option>";
+                }
+                ?>
+              </select>
             </div>
 
             <!-- Model footer -->

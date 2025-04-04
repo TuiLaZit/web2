@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $releasedDate = $_POST['releaseDate'] ?? '2025-01-01';
     $info = $_POST['info'] ?? '';
     $IMG = $_POST['IMG'] ?? '';
+    $status = $_POST['status'] ?? '';
 
     // Printing the values
     echo "IdGRP: " . $IdGRP . "<br>";
@@ -32,11 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Image: " . $IMG . "<br>";
 
     if (isset($_POST['addSP'])) {
-        $query = "INSERT INTO sanpham (IdGRP, name, type, price, quantity, releaseDate, info, IMG) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO sanpham (IdGRP, name, type, price, quantity, releaseDate, info, IMG, status) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     } elseif (isset($_POST['updateSP']) && isset($_GET['IdSP'])) {
         $IdSP = $_GET['IdSP'];
-        $query = "UPDATE sanpham SET IdGRP = ?, name = ?, type = ?, price = ?, quantity = ?, releaseDate = ?, info = ?, IMG = ?
+        $query = "UPDATE sanpham SET IdGRP = ?, name = ?, type = ?, price = ?, quantity = ?, releaseDate = ?, info = ?, IMG = ?, status = ?
                   WHERE IdSP = ?";
     } else {
         die('Invalid request.');
@@ -83,9 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['addSP'])) {
-        mysqli_stmt_bind_param($stmt, 'issiisss', $IdGRP, $name, $type, $price, $quantity, $releasedDate, $info, $filename);
+        mysqli_stmt_bind_param($stmt, 'issiisssi', $IdGRP, $name, $type, $price, $quantity, $releasedDate, $info, $filename, $status);
     } else {
-        mysqli_stmt_bind_param($stmt, 'issiisssi', $IdGRP, $name, $type, $price, $quantity, $releasedDate, $info, $filename, $_GET['IdSP']);
+        mysqli_stmt_bind_param($stmt, 'issiisssii', $IdGRP, $name, $type, $price, $quantity, $releasedDate, $info, $filename, $status, $_GET['IdSP']);
     }
 
 

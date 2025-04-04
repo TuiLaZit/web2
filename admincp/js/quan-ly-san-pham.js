@@ -172,7 +172,9 @@ function editProduct(event, productID) {
     isError = true;
   }
 
-  if (!image.includes("data:image")) {
+  let validExtensions = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
+
+  if (!image.includes("data:image") && !validExtensions.test(image)) {
     imageAlertEle.innerHTML = "Hình ảnh sản phẩm không hợp lệ!";
     isError = true;
   }
