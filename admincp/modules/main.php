@@ -30,7 +30,7 @@
             
             // Quản lý khách hàng
             case 'customers':
-                include("modules/customers/list.php");
+                include("modules/customers/danh-sach.php");
                 break;
             case 'customer_care':
                 include("modules/customer_care/list.php");
