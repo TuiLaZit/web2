@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2025 at 04:25 AM
+-- Generation Time: Apr 11, 2025 at 04:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -107,8 +107,11 @@ CREATE TABLE `khachhang` (
   `Password` varchar(20) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `PNumber` char(10) NOT NULL,
-  `Address` varchar(200) NOT NULL,
-  `Status` tinyint(1) NOT NULL DEFAULT 1
+  `AddressLine` varchar(200) NOT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT 1,
+  `Ward` varchar(45) NOT NULL,
+  `Provinces` varchar(45) NOT NULL,
+  `District` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -172,7 +175,11 @@ CREATE TABLE `nhom` (
 --
 
 INSERT INTO `nhom` (`IdGRP`, `Name`, `Company`, `Info`, `IMG`, `Status`) VALUES
-(5, 'NJZ', 'không có ', 'NewJeans, còn được gọi là NJZ, là một nhóm nhạc nữ Hàn Quốc. Nhóm bao gồm 5 thành viên: Minji, Hanni, Danielle, Haerin và Hyein.', '250207-njz-group-logo-v0-llgg14o29mhe1.webp', 1);
+(5, 'NJZ', 'không có', 'NewJeans, còn được gọi là NJZ, là một nhóm nhạc nữ Hàn Quốc. Nhóm bao gồm 5 thành viên: Minji, Hanni, Danielle, Haerin và Hyein.', '250207-njz-group-logo-v0-llgg14o29mhe1.webp', 1),
+(6, 'Big Bang', 'YG', 'Big Bang (cách điệu là BIGBANG), là một nhóm nhạc nam Hàn Quốc được thành lập bởi YG Entertainment, chính thức ra mắt năm 2006. Nhóm gồm 5 thành viên G-Dragon, T.O.P, Taeyang, Daesung và Seungri.', '67ef4e42ecd3f.png', 1),
+(7, 'IVE', 'Starship Ent.', 'IVE là một nhóm nhạc nữ Hàn Quốc được thành lập và quản lý bởi Starship Entertainment. Nhóm bao gồm 6 thành viên: Gaeul, Yujin, Rei, Wonyoung, Liz và Leeseo. ', '67ef4e6352df6.jpg', 1),
+(8, 'OIIA cat', 'không có', 'He is a cat that says \"OIIA\" while spinning.', '67f0bc0c8fd23.png', 1),
+(9, 'BTS', 'Hybe', 'BTS, còn được gọi là Bangtan Boys, là một nhóm nhạc nam Hàn Quốc do Big Hit Entertainment thành lập vào năm 2010 và bắt đầu quản lý vào năm 2013. Nhóm bao gồm 7 thành viên: Jin, Suga, J-Hope, RM, Jimi', '67f0bc59e7ce7.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -192,6 +199,23 @@ CREATE TABLE `sanpham` (
   `ReleaseDate` date NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sanpham`
+--
+
+INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Price`, `IMG`, `Quantity`, `Info`, `ReleaseDate`, `Status`) VALUES
+(5, 5, 'Binky Bong', 'Light Stick', 1000000, 'binky.jpg', 100, 'Binky Bong là lightstick chính thức của NewJeans . Nó được tiết lộ lần đầu vào ngày 29 tháng 10 năm 2022 (100 ngày sau khi ra mắt) và được bán vào ngày 30 tháng 3 năm 2023.', '2024-03-30', 1),
+(11, 5, 'NewJeans ‘OMG’ Message Card Hanni ver', 'Album', 360000, 'hanniomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2022-12-19', 1),
+(12, 5, 'NewJeans ‘OMG’ Message Card Minji ver', 'Album', 360000, 'minjiomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(13, 5, 'NewJeans ‘OMG’ Message Card Danielle ver', 'Album', 360000, 'danomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(14, 5, 'NewJeans ‘OMG’ Message Card Haerin ver', 'Album', 360000, 'haeomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(15, 5, 'NewJeans ‘OMG’ Message Card Hyein ver', 'Album', 360000, 'hyeinomg.jpg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(16, 5, 'ALBUM NEWJEANS - HOW SWEET Hanni ver', 'Album', 600000, 'hannihs.webp', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(17, 5, 'ALBUM NEWJEANS - HOW SWEET Minji ver', 'Album', 500000, 'minjihs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(18, 5, 'ALBUM NEWJEANS - HOW SWEET Danielle ver', 'Album', 450000, 'danhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(19, 5, 'ALBUM NEWJEANS - HOW SWEET Haerin ver', 'Album', 500000, 'haehs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(20, 5, 'ALBUM NEWJEANS - HOW SWEET Hyein ver', 'Album', 400000, 'hyeinhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1);
 
 -- --------------------------------------------------------
 
@@ -353,13 +377,13 @@ ALTER TABLE `nhanvien`
 -- AUTO_INCREMENT for table `nhom`
 --
 ALTER TABLE `nhom`
-  MODIFY `IdGRP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IdGRP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `vanchuyen`
