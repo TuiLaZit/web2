@@ -14,7 +14,7 @@
                     echo '<span>Xin chào, '.$_SESSION['admin_name'].'</span>';
                 }
             ?>
-            <a href="logout.php" class="logout-btn">Đăng xuất</a>
+            <a href="./modules/logout.php" class="logout-btn">Đăng xuất</a>
         </div>
     </div>
 </div>

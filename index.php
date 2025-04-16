@@ -10,6 +10,13 @@
 <body>
     <div class="wrapper">
         <?php
+            include("./admincp/config/config.php");
+
+            session_start();
+            if (isset($_SESSION["user"])) {
+                $user = $_SESSION["user"];
+            }
+
             include("pages/header.php");
             include("pages/main.php");
             include("pages/footer.php");

@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    max-width: 1000px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel {
+    background-color: #d0e7f7;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    position: relative;
+    background-image: url("/assets/Image/trang-chu/banner-dang-nhap.jpg");
+    background-size: cover;
+}
+
+.workspace-illustration {
+    width: 100%;
+    height: auto;
+}
+
+.right-panel {
+    background-color: #d0e7f7;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-form .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form .logo img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+.login-form .logo h2 {
+    color: #333;
+    text-align: center;
+}
+
+.login-form .logo p {
+    color: #666;
+    text-align: center;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.login-form input[type="text"], .login-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.login-form .extra-options {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.9em;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form .register-link {
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.registration-form{
+    background-color: white;
+    padding: 50px;
+}
+
+
+.registration-form .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.registration-form .logo2 {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    margin-top: 20px;
+}
+.registration-form .logo2 img {
+    width: 120px;
+    margin-top: 60px;
+}
+
+.registration-form .logo img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+.registration-form .logo h2 {
+    color: #333;
+    text-align: center;
+}
+
+.registration-form .logo p {
+    color: #666;
+    text-align: center;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.registration-form input, .registration-form select {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.registration-form .extra-options {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.9em;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.registration-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.registration-form .register-link {
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+}

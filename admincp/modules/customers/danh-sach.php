@@ -31,14 +31,65 @@ session_start();
 $errors = isset($_SESSION['form_errors']) ? $_SESSION['form_errors'] : [];
 $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
 
-// Clear session data after retrieving it
-if (isset($_SESSION['form_errors'])) {
-    unset($_SESSION['form_errors']);
-}
-if (isset($_SESSION['form_data'])) {
-    unset($_SESSION['form_data']);
-}
+
 ?>
+
+<script>
+    function getFormData() {
+        // You need to output this data from PHP to JavaScript
+        // This can be done by adding a script tag with the data in your PHP file
+        // For example:
+        /*
+          <?php if (isset($_SESSION['form_data'])): ?>
+          const formData = <?php echo json_encode($_SESSION['form_data']); ?>;
+          <?php else: ?>
+          const formData = null;
+          <?php endif; ?>
+        */
+
+        // For now, let's assume the data is available in a global variable
+        // Return null if no data is available
+        return typeof phpFormData !== 'undefined' ? phpFormData : null;
+    }
+
+    let phpFormData = null;
+
+    // Pass PHP session data to JavaScript
+    <?php if (isset($_SESSION['form_data'])): ?>
+        phpFormData = <?php echo json_encode($_SESSION['form_data']); ?>;
+
+        // Clear session data after retrieving it
+        if (isset($_SESSION['form_errors'])) {
+            unset($_SESSION['form_errors']);
+        }
+        if (isset($_SESSION['form_data'])) {
+            unset($_SESSION['form_data']);
+        }
+    <?php endif; ?>
+
+    <?php
+    if (isset($_GET['IdKH'])) {
+        $idKH = $_GET['IdKH'];
+
+        // Tìm khách hàng theo IdKH trong mảng $customers
+        $customerFound = null;
+        foreach ($customers as $customer) {
+            if ($customer['IdKH'] == $idKH) {
+                $customerFound = $customer;
+                break;
+            }
+        }
+    }
+    ?>
+
+    <?php if (isset($customerFound)): ?>
+        var customerFound = <?php echo json_encode($customerFound); ?>;
+    <?php else: ?>
+        var customerFound = null;
+    <?php endif; ?>
+</script>
+
+
 
 <style>
     body {
@@ -174,7 +225,7 @@ if (isset($_SESSION['form_data'])) {
                                 <td><?php echo $customer['Email'] ?></td>
                                 <td><?php echo $customer['Name'] ?></td>
                                 <td><?php echo $customer['PNumber'] ?></td>
-                                <td><?php echo $customer['Address'] ?></td>
+                                <td><?php echo $customer['AddressLine'] . ", " . $customer['District'] . ", " . $customer['Ward'] . ", " . $customer['Provinces'] ?></td>
                                 <td><label class="switch">
                                         <input type="checkbox"
                                             data-customerid="<?php echo $customer['IdKH'] ?>"
@@ -311,20 +362,26 @@ if (isset($_SESSION['form_data'])) {
                         </div>
                     </div>
 
+
                     <div class="model-body">
                         <label for="address" style="width: 15%; margin-left: 20px">Địa chỉ</label>
-                        <div>
-                            <input
-                                type="text"
-                                name="address"
-                                placeholder="Địa chỉ"
-                                style="
-                            margin-left: 40px;
-                            padding: 3px;
-                            border-radius: 5px;
-                            border: 1px solid #636262;
-                            width: 100%;
-                        "
+                        <div
+                            style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    margin-left: 40px;
+                                    gap: 1rem;
+                                ">
+                            <select id="province-input" name="province">
+                                <option value="">Tỉnh / Thành phố</option>
+                            </select>
+                            <select id="district-input" disabled name="district">
+                                <option value="">Quận / Huyện</option>
+                            </select>
+                            <select id="ward-input" disabled name="ward">
+                                <option value="">Xã / Phường / Thị trấn</option>
+                            </select>
+                            <input type="text" id="address" placeholder="Địa chỉ" disabled name="address"
                                 value="<?php echo isset($formData['address']) ? htmlspecialchars($formData['address']) : ''; ?>"
                                 onchange="isNotEmpty(event, 'Địa chỉ', 'address-alert')" />
                             <p id="address-alert" class="alert" style="color: red;">
@@ -369,21 +426,6 @@ if (isset($_SESSION['form_data'])) {
                 <i class="fa-solid fa-left-long cancel-view-details"></i>
                 <h1 style="color: #21568a">Chi tiết khách hàng</h1>
             </div>
-
-            <?php
-            if (isset($_GET['IdKH'])) {
-                $idKH = $_GET['IdKH'];
-
-                // Tìm khách hàng theo IdKH trong mảng $customers
-                $customerFound = null;
-                foreach ($customers as $customer) {
-                    if ($customer['IdKH'] == $idKH) {
-                        $customerFound = $customer;
-                        break;
-                    }
-                }
-            }
-            ?>
             <?php
             // Kiểm tra nếu tìm thấy khách hàng
             if ($customerFound) { ?>
@@ -410,7 +452,7 @@ if (isset($_SESSION['form_data'])) {
                             </div>
                             <div class="product-attribute">
                                 <h2 class="attribute-header">Địa chỉ:</h2>
-                                <p class="attribute-body"><?php echo $customerFound['Address']; ?></p>
+                                <p class="attribute-body"><?php echo $customerFound['AddressLine'] . ", " . $customerFound['District'] . ", " . $customerFound['Ward'] . ", " . $customerFound['Provinces'] ?></p>
                             </div>
                             <div class="product-attribute">
                                 <h2 class="attribute-header">Trạng thái:</h2>
@@ -538,14 +580,27 @@ if (isset($_SESSION['form_data'])) {
                         <div class="model-body">
                             <label for="addres" style="width: 15%; margin-left: 20px">Địa chỉ</label>
                             <div>
-                                <input
-                                    type="text"
-                                    name="address"
-                                    placeholder="Địa chỉ"
-                                    value="<?php echo $customerFound['Address'] ?? ''; ?>"
-                                    style="margin-left: 40px; padding: 3px; border-radius: 5px; border: 1px solid #636262; width: 100%;"
-                                    onchange="isNotEmpty(event, 'địa chỉ', 'address-alert-edit')" />
-                                <p id="address-alert-edit" class="alert"></p>
+                                <div
+                                    style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    margin-left: 40px;
+                                    gap: 1rem;
+                                ">
+                                    <select id="province-input-edit" name="province">
+                                        <option value="">Tỉnh / Thành phố</option>
+                                    </select>
+                                    <select id="district-input-edit" disabled name="district">
+                                        <option value="">Quận / Huyện</option>
+                                    </select>
+                                    <select id="ward-input-edit" disabled name="ward">
+                                        <option value="">Xã / Phường / Thị trấn</option>
+                                    </select>
+                                    <input type="text" id="address-edit" placeholder="Địa chỉ" disabled name="address"
+                                        value="<?php echo $customerFound['AddressLine'] ?? ''; ?>"
+                                        onchange="isNotEmpty(event, 'địa chỉ', 'address-alert-edit')" />
+                                    <p id="address-alert-edit" class="alert"></p>
+                                </div>
                             </div>
                         </div>
 
@@ -582,6 +637,7 @@ if (isset($_SESSION['form_data'])) {
             src="https://kit.fontawesome.com/793699135f.js"
             crossorigin="anonymous"></script>
 
+        <script src="./js/vietnamese-provinces-data.js"></script>
         <script src="./js/quan-ly-khach-hang.js?v=<?php echo time(); ?>"></script>
     </div>
 </div>

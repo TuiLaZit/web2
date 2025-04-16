@@ -10,13 +10,16 @@ class CustomerHandler
 {
     private $mysqli;
     private $errors = [];
+    private $encryptPassword;
 
     /**
      * Constructor - initialize with database connection
      */
-    public function __construct($mysqli)
+    public function __construct($mysqli, $key)
     {
         $this->mysqli = $mysqli;
+
+        $this->encryptPassword = $key;
     }
 
     /**
@@ -59,8 +62,8 @@ class CustomerHandler
     public function addCustomer($data)
     {
         // Prepare query with named parameters for better readability
-        $query = "INSERT INTO khachhang (Account, Email, Password, Name, PNumber, Address, Status) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO khachhang (Account, Email, Password, Name, PNumber, Provinces, Ward, District , AddressLine, Status) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->mysqli->prepare($query);
 
@@ -69,19 +72,26 @@ class CustomerHandler
             return false;
         }
 
-        $hashedPassword = password_hash("NewCustomer", PASSWORD_DEFAULT);
+        if ($data['register']) {
+            $hashedPassword = openssl_encrypt($data['password'], 'AES-128-ECB', $this->encryptPassword);
+        } else {
+            $hashedPassword = openssl_encrypt("NewCustomer", 'AES-128-ECB', $this->encryptPassword);
+        }
 
 
         // Bind parameters
         $stmt->bind_param(
-            'ssssssi',
+            'sssssssssi',
             $data['account'],
             $data['email'],
             $hashedPassword,
             $data['name'],
             $data['pNumber'],
+            $data['province'],
+            $data['ward'],
+            $data['district'],
             $data['address'],
-            $data['status']
+            $data['status'],
         );
 
         // Execute query
@@ -98,7 +108,7 @@ class CustomerHandler
     public function editCustomer($data, $idKH)
     {
         // Prepare query with named parameters for better readability
-        $query = "UPDATE khachhang SET Account = ?, Email = ?, Name = ?, PNumber = ?, Address = ?, Status = ?
+        $query = "UPDATE khachhang SET Account = ?, Email = ?, Name = ?, PNumber = ?, AddressLine = ?, Provinces = ?, Ward = ?, District = ?, Status = ?
             WHERE idKH = ?     
         ";
 
@@ -112,12 +122,15 @@ class CustomerHandler
 
         // Bind parameters
         $stmt->bind_param(
-            'sssssii',
+            'ssssssssii',
             $data['account'],
             $data['email'],
             $data['name'],
             $data['pNumber'],
             $data['address'],
+            $data['province'],
+            $data['ward'],
+            $data['district'],
             $data['status'],
             $idKH,
         );
@@ -189,7 +202,7 @@ class CustomerHandler
 // Main execution flow
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create handler instance
-    $customerHandler = new CustomerHandler($mysqli);
+    $customerHandler = new CustomerHandler($mysqli, $key);
 
     // Extract form data from $_POST
     $customerData = [
@@ -197,18 +210,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'email' => $_POST['email'] ?? '',
         'name' => $_POST['name'] ?? '',
         'pNumber' => $_POST['pNumber'] ?? '',
+        'province' => $_POST['province'] ?? '',
+        'ward' => $_POST['ward'] ?? '',
+        'district' => $_POST['district'] ?? '',
         'address' => $_POST['address'] ?? '',
-        'status' => $_POST['status'] ?? 1
+        'status' => $_POST['status'] ?? 1,
+        'register' => $_POST['register'] === 'true' ? true : false,
+        'password' => $_POST['password'] ?? '',
     ];
 
     // Check if we're adding a customer (form has addKH field)
     if (isset($_POST['addKH'])) {
+        $redirectPath = '../../index.php';
+        if ($customerData['register']) {
+            $redirectPath = '../../../register.php';
+        }
+
         // Validate data
         if ($customerHandler->validateData($customerData)) {
             // Add customer
             if ($customerHandler->addCustomer($customerData)) {
                 // Success - redirect to customers list
-                $customerHandler->redirect('../../index.php?action=customers&status=success');
+                if ($customerData['register']) {
+                    $redirectPath = '../../../login.php';
+                }
+                $customerHandler->redirect("$redirectPath?action=customers&status=success");
             } else {
                 // Database error
                 $errors = $customerHandler->getErrors();
@@ -229,8 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['form_errors'] = $errors;
                 }
 
-
-                $customerHandler->redirect("../../index.php?action=customers&status=error&adding=true");
+                $customerHandler->redirect("$redirectPath?action=customers&status=error&adding=true");
             }
         } else {
             // Validation error
@@ -240,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             $_SESSION['form_errors'] = $errors;
             $_SESSION['form_data'] = $customerData; // Keep form data for repopulating
-            $customerHandler->redirect("../../index.php?action=customers&status=validation_error&adding=true");
+            $customerHandler->redirect("$redirectPath?action=customers&status=validation_error&adding=true");
         }
     } else if (isset($_POST['updateKH']) && isset($_GET['IdKH'])) {
         $idKH = $_GET['IdKH'];

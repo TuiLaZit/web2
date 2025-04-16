@@ -153,7 +153,8 @@ function editProduct(event, productID) {
     accountAlertEle.innerHTML = "Không được để trống tên đăng nhập!";
     isError = true;
   } else if (!isValidUsername(account)) {
-    accountAlertEle.innerHTML = "Tên đăng nhập chỉ được chứa chữ cái, chữ số, dấu gạch dưới; tối thiểu 4 ký tự và tối đa 20 ký tự !";
+    accountAlertEle.innerHTML =
+      "Tên đăng nhập chỉ được chứa chữ cái, chữ số, dấu gạch dưới; tối thiểu 4 ký tự và tối đa 20 ký tự !";
     isError = true;
   }
 
@@ -274,7 +275,8 @@ document
       accountAlertEle.innerHTML = "Không được để trống tên đăng nhập!";
       isError = true;
     } else if (!isValidUsername(account)) {
-      accountAlertEle.innerHTML = "Tên đăng nhập chỉ được chứa chữ cái, chữ số, dấu gạch dưới; tối thiểu 4 ký tự và tối đa 20 ký tự !";
+      accountAlertEle.innerHTML =
+        "Tên đăng nhập chỉ được chứa chữ cái, chữ số, dấu gạch dưới; tối thiểu 4 ký tự và tối đa 20 ký tự !";
       isError = true;
     }
 
@@ -454,3 +456,227 @@ switchEles.forEach((switchEle) =>
     alert("Lỗi!");
   })
 );
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Retrieve stored form data from PHP session (if available)
+  const formData = getFormData();
+
+  // Chèn dữ liệu thành phố
+  populateProvinces();
+  populateProvinces("province-input-edit");
+
+  // If there's stored province value, select it and populate districts
+  if (formData && formData.province) {
+    const provinceSelect = document.getElementById("province-input");
+    provinceSelect.value = formData.province;
+
+    // Trigger province change to populate districts
+    if (formData.province) {
+      populateDistricts(formData.province);
+
+      // If there's stored district value, select it and populate wards
+      if (formData.district) {
+        const districtSelect = document.getElementById("district-input");
+        districtSelect.value = formData.district;
+
+        // Trigger district change to populate wards
+        if (formData.district) {
+          populateWards(formData.district);
+
+          // If there's stored ward value, select it
+          if (formData.ward) {
+            const wardSelect = document.getElementById("ward-input");
+            wardSelect.value = formData.ward;
+          }
+        }
+      }
+    }
+  }
+
+  if (customerFound) {
+    displayCustomerAddress(customerFound);
+  }
+
+  // Chèn dữ liệu quận vào form chọn quận khi chọn xong thành phố
+  document
+    .getElementById("province-input")
+    .addEventListener("change", function () {
+      const selectedProvinceCode = this.value;
+      if (
+        selectedProvinceCode === "" ||
+        selectedProvinceCode === null ||
+        selectedProvinceCode === undefined
+      ) {
+        document.getElementById("district-input").required = false;
+        document.getElementById("district-input").disabled = true;
+        document.getElementById("ward-input").required = false;
+        document.getElementById("ward-input").disabled = true;
+        document.getElementById("address").required = false;
+        document.getElementById("address").disabled = true;
+        return;
+      }
+
+      populateDistricts(selectedProvinceCode);
+    });
+
+  document
+    .getElementById("province-input-edit")
+    .addEventListener("change", function () {
+      const selectedProvinceCode = this.value;
+      if (
+        selectedProvinceCode === "" ||
+        selectedProvinceCode === null ||
+        selectedProvinceCode === undefined
+      ) {
+        document.getElementById("district-input-edit").required = false;
+        document.getElementById("district-input-edit").disabled = true;
+        document.getElementById("ward-input-edit").required = false;
+        document.getElementById("ward-input-edit").disabled = true;
+        document.getElementById("address-edit").required = false;
+        document.getElementById("address-edit").disabled = true;
+        return;
+      }
+
+      populateDistricts(
+        selectedProvinceCode,
+        "district-input-edit",
+        "ward-input-edit"
+      );
+    });
+
+  document
+    .getElementById("district-input")
+    .addEventListener("change", function () {
+      const selectedDistrictCode = this.value;
+      if (
+        selectedDistrictCode === "" ||
+        selectedDistrictCode === null ||
+        selectedDistrictCode === undefined
+      ) {
+        document.getElementById("ward-input").required = false;
+        document.getElementById("ward-input").disabled = true;
+        document.getElementById("address").required = false;
+        document.getElementById("address").disabled = true;
+        return;
+      }
+      populateWards(selectedDistrictCode);
+    });
+
+  document
+    .getElementById("district-input-edit")
+    .addEventListener("change", function () {
+      const selectedDistrictCode = this.value;
+      if (
+        selectedDistrictCode === "" ||
+        selectedDistrictCode === null ||
+        selectedDistrictCode === undefined
+      ) {
+        document.getElementById("ward-input-edit").required = false;
+        document.getElementById("ward-input-edit").disabled = true;
+        document.getElementById("address-edit").required = false;
+        document.getElementById("address-edit").disabled = true;
+        return;
+      }
+      populateWards(
+        selectedDistrictCode,
+        "province-input-edit",
+        "ward-input-edit",
+        "address-edit"
+      );
+    });
+});
+
+// function to display customer address in edit form
+function displayCustomerAddress(customer) {
+  const provinceSelect = document.getElementById("province-input-edit");
+  provinceSelect.value = customer.Provinces;
+
+  // Trigger province change to populate districts
+  if (customer.Provinces) {
+    populateDistricts(customer.Provinces, "district-input-edit", "ward-input-edit");
+
+    // If there's stored district value, select it and populate wards
+    if (customer.District) {
+      const districtSelect = document.getElementById("district-input-edit");
+      districtSelect.value = customer.District;
+
+      // Trigger district change to populate wards
+      if (customer.District) {
+        populateWards(customer.District, "province-input-edit", "ward-input-edit", "address-edit");
+
+        // If there's stored ward value, select it
+        if (customer.Ward) {
+          const wardSelect = document.getElementById("ward-input-edit");
+          wardSelect.value = customer.Ward;
+        }
+      }
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------- //
+
+function populateProvinces(selectId = "province-input") {
+  const provinceSelect = document.getElementById(selectId);
+  provinceSelect.innerHTML = `<option value="">Chọn tỉnh/thành</option>`;
+  vietnameseProvinces.forEach((province) => {
+    provinceSelect.innerHTML += `<option value="${province.FullName}">${province.FullName}</option>`;
+  });
+}
+
+function populateDistricts(
+  provinceCode,
+  selectDistrictId = "district-input",
+  selectWardId = "ward-input"
+) {
+  const districtSelect = document.getElementById(selectDistrictId);
+  const wardSelect = document.getElementById(selectWardId);
+  districtSelect.innerHTML = `<option value="">Chọn quận/huyện</option>`;
+  districtSelect.disabled = !provinceCode;
+  districtSelect.required = true;
+  wardSelect.innerHTML = `<option value="">Chọn phường/xã</option>`;
+  wardSelect.disabled = true;
+
+  const province = vietnameseProvinces.find(
+    (province) => province.FullName === provinceCode
+  );
+  province.District.forEach((district) => {
+    districtSelect.innerHTML += `<option value="${district.FullName}">${district.FullName}</option>`;
+  });
+}
+
+function populateWards(
+  districtCode,
+  selectProvinceId = "province-input",
+  selectWardId = "ward-input",
+  inputAddressId = "address"
+) {
+  const wardSelect = document.getElementById(selectWardId);
+  wardSelect.innerHTML = `<option value="">Chọn phường/xã</option>`;
+  wardSelect.disabled = !districtCode;
+  wardSelect.required = true;
+
+  const provinceCode = document.getElementById(selectProvinceId).value;
+  const province = vietnameseProvinces.find(
+    (province) => province.FullName === provinceCode
+  );
+
+  console.log(province);
+
+  const district = province.District.find(
+    (district) => district.FullName === districtCode
+  );
+  district.Ward.forEach((ward) => {
+    wardSelect.innerHTML += `<option value="${ward.FullName}">${ward.FullName}</option>`;
+  });
+
+  document.getElementById(inputAddressId).disabled = false;
+  document.getElementById(inputAddressId).required = true;
+}
+
+function getAddress(addressObj) {
+  if (!addressObj || addressObj === null) {
+    return "";
+  }
+  return `${addressObj.address}, ${addressObj.ward}, ${addressObj.district}, ${addressObj.province}.`;
+}
