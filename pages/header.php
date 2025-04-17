@@ -20,15 +20,17 @@
             <li>
                 <a href="index.php?quanly=thongbao" class="rightbutton">Thông Báo</a>
             </li>
-            <li>
-                <a href="login.php" class="rightbutton">Đăng Nhập</a>
-            </li>
+
             <?php if (isset($user)): ?>
                 <li>
                     <div>Xin chào <?php echo $user['Name'] ?></div>
                 </li>
                 <li>
                     <a href="./controller/login-customer.php?logout" class="rightbutton">Đăng xuất</a>
+                </li>
+            <?php else: ?>
+                <li>
+                    <a href="login.php" class="rightbutton">Đăng Nhập</a>
                 </li>
             <?php endif; ?>
         </ul>

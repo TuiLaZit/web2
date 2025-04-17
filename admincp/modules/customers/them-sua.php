@@ -1,20 +1,14 @@
 <?php
 // config.php handles database connection and configuration
 require_once('../../config/config.php');
+require_once('../../../utils.php');
 
-/**
- * Customer Handler Class
- * Handles customer operations following SOLID principles
- */
 class CustomerHandler
 {
     private $mysqli;
     private $errors = [];
     private $encryptPassword;
 
-    /**
-     * Constructor - initialize with database connection
-     */
     public function __construct($mysqli, $key)
     {
         $this->mysqli = $mysqli;
@@ -22,11 +16,6 @@ class CustomerHandler
         $this->encryptPassword = $key;
     }
 
-    /**
-     * Validate form data
-     * @param array $data Customer data to validate
-     * @return bool True if valid, false otherwise
-     */
     public function validateData($data)
     {
         // Required fields
@@ -39,26 +28,10 @@ class CustomerHandler
             }
         }
 
-        // // Validate email format
-        // if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-        //     $this->errors['email'] = "Email không hợp lệ";
-        //     return false;
-        // }
-
-        // // Validate phone number (assuming Vietnamese phone number format)
-        // if (!preg_match('/^(0[3|5|7|8|9])+([0-9]{9})$/', $data['pNumber'])) {
-        //     $this->errors['pNumber'] = "Số điện thoại không hợp lệ";
-        //     return false;
-        // }
-
         return true;
     }
 
-    /**
-     * Add new customer
-     * @param array $data Customer data
-     * @return bool Success status
-     */
+
     public function addCustomer($data)
     {
         // Prepare query with named parameters for better readability
@@ -179,19 +152,11 @@ class CustomerHandler
         return $result;
     }
 
-    /**
-     * Get validation errors
-     * @return array Errors array
-     */
     public function getErrors()
     {
         return $this->errors;
     }
 
-    /**
-     * Redirect to a specific page
-     * @param string $location Redirect location
-     */
     public function redirect($location)
     {
         header("Location: $location");
@@ -215,25 +180,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'district' => $_POST['district'] ?? '',
         'address' => $_POST['address'] ?? '',
         'status' => $_POST['status'] ?? 1,
-        'register' => $_POST['register'] === 'true' ? true : false,
+        'register' => $_POST['register'] ?? false,
         'password' => $_POST['password'] ?? '',
     ];
 
-    // Check if we're adding a customer (form has addKH field)
     if (isset($_POST['addKH'])) {
         $redirectPath = '../../index.php';
-        if ($customerData['register']) {
-            $redirectPath = '../../../register.php';
-        }
 
         // Validate data
         if ($customerHandler->validateData($customerData)) {
             // Add customer
             if ($customerHandler->addCustomer($customerData)) {
                 // Success - redirect to customers list
-                if ($customerData['register']) {
-                    $redirectPath = '../../../login.php';
-                }
                 $customerHandler->redirect("$redirectPath?action=customers&status=success");
             } else {
                 // Database error
@@ -318,6 +276,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Database error
             $errors = $customerHandler->getErrors();
             echo false;
+        }
+    } else if (isset($_POST['register'])) {
+        // Validate data
+        if ($customerHandler->validateData($customerData)) {
+            // Add customer
+            if ($customerHandler->addCustomer($customerData)) {
+                // Success - redirect to customers list
+                responseJson([
+                    'success' => true,
+                    'data' => $customerData,
+                ]);
+            } else {
+                // Database error
+                $errors = $customerHandler->getErrors();
+                // Store errors in session and redirect back with error message
+                session_start();
+                $_SESSION['form_errors'] = $errors;
+                $_SESSION['form_data'] = $customerData; // Keep form data for repopulating
+                // Nếu trùng các dữ liệu unique trong db
+                if (str_contains($errors['db'], "Duplicate entry")) {
+                    if (str_contains($errors['db'], "ACCOUNT")) {
+                        $errors['db'] = 'Tên đăng nhập này đã tồn tại !';
+                    } else if (str_contains($errors['db'], "Email_UNIQUE")) {
+                        $errors['db'] = 'Email này đã được đăng ký !';
+                    } else if (str_contains($errors['db'], "PNumber")) {
+                        $errors['db'] = 'Số điện thoại này đã được đăng ký !';
+                    }
+
+                    $_SESSION['form_errors'] = $errors;
+                }
+
+                responseJson([
+                    'success' => false,
+                    'formData' => $customerData,
+                    'formErrors' => $errors
+                ]);
+            }
+        } else {
+            // Validation error
+            $errors = $customerHandler->getErrors();
+
+            // Store errors in session and redirect back with error message
+            session_start();
+            $_SESSION['form_errors'] = $errors;
+            $_SESSION['form_data'] = $customerData; // Keep form data for repopulating
+            $customerHandler->redirect("$redirectPath?action=customers&status=validation_error&adding=true");
+            responseJson([
+                'success' => false,
+                'formData' => $customerData,
+                'formErrors' => $errors
+            ]);
         }
     } else {
         // Invalid request

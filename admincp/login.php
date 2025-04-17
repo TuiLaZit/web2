@@ -13,6 +13,8 @@
     <div class="wrapper">
         <?php
         include("config/config.php");
+        include("../utils.php");
+
         // Start the session to access error messages
         session_start();
 
@@ -34,7 +36,7 @@
                     <div class="login-text">
                         <h2>Chào mừng trở lại</h2>
                         <p>Nếu bạn là khách hàng lạc lối.<br>Vào trang khách hàng.</p>
-                        <a href="/dangnhap.html" class="btn">Khách hàng</a>
+                        <a href="../login.php" class="btn">Khách hàng</a>
                     </div>
                 </div>
 

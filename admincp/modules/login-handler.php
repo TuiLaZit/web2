@@ -154,7 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Authenticate user
             if ($loginHandler->authenticateUser($loginData)) {
                 // Redirect based on user role if needed
-                $_SESSION['user'] = ['username' => $loginData['username']]; // Keep username for repopulating
                 // For now just redirect to home page
                 $loginHandler->redirect('../index.php?status=login_success');
             } else {

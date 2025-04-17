@@ -24,9 +24,6 @@ class CustomerStatus
 }
 
 
-// Start the session to access error messages
-session_start();
-
 // Get errors from session if they exist
 $errors = isset($_SESSION['form_errors']) ? $_SESSION['form_errors'] : [];
 $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];

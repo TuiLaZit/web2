@@ -55,7 +55,9 @@ if (isset($_SESSION['login_data'])) {
           </div>
           <?php if (isset($errors) && sizeof($errors) > 0): ?>
             <div class="alert alert-danger" style="color: red; margin: 10px 20px;">
-              <?php print_r($errors); ?>
+              <?php foreach ($errors as $error) {
+                echo $error;
+              } ?>
             </div>
           <?php endif; ?>
           <button type="submit">Đăng nhập</button>

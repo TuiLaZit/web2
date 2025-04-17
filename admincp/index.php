@@ -13,6 +13,7 @@
     <div class="wrapper">
         <?php
         include("config/config.php");
+        include("../utils.php");
 
         session_start();
 
