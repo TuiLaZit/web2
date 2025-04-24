@@ -12,10 +12,7 @@ if ($query_get_customers && mysqli_num_rows($query_get_customers) > 0) {
     }
 }
 
-$listStatus =  [
-    ['id' => 1, 'name' => 'Hoạt động'],
-    ['id' => 2, 'name' => 'Khóa'],
-];
+
 
 class CustomerStatus
 {
@@ -23,29 +20,20 @@ class CustomerStatus
     public const KHOA = 2;
 }
 
+$listStatus =  [
+    ['id' => CustomerStatus::HOAT_DONG, 'name' => 'Hoạt động'],
+    ['id' => CustomerStatus::KHOA, 'name' => 'Khóa'],
+];
+
 
 // Get errors from session if they exist
 $errors = isset($_SESSION['form_errors']) ? $_SESSION['form_errors'] : [];
 $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
 
-
 ?>
 
 <script>
     function getFormData() {
-        // You need to output this data from PHP to JavaScript
-        // This can be done by adding a script tag with the data in your PHP file
-        // For example:
-        /*
-          <?php if (isset($_SESSION['form_data'])): ?>
-          const formData = <?php echo json_encode($_SESSION['form_data']); ?>;
-          <?php else: ?>
-          const formData = null;
-          <?php endif; ?>
-        */
-
-        // For now, let's assume the data is available in a global variable
-        // Return null if no data is available
         return typeof phpFormData !== 'undefined' ? phpFormData : null;
     }
 
@@ -54,15 +42,17 @@ $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
     // Pass PHP session data to JavaScript
     <?php if (isset($_SESSION['form_data'])): ?>
         phpFormData = <?php echo json_encode($_SESSION['form_data']); ?>;
-
-        // Clear session data after retrieving it
-        if (isset($_SESSION['form_errors'])) {
-            unset($_SESSION['form_errors']);
-        }
-        if (isset($_SESSION['form_data'])) {
-            unset($_SESSION['form_data']);
-        }
     <?php endif; ?>
+
+    <?php
+    // Clear session data after retrieving it
+    if (isset($_SESSION['form_errors'])) {
+        unset($_SESSION['form_errors']);
+    }
+    if (isset($_SESSION['form_data'])) {
+        unset($_SESSION['form_data']);
+    }
+    ?>
 
     <?php
     if (isset($_GET['IdKH'])) {

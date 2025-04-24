@@ -240,7 +240,7 @@ addProductForm.addEventListener("submit", (event) => {
   const type = formData.get("type");
   console.log(type);
   const price = formData.get("price");
-  const quantity = formData.get("quantity");
+  // const quantity = formData.get("quantity");
   const releaseDate = formData.get("releaseDate");
   const info = formData.get("info");
   let image = document.getElementById("output-image").src;
@@ -250,7 +250,7 @@ addProductForm.addEventListener("submit", (event) => {
   const nameAlertEle = document.getElementById("name-alert");
   const typeAlertEle = document.getElementById("type-alert");
   const priceAlertEle = document.getElementById("price-alert");
-  const quantityAlertEle = document.getElementById("quantity-alert");
+  // const quantityAlertEle = document.getElementById("quantity-alert");
   const imageAlertEle = document.getElementById("image-alert");
 
   if (name === "") {
@@ -273,15 +273,15 @@ addProductForm.addEventListener("submit", (event) => {
     isError = true;
   }
 
-  if (quantity === "") {
-    quantityAlertEle.innerHTML = "Không được để trống số lượng sản phẩm !";
-    isError = true;
-  }
+  // if (quantity === "") {
+  //   quantityAlertEle.innerHTML = "Không được để trống số lượng sản phẩm !";
+  //   isError = true;
+  // }
 
-  if (!isValidNumber(quantity) && quantity !== "") {
-    quantityAlertEle.innerHTML = "Số lượng sản phẩm không hợp lệ !";
-    isError = true;
-  }
+  // if (!isValidNumber(quantity) && quantity !== "") {
+  //   quantityAlertEle.innerHTML = "Số lượng sản phẩm không hợp lệ !";
+  //   isError = true;
+  // }
 
   if (image === "") {
     imageAlertEle.innerHTML = "Hình ảnh sản phẩm không hợp lệ !";

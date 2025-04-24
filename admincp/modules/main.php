@@ -43,6 +43,11 @@
             case 'add-product':
                 include("modules/products/them-san-pham.php");
                 break;
+            
+            case 'imports':
+                include("modules/products/import/list-import.php");
+                break;
+
             case 'groups':
                 include("modules/groups/list.php");
                 break;

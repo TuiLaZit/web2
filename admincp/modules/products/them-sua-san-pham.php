@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
     $type = $_POST['type'] ?? '';
     $price = $_POST['price'] ?? '';
-    $quantity = $_POST['quantity'] ?? '';
+    $quantity = $_POST['quantity'] ?? 0;
     $releasedDate = $_POST['releaseDate'] ?? '2025-01-01';
     $info = $_POST['info'] ?? '';
     $IMG = $_POST['IMG'] ?? '';
@@ -54,32 +54,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     // Di chuyển ảnh vào thư mục uploads
-    if (isset($_FILES["IMG"]["tmp_name"])) {
-        move_uploaded_file($_FILES["IMG"]["tmp_name"], $target_file);
-        $filename = basename($_FILES["IMG"]["name"]) ?? "";
+    move_uploaded_file($_FILES["IMG"]["name"], $target_file);
+    $filename = basename($_FILES["IMG"]["name"]) ?? "";
 
-        if ($filename === "") {
-            $sql_get_product = "SELECT `IdSP`, `IdGRP`, `name`, `type`, `price`, `quantity`, `releaseDate`, `info`, `IMG`
+    if (isset($_POST['updateSP']) && $filename === "") {
+        $sql_get_product = "SELECT `IdSP`, `IdGRP`, `name`, `type`, `price`, `quantity`, `releaseDate`, `info`, `IMG`
             FROM `sanpham`
             WHERE IdSP = ?
             LIMIT 1";
 
-            $stmt_get_product_by_id = mysqli_prepare($mysqli, $sql_get_product);
-            mysqli_stmt_bind_param($stmt_get_product_by_id, 'i', $IdSP);
+        $stmt_get_product_by_id = mysqli_prepare($mysqli, $sql_get_product);
+        mysqli_stmt_bind_param($stmt_get_product_by_id, 'i', $IdSP);
 
-            // Fetch the product and assign it to the $product variable
-            mysqli_stmt_execute($stmt_get_product_by_id);
+        // Fetch the product and assign it to the $product variable
+        mysqli_stmt_execute($stmt_get_product_by_id);
 
-            $result = mysqli_stmt_get_result($stmt_get_product_by_id);
-            $product = mysqli_fetch_assoc($result);
+        $result = mysqli_stmt_get_result($stmt_get_product_by_id);
+        $product = mysqli_fetch_assoc($result);
 
-            // Check if product is found
-            if ($product) {
-                // Access product data, e.g., $product['name']
-                $filename = $product['IMG'];
-            } else {
-                die('Error product not found');
-            }
+        // Check if product is found
+        if ($product) {
+            // Access product data, e.g., $product['name']
+            $filename = $product['IMG'];
+        } else {
+            die('Error product not found');
         }
     }
 

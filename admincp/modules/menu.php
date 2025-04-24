@@ -22,6 +22,7 @@
                 <li><a href="index.php?action=members">Thành viên</a></li>
                 <li><a href="index.php?action=versions">Version</a></li>
                 <li><a href="index.php?action=promotions">Khuyến mãi</a></li>
+                <li><a href="index.php?action=imports">Nhập hàng</a></li>
             </ul>
         </li>
         <li><a href="index.php?action=orders">Quản lý hóa đơn</a></li>

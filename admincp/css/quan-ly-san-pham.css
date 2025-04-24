@@ -63,6 +63,7 @@ body {
 
 .bg-color {
   background-color: #eaf1fb;
+  padding-bottom: 60px;
 }
 
 .button-style {
@@ -172,25 +173,29 @@ tr th:nth-child(6) {
 }
 
 tr th:nth-child(7) {
-  width: 7%;
+  width: 5%;
 }
 
 tr th:nth-child(8) {
-  width: 30%;
+  width: 5%;
 }
 
 tr th:nth-child(9) {
-  width: 10%;
+  width: 30%;
 }
 
-tr th:nth-child(9),
-td:nth-child(9) {
+tr th:nth-child(10) {
   width: 10%;
-  border-right: none;
 }
 
 tr th:nth-child(10),
 td:nth-child(10) {
+  width: 10%;
+  border-right: none;
+}
+
+tr th:nth-child(11),
+td:nth-child(11) {
   width: 5%;
   border-left: 2px solid #e1dddd;
 }

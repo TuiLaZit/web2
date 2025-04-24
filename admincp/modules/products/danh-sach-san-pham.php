@@ -1,8 +1,23 @@
 <?php
-$sql_get_products = "SELECT sp.`IdSP`, sp.`IdGRP`, nh.`name` AS `group_name`, sp.`name`, sp.`type`, sp.`price`, sp.`quantity`, sp.`releaseDate`, sp.`info`, sp.`IMG`, sp.`status`
+$sql_get_products = "SELECT DISTINCT 
+sp.`IdSP`, sp.`IdGRP`, nh.`name` AS`group_name`,
+ sp.`name`, 0, nhaphang.`ImportPrice`, sp.`Type` as `type`, sp.`Quantity` as `quantity`,
+ sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`
 FROM `sanpham` sp
-JOIN `nhom` nh ON sp.`IdGRP` = nh.`IdGRP`";
+JOIN `nhom` nh ON sp.`IdGRP` = nh.`IdGRP`
+LEFT JOIN `nhaphang` nhaphang ON nhaphang.`IdSP` = sp.`IdSP`
+";
 $query_get_products = mysqli_query($mysqli, $sql_get_products);
+
+$products = [];
+
+// Nếu có dữ liệu
+if ($query_get_products && mysqli_num_rows($query_get_products) > 0) {
+  while ($row = mysqli_fetch_array($query_get_products)) {
+    $products[] = $row;
+  }
+}
+
 
 $sql_get_nhoms = "SELECT * from nhom";
 $query_get_nhoms = mysqli_query($mysqli, $sql_get_nhoms);
@@ -31,9 +46,55 @@ $listStatus =  [
   .main-content {
     padding: 0px;
   }
+
+  .input-container {
+    position: relative;
+    width: 150px;
+    margin-left: 40px;
+  }
+
+  .input-container::before {
+    content: "%";
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 16px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .percentage-input {
+    width: 150px;
+    padding: 3px 3px 3px 3px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    border-radius: 5px;
+    border: 1px solid #636262;
+  }
+
+  .percentage-input:hover {
+    border-color: #bbb;
+  }
+
+  .percentage-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  }
+
+  /* For better accessibility */
+  .label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+  }
 </style>
 
-<div style="position: relative; width: 100%; height: calc(100vh - 110px);">
+<div style="position: relative; width: 100%; height: calc(100vh - 110px); ">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
     <!-- Body page -->
@@ -139,7 +200,8 @@ $listStatus =  [
             <th>Ảnh sản phẩm</th>
             <th>Tên sản phẩm</th>
             <th>Type</th>
-            <th>Giá</th>
+            <th>Giá nhập</th>
+            <th>Giá bán</th>
             <th>Số lượng</th>
             <th>Thông tin</th>
             <th>Trạng thái</th>
@@ -147,12 +209,10 @@ $listStatus =  [
           </tr>
 
           <?php
-          $products = []; // Mảng lưu trữ sản phẩm
 
           // Nếu có dữ liệu
-          if ($query_get_products && mysqli_num_rows($query_get_products) > 0) {
-            while ($row = mysqli_fetch_array($query_get_products)) {
-              $products[] = $row; // Thêm sản phẩm vào mảng
+          if (isset($products)) {
+            foreach ($products as $row) {
 
           ?>
               <tr>
@@ -167,7 +227,8 @@ $listStatus =  [
                 </td>
                 <td><?php echo $row['name'] ?></td>
                 <td><?php echo $row['type'] ?></td>
-                <td><?php echo $row['price'] ?></td>
+                <td><?php echo number_format($row['ImportPrice'], 0) ?></td>
+                <td><?php echo number_format($row['ImportPrice'] * $row['price'] / 100, 0) ?></td>
                 <td><?php echo $row['quantity'] ?></td>
                 <td><?php echo $row['info'] ?></td>
                 <td><?php
@@ -267,25 +328,19 @@ $listStatus =  [
           </div>
 
           <div class="model-body">
-            <label for="price" style="width: 15%; margin-left: 20px">Đơn giá</label>
+            <label for="price" style="width: 15%; margin-left: 20px">Tỷ suất giá bán</label>
             <div>
-              <input
-                type="text"
-                name="price"
-                placeholder="Đơn giá"
-                style="
-                margin-left: 40px;
-                padding: 3px;
-                border-radius: 5px;
-                border: 1px solid #636262;
-                width: 100%;
-              "
-                onchange="isNotEmpty(event, 'giá', 'price-alert')" />
+              <div class="input-container">
+                <input type="number" name="price" id="percentage"
+                  class="percentage-input" placeholder="10"
+                  min="0"
+                  onchange="isNotEmpty(event, 'Tỷ suất giá bán', 'price-alert')" />
+              </div>
               <p id="price-alert" class="alert"></p>
             </div>
           </div>
 
-          <div class="model-body">
+          <!-- <div class="model-body">
             <label for="quantity" style="width: 15%; margin-left: 20px">Số lượng</label>
             <div>
               <input
@@ -302,7 +357,7 @@ $listStatus =  [
                 onchange="isNotEmpty(event, 'số lượng', 'quantity-alert')" />
               <p id="quantity-alert" class="alert"></p>
             </div>
-          </div>
+          </div> -->
 
           <div class="model-body">
             <label for="releaseDate" style="width: 15%; margin-left: 20px">Ngày phát hành</label>
@@ -544,23 +599,22 @@ $listStatus =  [
             </div>
 
             <div class="model-body">
-              <label for="price" style="width: 15%; margin-left: 20px">Đơn giá</label>
-              <div>
-                <input
-                  type="text"
-                  name="price"
-                  placeholder="Đơn giá"
+              <label for="price" style="width: 15%; margin-left: 20px">Tỷ suất giá bán</label>
+              <div class="input-container">
+                <input type="number" name="price" id="percentage"
+                  class="percentage-input" placeholder="10"
                   value="<?php echo $productFound['price'] ?? ''; ?>"
-                  style="margin-left: 40px; padding: 3px; border-radius: 5px; border: 1px solid #636262; width: 100%;"
-                  onchange="isNotEmpty(event, 'giá', 'price-alert-edit')" />
-                <p id="price-alert-edit" class="alert"></p>
+                  min="0"
+                  onchange="isNotEmpty(event, 'Tỷ suất giá bán', 'price-alert-edit')" />
               </div>
+              <p id="price-alert-edit" class="alert"></p>
             </div>
 
             <div class="model-body">
               <label for="quantity" style="width: 15%; margin-left: 20px">Số lượng</label>
               <div>
                 <input
+                  disabled
                   type="text"
                   name="quantity"
                   placeholder="Số lượng"
@@ -601,6 +655,7 @@ $listStatus =  [
             ">
                 <?php
                 foreach ($listStatus as $status) {
+                  if ($status['id'] == 3) {continue;}
                   $selectedStatus = ($productFound['status'] ?? '') == $status['id'] ? 'selected' : '';
                   echo "<option value='{$status['id']}' $selectedStatus>{$status['name']}</option>";
                 }

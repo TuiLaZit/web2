@@ -32,7 +32,7 @@ class CustomerHandler
     }
 
 
-    public function addCustomer($data)
+    public function addOne($data)
     {
         // Prepare query with named parameters for better readability
         $query = "INSERT INTO khachhang (Account, Email, Password, Name, PNumber, Provinces, Ward, District , AddressLine, Status) 
@@ -78,7 +78,7 @@ class CustomerHandler
         return $result;
     }
 
-    public function editCustomer($data, $idKH)
+    public function editById($data, $idKH)
     {
         // Prepare query with named parameters for better readability
         $query = "UPDATE khachhang SET Account = ?, Email = ?, Name = ?, PNumber = ?, AddressLine = ?, Provinces = ?, Ward = ?, District = ?, Status = ?
@@ -190,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate data
         if ($customerHandler->validateData($customerData)) {
             // Add customer
-            if ($customerHandler->addCustomer($customerData)) {
+            if ($customerHandler->addOne($customerData)) {
                 // Success - redirect to customers list
                 $customerHandler->redirect("$redirectPath?action=customers&status=success");
             } else {
@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate data
         if ($customerHandler->validateData($customerData)) {
             // Add customer
-            if ($customerHandler->editCustomer($customerData, $idKH)) {
+            if ($customerHandler->editById($customerData, $idKH)) {
                 // Success - redirect to customers list
                 $customerHandler->redirect("../../index.php?action=customers&status=success&IdKH=$idKH");
             } else {
@@ -281,7 +281,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate data
         if ($customerHandler->validateData($customerData)) {
             // Add customer
-            if ($customerHandler->addCustomer($customerData)) {
+            if ($customerHandler->addOne($customerData)) {
                 // Success - redirect to customers list
                 responseJson([
                     'success' => true,
