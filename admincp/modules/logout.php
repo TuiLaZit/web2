@@ -2,9 +2,6 @@
 require_once('../config/config.php');
 include("../../utils.php");
 
-/**
- * Log out user
- */
 function logoutUser()
 {
     // Unset all session variables

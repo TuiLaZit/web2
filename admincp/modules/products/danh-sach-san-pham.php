@@ -1,11 +1,19 @@
 <?php
 $sql_get_products = "SELECT DISTINCT 
-sp.`IdSP`, sp.`IdGRP`, nh.`name` AS`group_name`,
- sp.`name`, 0, nhaphang.`ImportPrice`, sp.`Type` as `type`, sp.`Quantity` as `quantity`,
- sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`
+    sp.`IdSP`, sp.`IdGRP`, nh.`name` AS `group_name`,
+    sp.`name`, 0, latest_import.`ImportPrice`, sp.`Type` as `type`, sp.`Quantity` as `quantity`,
+    sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`
 FROM `sanpham` sp
 JOIN `nhom` nh ON sp.`IdGRP` = nh.`IdGRP`
-LEFT JOIN `nhaphang` nhaphang ON nhaphang.`IdSP` = sp.`IdSP`
+LEFT JOIN (
+    SELECT nhaphang.`IdSP`, nhaphang.`ImportPrice`
+    FROM `nhaphang` nhaphang
+    INNER JOIN (
+        SELECT `IdSP`, MAX(`IdNhapHang`) AS max_id
+        FROM `nhaphang`
+        GROUP BY `IdSP`
+    ) latest ON nhaphang.`IdSP` = latest.`IdSP` AND nhaphang.`IdNhapHang` = latest.max_id
+) latest_import ON latest_import.`IdSP` = sp.`IdSP`
 ";
 $query_get_products = mysqli_query($mysqli, $sql_get_products);
 

@@ -2,10 +2,6 @@
 // config.php handles database connection and configuration
 require_once('../admincp/config/config.php');
 
-/**
- * Login Handler Class
- * Handles user authentication following SOLID principles
- */
 class LoginCustomer
 {
     private $mysqli;
@@ -22,11 +18,6 @@ class LoginCustomer
         session_start();
     }
 
-    /**
-     * Validate login data
-     * @param array $data Login data to validate
-     * @return bool True if valid, false otherwise
-     */
     public function validateData($data)
     {
         // Required fields
@@ -42,11 +33,6 @@ class LoginCustomer
         return true;
     }
 
-    /**
-     * Authenticate user
-     * @param array $data Login credentials
-     * @return bool Success status
-     */
     public function authenticateUser($data)
     {
         // Prepare query to find user by account/email
@@ -98,10 +84,6 @@ class LoginCustomer
         return true;
     }
 
-
-    /**
-     * Log out user
-     */
     public function logoutUser()
     {
         // Unset all session variables
@@ -113,19 +95,11 @@ class LoginCustomer
         return true;
     }
 
-    /**
-     * Get validation errors
-     * @return array Errors array
-     */
     public function getErrors()
     {
         return $this->errors;
     }
 
-    /**
-     * Redirect to a specific page
-     * @param string $location Redirect location
-     */
     public function redirect($location)
     {
         header("Location: $location");
