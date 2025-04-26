@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 04:34 PM
+-- Generation Time: Apr 26, 2025 at 03:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -104,7 +104,7 @@ CREATE TABLE `khachhang` (
   `IdKH` int(11) NOT NULL,
   `Account` varchar(50) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `Password` varchar(20) NOT NULL,
+  `Password` varchar(1000) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `PNumber` char(10) NOT NULL,
   `AddressLine` varchar(200) NOT NULL,
@@ -158,6 +158,20 @@ INSERT INTO `nhanvien` (`IdNV`, `Account`, `Password`, `Name`, `PNumber`, `Addre
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `nhaphang`
+--
+
+CREATE TABLE `nhaphang` (
+  `IdNhapHang` int(11) NOT NULL,
+  `IdSP` int(11) NOT NULL,
+  `ImportPrice` int(11) NOT NULL,
+  `ImportDate` date NOT NULL,
+  `ImportQuantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `nhom`
 --
 
@@ -166,7 +180,7 @@ CREATE TABLE `nhom` (
   `Name` varchar(100) NOT NULL,
   `Company` varchar(100) DEFAULT NULL,
   `Info` varchar(200) NOT NULL,
-  `IMG` varchar(100) DEFAULT NULL,
+  `IMG` varchar(256) DEFAULT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -193,7 +207,7 @@ CREATE TABLE `sanpham` (
   `Name` varchar(50) NOT NULL,
   `Type` varchar(50) NOT NULL,
   `Price` int(11) NOT NULL,
-  `IMG` varchar(50) NOT NULL,
+  `IMG` varchar(256) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `Info` varchar(200) NOT NULL,
   `ReleaseDate` date NOT NULL,
@@ -286,7 +300,8 @@ ALTER TABLE `hoadon`
 --
 ALTER TABLE `khachhang`
   ADD PRIMARY KEY (`IdKH`),
-  ADD UNIQUE KEY `ACCOUNT` (`Account`);
+  ADD UNIQUE KEY `ACCOUNT` (`Account`),
+  ADD UNIQUE KEY `PNumber` (`PNumber`);
 
 --
 -- Indexes for table `khuyenmai`
@@ -301,6 +316,13 @@ ALTER TABLE `khuyenmai`
 ALTER TABLE `nhanvien`
   ADD PRIMARY KEY (`IdNV`),
   ADD UNIQUE KEY `Account` (`Account`);
+
+--
+-- Indexes for table `nhaphang`
+--
+ALTER TABLE `nhaphang`
+  ADD PRIMARY KEY (`IdNhapHang`),
+  ADD KEY `NhapHang_SanPham` (`IdSP`);
 
 --
 -- Indexes for table `nhom`
@@ -374,6 +396,12 @@ ALTER TABLE `nhanvien`
   MODIFY `IdNV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `nhaphang`
+--
+ALTER TABLE `nhaphang`
+  MODIFY `IdNhapHang` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `nhom`
 --
 ALTER TABLE `nhom`
@@ -436,6 +464,12 @@ ALTER TABLE `hoadon`
 --
 ALTER TABLE `khuyenmai`
   ADD CONSTRAINT `KM_GRP` FOREIGN KEY (`IdGRP`) REFERENCES `nhom` (`IdGRP`);
+
+--
+-- Constraints for table `nhaphang`
+--
+ALTER TABLE `nhaphang`
+  ADD CONSTRAINT `NhapHang_SanPham` FOREIGN KEY (`IdSP`) REFERENCES `sanpham` (`IdSP`);
 
 --
 -- Constraints for table `sanpham`
