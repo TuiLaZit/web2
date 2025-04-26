@@ -1,0 +1,152 @@
+#group{
+    width:100%;
+    background-color:aliceblue;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2em;
+    flex-wrap: wrap;
+}
+
+#group img{
+    height: 20em;
+    width: auto;
+    object-fit: contain;
+}
+
+#group-info{
+    text-align: left;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#group-info h1{
+    font-size: 2em;
+}
+
+#group-info p{
+    font-size: 1.5em;
+}
+
+#main-page{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: violet;
+}
+
+#shop{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: space-between;
+}
+
+#products{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#products-list{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product-item{
+    width: 16em;
+    height: 16em;
+    margin: 0.5em;
+}
+
+.product-item img{
+    width: 12em;
+    height: 12em;
+    display: flex;
+    object-fit: contain;
+    justify-self: center;
+}
+
+.product-item h3{
+    text-align: center;
+}
+
+.product-item p{
+    text-align: center;
+}
+
+/* Phần bổ sung cho responsive */
+@media (max-width: 1024px) {
+    .product-item {
+        width: 14em;
+        height: 14em;
+    }
+
+    .product-item img {
+        width: 10em;
+        height: 10em;
+    }
+
+    #group img {
+        height: 16em;
+    }
+
+    #group-info h1 {
+        font-size: 1.8em;
+    }
+
+    #group-info p {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-item {
+        width: 12em;
+        height: 12em;
+    }
+
+    .product-item img {
+        width: 8em;
+        height: 8em;
+    }
+
+    #group-info h1 {
+        font-size: 1.5em;
+    }
+
+    #group-info p {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    #products-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-item {
+        width: 100%;
+        height: auto;
+    }
+
+    .product-item img {
+        width: 90%;
+        height: auto;
+    }
+
+    #group-info h1 {
+        font-size: 1.3em;
+        text-align: center;
+    }
+
+    #group-info p {
+        font-size: 1em;
+        text-align: center;
+    }
+}

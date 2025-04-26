@@ -1,0 +1,218 @@
+/* Ẩn modal ban đầu */
+#searchModal {
+    display: none;
+    height: 100vh;
+    width: 40vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: space-evenly;
+}
+/* Nội dung modal */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    width: 50%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Nút đóng */
+.close {
+    float: right;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+/* Lớp phủ toàn màn hình */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Làm mờ với màu đen */
+    display: none;
+    z-index: 998; /* Đảm bảo lớp phủ nằm dưới modal */
+}
+
+/* Hiển thị modal và lớp phủ khi active */
+#searchModal.active {
+    display: block;
+    z-index: 999; /* Đặt trên overlay */
+}
+
+.overlay.active {
+    display: block;
+}
+
+.group-item{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.group-item img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.group-item h3{
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    margin-left: 30px;
+}
+
+.main.hide{
+    pointer-events: none;
+    position: relative;
+    
+}
+
+#bannerCarousel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Căn giữa nội dung banner */
+    align-items: center;
+    background-color:#292929;
+    display:flex;
+    align-self: center;
+}
+
+.carousel-control {
+    height: 100%; /* Giữ nguyên chiều cao */
+    width: 5%; /* Chiều rộng nhỏ hơn */
+    display: flex;
+    align-items: center; /* Canh giữa mũi tên theo chiều dọc */
+    justify-content: center; /* Canh giữa mũi tên theo chiều ngang */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: transparent; /* Loại bỏ màu nền */
+}
+
+#carouselInner {
+    height: 100%; /* Giữ chiều cao toàn bộ khung */
+    width: 80%; /* Giữ chiều rộng của khung */
+    margin: 0 auto; /* Căn giữa toàn bộ khung theo trục ngang */
+    display: flex;
+}
+
+.carousel-item {
+    width: 80%; /* Giữ chiều rộng của mỗi vật phẩm */
+    height: 90%; /* Chiều cao của mỗi vật phẩm */
+    display: flex;
+    justify-content: center; /* Căn giữa nội dung trong mỗi vật phẩm theo trục ngang */
+}
+
+.banner-class {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    align-items: center;
+    text-decoration: none;
+    flex-wrap: wrap;
+    padding-bottom: 30px;
+}
+
+.banner-class * {
+    margin: 10px;
+    flex-shrink: 10px;
+}
+
+.banner-img {
+    width: auto;
+    height: 400px;
+    object-fit: contain;
+    display: flex;
+    border-radius: 50px;
+}
+
+.carousel-caption {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.banner-text {
+    text-align: left;
+    color: rgb(255, 255, 255);
+}
+
+#openSearchModal {
+    width: 80%;
+    margin: auto; /* căn ngang trung tâm */
+    margin-top: 10px;
+    display: flex; /* bật Flexbox */
+    align-items: center; /* căn chỉnh dọc chữ */
+    justify-content: center; /* căn chỉnh ngang chữ */
+    background-color: #ffffff;
+    border-radius: 100px;
+}
+
+#main-page{
+    display:flex;
+    flex-direction: column;
+    background-color:#f0f0f0;
+}
+
+#main-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.group-container{
+    width: 80%;
+    margin:auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-grid{
+    width:100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.product-item{
+    width: 350px;
+    height: 300px;
+}
+
+.product-item img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.group-name{
+    height: 60px;
+    width: 100%;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: rgb(75, 75, 75);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+.group-name p{
+    margin-left: 20px;
+    color: white;
+    margin-top:10px;
+    font-size: 30px;
+}
+
+.current-page-info{
+    padding-bottom: 0em !important; 
+}

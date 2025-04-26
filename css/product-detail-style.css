@@ -1,0 +1,60 @@
+.product-detail {
+    width: 100%;
+    display: flex;
+    background-color: aliceblue;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+/* Hình ảnh sẽ tự động co giãn */
+.prod-img img {
+    width: 100%;
+    max-width: 50em; /* Đảm bảo kích thước tối đa */
+    height: auto; /* Tự điều chỉnh chiều cao theo tỉ lệ */
+    object-fit: contain;
+    margin-left: 3em;
+}
+
+/* Phần thông tin sản phẩm */
+.prod-info {
+    flex: 1;
+    margin-left: 3em;
+    margin-right: 3em;
+    align-self: center;
+    text-align: left;
+}
+
+/* Điều chỉnh chữ khi màn hình nhỏ hơn */
+.prod-info h1 {
+    font-size: 2em;
+}
+
+.prod-info p {
+    font-size: 1.5em;
+}
+
+/* Media Query cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .product-detail {
+        flex-direction: column; /* Xếp chồng các phần */
+        align-items: center; /* Căn giữa phần tử */
+    }
+
+    .prod-info {
+        margin-left: 1em;
+        margin-right: 1em;
+        text-align: center; /* Chuyển sang căn giữa cho màn hình nhỏ */
+    }
+
+    .prod-img img {
+        margin-left: 0; /* Loại bỏ khoảng cách không cần thiết */
+    }
+
+    .prod-info h1 {
+        font-size: 1.5em; /* Giảm kích thước chữ */
+    }
+
+    .prod-info p {
+        font-size: 1.2em;
+    }
+}
