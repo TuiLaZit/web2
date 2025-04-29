@@ -21,7 +21,7 @@
             }
 
             include("pages/header.php");
-            include("pages/main.php");
+            include("pages/main/main.php");
             include("pages/footer.php");
         ?>
     </div>
