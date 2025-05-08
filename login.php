@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/trang-chu.css" />
+  <link rel="stylesheet" href="./css/trang-chu.css?v=<?php echo time() ?>" />
 </head>
 
 <?php
@@ -13,6 +13,10 @@ require_once("./utils.php");
 session_start();
 
 if (isset($_SESSION['user'])) {
+  $user = $_SESSION['user'];
+  if ($user['isAdmin']) {
+    redirect('./admincp');
+  }
   redirect('./index.php');
 }
 
@@ -32,14 +36,16 @@ if (isset($_SESSION['login_data'])) {
 <body>
   <div class="container">
     <!-- Phần Hình Minh Họa -->
-    <div class="left-panel"></div>
+    <div class="left-panel">
+      <img src="./img/login-banner.jpg" alt="login-banner">
+    </div>
     <!-- Phần Form Đăng Nhập -->
     <div class="right-panel">
       <div class="login-form">
         <div class="logo">
-          <img src="/assets/Image/logo.png" alt="SGU Click Logo" />
+          <img src="" alt="Logo" />
           <h2>CHÀO MỪNG ĐẾN VỚI</h2>
-          <p>SGU Click - Chất phím, chất click!</p>
+          <p>KCorner - Góc nhỏ, chất mơ!</p>
         </div>
 
         <!-- Form đăng nhập -->
@@ -67,34 +73,39 @@ if (isset($_SESSION['login_data'])) {
         </form>
 
         <!-- Form quên mật khẩu -->
-        <form style="display: none" id="formForgotPassword">
+        <form style="display: none" id="formForgotPassword" onsubmit="createNewPassword(event)">
           <input
             id="phone"
             type="text"
+            name="Phone"
             placeholder="Số điện thoại đã đăng ký"
             required />
           <input
             id="newPassword"
             type="password"
+            name="Password"
             placeholder="Mật khẩu mới"
             required />
           <input
             id="confirmNewPassword"
+            name="RePassword"
             type="password"
             placeholder="Xác nhân mật khẩu mới"
             required />
-          <button type="submit" onclick="createNewPassword(event)">
+          <div class="alert-danger" style="color:red;">
+
+          </div>
+          <button type="submit" >
             Tạo mật khẩu mới
           </button>
           <p class="register-link">
-            Bạn đã có tài khoản? <a href="/dangnhap.html">Đăng nhập ngay</a>
-          </p>
+            Bạn đã có tài khoản? <a href="./login.php">Đăng nhập ngay</a>
+          </p
         </form>
       </div>
     </div>
   </div>
-  <!-- Nếu để script ở đầu thì cần dùng DOMContentLoaded -->
-  </script>
-</body>
 
+  <script src="./js/login.js?v=<?php echo time()?>"></script>
+</body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 // config.php handles database connection and configuration
 require_once('../admincp/config/config.php');
+require_once('../utils.php');
 
 class LoginCustomer
 {
@@ -18,11 +19,8 @@ class LoginCustomer
         session_start();
     }
 
-    public function validateData($data)
+    public function validateData($data, $requiredFields)
     {
-        // Required fields
-        $requiredFields = ['username', 'password'];
-
         foreach ($requiredFields as $field) {
             if (empty($data[$field])) {
                 $this->errors[$field] = "Trường $field không được để trống";
@@ -95,6 +93,57 @@ class LoginCustomer
         return true;
     }
 
+    public function updatePassword($data)
+    {
+        // Prepare query to find user by account/email
+        $query = "SELECT * FROM khachhang 
+                    WHERE PNumber = ? LIMIT 1";
+
+        $stmt = $this->mysqli->prepare($query);
+
+        if (!$stmt) {
+            $this->errors['db'] = "Database preparation error: " . $this->mysqli->error;
+            return false;
+        }
+
+        // Bind parameters
+        $stmt->bind_param(
+            's',
+            $data['Phone'],
+        );
+
+        // Execute query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            $this->errors['resetPassword'] = "Số điện thoại này chưa được đăng ký!";
+            return false;
+        }
+
+        $stmt->close();
+
+        $updatePasswordQuery = "UPDATE khachhang SET Password = ? WHERE PNumber = ?";
+        $updatePasswordStmt = $this->mysqli->prepare($updatePasswordQuery);
+
+        if (!$updatePasswordStmt) {
+            $this->errors['db'] = "Database preparation error: " . $this->mysqli->error;
+            return false;
+        }
+
+        $passcrypted = openssl_encrypt($data['Password'], 'AES-128-ECB', $this->encryptPassword);
+        $updatePasswordStmt->bind_param('ss', $passcrypted, $data['Phone']);
+        $updatePasswordResult = $updatePasswordStmt->execute();
+
+        if (!$updatePasswordResult) {
+            $this->errors['db'] = "Database execution error: " . $updatePasswordStmt->error;
+            return false;
+        }
+
+        $updatePasswordStmt->close();
+        return true;
+    }
+
     public function getErrors()
     {
         return $this->errors;
@@ -109,12 +158,9 @@ class LoginCustomer
 
 // Create handler instance
 $loginHandler = new LoginCustomer($mysqli, $key);
-session_start();
 
 // Main execution flow
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-
     // Check if we're handling login
     if (isset($_POST['login'])) {
         // Extract form data from $_POST
@@ -123,8 +169,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'password' => $_POST['password'] ?? '',
         ];
 
+        $requiredFields = ['username', 'password'];
+
         // Validate data
-        if ($loginHandler->validateData($loginData)) {
+        if ($loginHandler->validateData($loginData, $requiredFields)) {
             // Authenticate user
             if ($loginHandler->authenticateUser($loginData)) {
                 // Redirect based on user role if needed
@@ -149,17 +197,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['login_data'] = ['username' => $loginData['username']]; // Keep username for repopulating
             $loginHandler->redirect('../login.php?action=login&status=validation_error');
         }
+    } else if (isset($_GET['reset-password'])) {
+        $resetPasswordData = [
+            'Phone' => $_POST['Phone'] ?? '',
+            'Password' => $_POST['Password'] ?? '',
+            'RePassword' => $_POST['RePassword'] ?? '',
+        ];
+
+        $requiredFields = ['Phone', 'Password', 'RePassword'];
+
+        if ($loginHandler->validateData($resetPasswordData, $requiredFields)) {
+            if ($resetPasswordData['Password'] !== $resetPasswordData['RePassword']) {
+                return responseJson([
+                    'success' => false,
+                    'messages' => [
+                        'reset-password' => "Mật khẩu không trùng khớp!"
+                    ]
+                ]);
+            }
+
+            // Authenticate user
+            if ($loginHandler->updatePassword($resetPasswordData)) {
+                // Redirect based on user role if needed
+                return responseJson([
+                    'success' => true,
+                ]);
+            } else {
+                // Authentication error
+                $errors = $loginHandler->getErrors();
+                return responseJson([
+                    'success' => false,
+                    'messages' => $errors
+                ]);
+            }
+        } else {
+            // Validation error
+            $errors = $loginHandler->getErrors();
+            return responseJson([
+                'success' => false,
+                'messages' => $errors
+            ]);
+        }
+    }
+} else if (isset($_GET['logout'])) {
+    if ($loginHandler->logoutUser()) {
+        $loginHandler->redirect('../login.php?action=login&status=logout_success');
+    } else {
+        $loginHandler->redirect('../login.php?status=logout_error');
     }
 } else {
-    // Check if we're handling logout
-    if (isset($_GET['logout'])) {
-        if ($loginHandler->logoutUser()) {
-            $loginHandler->redirect('../login.php?action=login&status=logout_success');
-        } else {
-            $loginHandler->redirect('../login.php?status=logout_error');
-        }
-    } else {
-        // Invalid request
-        die('Invalid request: Missing required parameter');
-    }
+    // Invalid request
+    die('Invalid request: Missing required parameter');
 }

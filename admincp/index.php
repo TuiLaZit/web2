@@ -19,7 +19,7 @@
 
 
         if (!isset($_SESSION['user'])) {
-            redirect('./login.php');
+            redirect('./login-admin.php');
         }
 
         $user = $_SESSION['user'];

@@ -12,7 +12,7 @@ function logoutUser()
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     session_start();
     logoutUser();
-    redirect('../login.php?action=login&status=logout_success');
+    redirect('../login-admin.php?action=login&status=logout_success');
 } else {
     die('Invalid request method.');
 }

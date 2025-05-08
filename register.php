@@ -27,19 +27,19 @@
 
 
   <img
-    src="/assets/Image/trang-chu/keyboard-sticker-1.png"
+    src="./img/register-banner-1.png"
     alt="hinh-dang-ky"
     style="position: absolute; top: 20px; left: 100px; width: 250px" />
   <img
-    src="/assets/Image/trang-chu/keyboard-sticker-3.png"
+    src="./img/register-banner-2.png"
     alt="hinh-dang-ky"
     style="position: absolute; top: 20px; right: 100px; width: 250px" />
   <img
-    src="/assets/Image/trang-chu/keyboard-sticker-2.png"
+    src="./img/register-banner-3.png"
     alt="hinh-dang-ky"
     style="position: absolute; bottom: 20px; left: 100px; width: 250px" />
   <img
-    src="/assets/Image/trang-chu/keyboard-sticker-4.png"
+    src="./img/register-banner-4.png"
     alt="hinh-dang-ky"
     style="position: absolute; bottom: 20px; right: 100px; width: 250px" />
   <section>
