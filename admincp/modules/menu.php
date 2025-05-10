@@ -1,11 +1,10 @@
 <div class="menu">
     <ul class="admin-menu">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle">Quản lý nhân viên</a>
-
+            <a href="index.php?action=staff" class="dropdown-toggle">Quản lý nhân viên</a>
         </li>
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle">Quản lý khách hàng</a>
+            <a href="index.php?action=customers" class="dropdown-toggle">Quản lý khách hàng</a>
         </li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle">Quản lý sản phẩm ▼</a>
