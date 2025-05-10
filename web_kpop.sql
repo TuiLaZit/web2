@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2025 at 03:41 PM
+-- Generation Time: May 10, 2025 at 02:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,13 +85,15 @@ CREATE TABLE `chitietkhuyenmai` (
 CREATE TABLE `hoadon` (
   `IdHD` int(11) NOT NULL,
   `IdKH` int(11) NOT NULL,
-  `IdNV` int(11) NOT NULL,
   `Total` int(11) DEFAULT NULL,
-  `IDDVVC` int(11) NOT NULL,
   `Date` date NOT NULL,
   `ExpectDate` date NOT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT 1,
-  `PTTT` tinyint(1) NOT NULL DEFAULT 1
+  `PTTT` tinyint(1) NOT NULL DEFAULT 1,
+  `AddressLine` varchar(200) NOT NULL,
+  `Ward` varchar(45) NOT NULL,
+  `Provinces` varchar(45) NOT NULL,
+  `District` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -231,25 +233,6 @@ INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Price`, `IMG`, `Quantit
 (19, 5, 'ALBUM NEWJEANS - HOW SWEET Haerin ver', 'Album', 500000, 'haehs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
 (20, 5, 'ALBUM NEWJEANS - HOW SWEET Hyein ver', 'Album', 400000, 'hyeinhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `vanchuyen`
---
-
-CREATE TABLE `vanchuyen` (
-  `IDDVVC` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL,
-  `Status` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `vanchuyen`
---
-
-INSERT INTO `vanchuyen` (`IDDVVC`, `Name`, `Status`) VALUES
-(1, 'Giao Hàng Tiết Kiệm', 1);
-
 --
 -- Indexes for dumped tables
 --
@@ -291,9 +274,7 @@ ALTER TABLE `chitietkhuyenmai`
 --
 ALTER TABLE `hoadon`
   ADD PRIMARY KEY (`IdHD`),
-  ADD KEY `HD_KH` (`IdKH`),
-  ADD KEY `HD_NV` (`IdNV`),
-  ADD KEY `HD_DVVC` (`IDDVVC`);
+  ADD KEY `HD_KH` (`IdKH`);
 
 --
 -- Indexes for table `khachhang`
@@ -336,12 +317,6 @@ ALTER TABLE `nhom`
 ALTER TABLE `sanpham`
   ADD PRIMARY KEY (`IdSP`),
   ADD KEY `SP_GRP` (`IdGRP`);
-
---
--- Indexes for table `vanchuyen`
---
-ALTER TABLE `vanchuyen`
-  ADD PRIMARY KEY (`IDDVVC`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -414,12 +389,6 @@ ALTER TABLE `sanpham`
   MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT for table `vanchuyen`
---
-ALTER TABLE `vanchuyen`
-  MODIFY `IDDVVC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- Constraints for dumped tables
 --
 
@@ -455,9 +424,7 @@ ALTER TABLE `chitietkhuyenmai`
 -- Constraints for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  ADD CONSTRAINT `HD_DVVC` FOREIGN KEY (`IDDVVC`) REFERENCES `vanchuyen` (`IDDVVC`),
-  ADD CONSTRAINT `HD_KH` FOREIGN KEY (`IdKH`) REFERENCES `khachhang` (`IdKH`),
-  ADD CONSTRAINT `HD_NV` FOREIGN KEY (`IdNV`) REFERENCES `nhanvien` (`IdNV`);
+  ADD CONSTRAINT `HD_KH` FOREIGN KEY (`IdKH`) REFERENCES `khachhang` (`IdKH`);
 
 --
 -- Constraints for table `khuyenmai`
