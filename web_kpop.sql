@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2025 at 02:11 AM
+-- Generation Time: May 10, 2025 at 06:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -171,6 +171,13 @@ CREATE TABLE `nhaphang` (
   `ImportQuantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `nhaphang`
+--
+
+INSERT INTO `nhaphang` (`IdNhapHang`, `IdSP`, `ImportPrice`, `ImportDate`, `ImportQuantity`) VALUES
+(1, 21, 300000, '2025-05-10', 100);
+
 -- --------------------------------------------------------
 
 --
@@ -208,6 +215,7 @@ CREATE TABLE `sanpham` (
   `IdGRP` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `Type` varchar(50) NOT NULL,
+  `Ratio` int(11) NOT NULL,
   `Price` int(11) NOT NULL,
   `IMG` varchar(256) NOT NULL,
   `Quantity` int(11) NOT NULL,
@@ -220,18 +228,19 @@ CREATE TABLE `sanpham` (
 -- Dumping data for table `sanpham`
 --
 
-INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Price`, `IMG`, `Quantity`, `Info`, `ReleaseDate`, `Status`) VALUES
-(5, 5, 'Binky Bong', 'Light Stick', 1000000, 'binky.jpg', 100, 'Binky Bong là lightstick chính thức của NewJeans . Nó được tiết lộ lần đầu vào ngày 29 tháng 10 năm 2022 (100 ngày sau khi ra mắt) và được bán vào ngày 30 tháng 3 năm 2023.', '2024-03-30', 1),
-(11, 5, 'NewJeans ‘OMG’ Message Card Hanni ver', 'Album', 360000, 'hanniomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2022-12-19', 1),
-(12, 5, 'NewJeans ‘OMG’ Message Card Minji ver', 'Album', 360000, 'minjiomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
-(13, 5, 'NewJeans ‘OMG’ Message Card Danielle ver', 'Album', 360000, 'danomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
-(14, 5, 'NewJeans ‘OMG’ Message Card Haerin ver', 'Album', 360000, 'haeomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
-(15, 5, 'NewJeans ‘OMG’ Message Card Hyein ver', 'Album', 360000, 'hyeinomg.jpg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
-(16, 5, 'ALBUM NEWJEANS - HOW SWEET Hanni ver', 'Album', 600000, 'hannihs.webp', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
-(17, 5, 'ALBUM NEWJEANS - HOW SWEET Minji ver', 'Album', 500000, 'minjihs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
-(18, 5, 'ALBUM NEWJEANS - HOW SWEET Danielle ver', 'Album', 450000, 'danhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
-(19, 5, 'ALBUM NEWJEANS - HOW SWEET Haerin ver', 'Album', 500000, 'haehs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
-(20, 5, 'ALBUM NEWJEANS - HOW SWEET Hyein ver', 'Album', 400000, 'hyeinhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1);
+INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Ratio`, `Price`, `IMG`, `Quantity`, `Info`, `ReleaseDate`, `Status`) VALUES
+(5, 5, 'Binky Bong', 'Light Stick', 0, 150, 'binky.jpg', 0, 'Binky Bong là lightstick chính thức của NewJeans . Nó được tiết lộ lần đầu vào ngày 29 tháng 10 năm 2022 (100 ngày sau khi ra mắt) và được bán vào ngày 30 tháng 3 năm 2023.', '2025-01-01', 1),
+(11, 5, 'NewJeans ‘OMG’ Message Card Hanni ver', 'Album', 0, 360000, 'hanniomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2022-12-19', 1),
+(12, 5, 'NewJeans ‘OMG’ Message Card Minji ver', 'Album', 0, 360000, 'minjiomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(13, 5, 'NewJeans ‘OMG’ Message Card Danielle ver', 'Album', 0, 360000, 'danomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(14, 5, 'NewJeans ‘OMG’ Message Card Haerin ver', 'Album', 0, 360000, 'haeomg.jpeg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(15, 5, 'NewJeans ‘OMG’ Message Card Hyein ver', 'Album', 0, 360000, 'hyeinomg.jpg', 100, 'OMG is the first single album by the South Korean girl group NewJeans. It was released on January 2, 2023. A pre-release single \"Ditto\" was released on December 19, 2022.', '2023-01-02', 1),
+(16, 5, 'ALBUM NEWJEANS - HOW SWEET Hanni ver', 'Album', 0, 600000, 'hannihs.webp', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(17, 5, 'ALBUM NEWJEANS - HOW SWEET Minji ver', 'Album', 0, 500000, 'minjihs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(18, 5, 'ALBUM NEWJEANS - HOW SWEET Danielle ver', 'Album', 0, 450000, 'danhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(19, 5, 'ALBUM NEWJEANS - HOW SWEET Haerin ver', 'Album', 0, 500000, 'haehs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(20, 5, 'ALBUM NEWJEANS - HOW SWEET Hyein ver', 'Album', 0, 400000, 'hyeinhs.jpg', 100, 'How Sweet is the second single album by NewJeans. It was released on May 24,2024 at 1PM KST.The music video for the title track“How Sweet” was released on the same day,at 4PM KST.', '2024-05-24', 1),
+(21, 5, 'Hanni NewJeans x Murakami Keyring doll', 'Collab', 0, 151, 'hannimurakey.jpg', 0, 'Hanni Keyring doll collab with Murakami on the Tokyo Dome Fan Meeting', '2025-01-01', 1);
 
 --
 -- Indexes for dumped tables
@@ -374,7 +383,7 @@ ALTER TABLE `nhanvien`
 -- AUTO_INCREMENT for table `nhaphang`
 --
 ALTER TABLE `nhaphang`
-  MODIFY `IdNhapHang` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdNhapHang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `nhom`
@@ -386,7 +395,7 @@ ALTER TABLE `nhom`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
