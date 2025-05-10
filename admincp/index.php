@@ -31,7 +31,6 @@
         include("modules/header.php");
         include("modules/menu.php");
         include("modules/main.php");
-        include("modules/footer.php");
         ?>
     </div>
 </body>
