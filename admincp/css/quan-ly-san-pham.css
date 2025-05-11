@@ -140,10 +140,12 @@ th:first-child {
 
 tr td:last-child {
   border-right: none;
+  border-bottom: none;
 }
 
 tr th:last-child {
   border-right: none;
+  border-bottom: none;
 }
 /*-----------------------*/
 

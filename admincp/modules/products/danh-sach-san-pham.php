@@ -2,7 +2,7 @@
 $sql_get_products = "SELECT DISTINCT 
     sp.`IdSP`, sp.`IdGRP`, nh.`name` AS `group_name`,
     sp.`name`, 0, latest_import.`ImportPrice`, sp.`Type` as `type`, sp.`Quantity` as `quantity`,
-    sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`
+    sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`, sp.`Ratio` as `Ratio`
 FROM `sanpham` sp
 JOIN `nhom` nh ON sp.`IdGRP` = nh.`IdGRP`
 LEFT JOIN (
@@ -102,7 +102,7 @@ $listStatus =  [
   }
 </style>
 
-<div style="position: relative; width: 100%; height: calc(100vh - 110px); ">
+<div style="position: relative; width: 100%; height: calc(100vh - 60px); ">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
     <!-- Body page -->
@@ -160,7 +160,7 @@ $listStatus =  [
                 <td><?php echo $row['name'] ?></td>
                 <td><?php echo $row['type'] ?></td>
                 <td><?php echo number_format($row['ImportPrice'], 0) ?></td>
-                <td><?php echo number_format($row['ImportPrice'] * $row['price'] / 100, 0) ?></td>
+                <td><?php echo number_format($row['price'], 0) ?></td>
                 <td><?php echo $row['quantity'] ?></td>
                 <td><?php echo $row['info'] ?></td>
                 <td><?php
@@ -263,7 +263,7 @@ $listStatus =  [
             <label for="price" style="width: 15%; margin-left: 20px">Tỷ suất giá bán</label>
             <div>
               <div class="input-container">
-                <input type="number" name="price" id="percentage"
+                <input type="number" name="ratio" id="percentage"
                   class="percentage-input" placeholder="10"
                   min="0"
                   onchange="isNotEmpty(event, 'Tỷ suất giá bán', 'price-alert')" />
@@ -533,9 +533,9 @@ $listStatus =  [
             <div class="model-body">
               <label for="price" style="width: 15%; margin-left: 20px">Tỷ suất giá bán</label>
               <div class="input-container">
-                <input type="number" name="price" id="percentage"
+                <input type="number" name="ratio" id="percentage"
                   class="percentage-input" placeholder="10"
-                  value="<?php echo $productFound['price'] ?? ''; ?>"
+                  value="<?php echo $productFound['Ratio'] ?? ''; ?>"
                   min="0"
                   onchange="isNotEmpty(event, 'Tỷ suất giá bán', 'price-alert-edit')" />
               </div>

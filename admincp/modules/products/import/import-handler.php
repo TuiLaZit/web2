@@ -27,6 +27,30 @@ class ImportHandler
         return true;
     }
 
+    public function findProductById($idSP)
+    {
+        $getQuery = "SELECT * FROM sanpham WHERE IdSP = ?";
+        $getStmt = $this->mysqli->prepare($getQuery);
+
+        if (!$getStmt) {
+            $this->errors['db'] = "Database preparation error: " . $this->mysqli->error;
+            throw new Exception($this->errors['db']);
+        }
+
+        $getStmt->bind_param('i', $idSP);
+        $getStmt->execute();
+        $getResult = $getStmt->get_result();
+        $getStmt->close();
+
+        if ($getResult->num_rows === 0) {
+            $this->errors['db'] = "Product record not found";
+            throw new Exception($this->errors['db']);
+        }
+
+
+        return $getResult->fetch_assoc();
+    }
+
 
     public function addOne($data)
     {
@@ -65,7 +89,8 @@ class ImportHandler
             $stmt->close();
 
             // After successful insert, update quantity in sanpham table
-            $updateQuery = "UPDATE sanpham SET Quantity = Quantity + ? WHERE IdSP = ?";
+            $productUpdatedData = $this->findProductById($data['IdSP']);
+            $updateQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ? WHERE IdSP = ?";
             $updateStmt = $this->mysqli->prepare($updateQuery);
 
             if (!$updateStmt) {
@@ -73,8 +98,10 @@ class ImportHandler
                 throw new Exception($this->errors['db']);
             }
 
+            $calculatedPrice = $data['ImportPrice'] * $productUpdatedData['Ratio'] / 100;
+
             // Bind parameters for update query
-            $updateStmt->bind_param('ii', $data['ImportQuantity'], $data['IdSP']);
+            $updateStmt->bind_param('iii', $data['ImportQuantity'], $calculatedPrice, $data['IdSP']);
 
             // Execute update query
             $updateResult = $updateStmt->execute();
@@ -160,8 +187,30 @@ class ImportHandler
 
             // If the product ID changed, we need to update both the old and new product
             if ($oldIdSP != $data['IdSP']) {
+                // Get the lastest import of old product
+                $lastestImportOfProductQuery = "SELECT * FROM nhaphang where IdSP = ? LIMIT 1";
+                $lastestImportOfProductStmt = $this->mysqli->prepare($lastestImportOfProductQuery);
+
+                if (!$lastestImportOfProductStmt) {
+                    $this->errors['db'] = "Database preparation error: " . $this->mysqli->error;
+                    throw new Exception($this->errors['db']);
+                }
+
+                $lastestImportOfProductStmt->bind_param('i', $oldIdSP);
+                $lastestImportOfProductStmt->execute(); // Just execute, don't chain get_result()
+                $lastestImportOfProductResult = $lastestImportOfProductStmt->get_result(); // Get result separately
+        
+                $lastestImportPrice = 0;
+                if ($lastestImportOfProductResult->num_rows !== 0) {
+                    $lastestImportOfProductData = $lastestImportOfProductResult->fetch_assoc();
+                    $lastestImportPrice = $lastestImportOfProductData['ImportPrice'];
+                }
+
+                $lastestImportOfProductStmt->close();
+
                 // Subtract old quantity from old product
-                $updateOldQuery = "UPDATE sanpham SET Quantity = Quantity - ? WHERE IdSP = ?";
+                $productUpdatingData = $this->findProductById($oldIdSP);
+                $updateOldQuery = "UPDATE sanpham SET Quantity = Quantity - ?, Price = ? WHERE IdSP = ?";
                 $updateOldStmt = $this->mysqli->prepare($updateOldQuery);
 
                 if (!$updateOldStmt) {
@@ -169,7 +218,8 @@ class ImportHandler
                     throw new Exception($this->errors['db']);
                 }
 
-                $updateOldStmt->bind_param('ii', $oldQuantity, $oldIdSP);
+                $calculatedPrice = $lastestImportPrice * $productUpdatingData['Ratio'] / 100;
+                $updateOldStmt->bind_param('iii', $oldQuantity, $calculatedPrice, $oldIdSP);
                 $updateOldResult = $updateOldStmt->execute();
 
                 if (!$updateOldResult) {
@@ -180,7 +230,8 @@ class ImportHandler
                 $updateOldStmt->close();
 
                 // Add new quantity to new product
-                $updateNewQuery = "UPDATE sanpham SET Quantity = Quantity + ? WHERE IdSP = ?";
+                $productUpdatingData = $this->findProductById($data['IdSP']);
+                $updateNewQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ? WHERE IdSP = ?";
                 $updateNewStmt = $this->mysqli->prepare($updateNewQuery);
 
                 if (!$updateNewStmt) {
@@ -188,7 +239,8 @@ class ImportHandler
                     throw new Exception($this->errors['db']);
                 }
 
-                $updateNewStmt->bind_param('ii', $data['ImportQuantity'], $data['IdSP']);
+                $calculatedPrice = $data['ImportPrice'] * $productUpdatingData['Ratio'] / 100;
+                $updateNewStmt->bind_param('iii', $data['ImportQuantity'], $calculatedPrice, $data['IdSP']);
                 $updateNewResult = $updateNewStmt->execute();
 
                 if (!$updateNewResult) {
@@ -199,8 +251,9 @@ class ImportHandler
                 $updateNewStmt->close();
             } else {
                 // Same product, just update the difference in quantity
+                $productUpdatingData = $this->findProductById($data['IdSP']);
                 $quantityDifference = $data['ImportQuantity'] - $oldQuantity;
-                $updateQuantityQuery = "UPDATE sanpham SET Quantity = Quantity + ? WHERE IdSP = ?";
+                $updateQuantityQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ? WHERE IdSP = ?";
                 $updateQuantityStmt = $this->mysqli->prepare($updateQuantityQuery);
 
                 if (!$updateQuantityStmt) {
@@ -208,7 +261,8 @@ class ImportHandler
                     throw new Exception($this->errors['db']);
                 }
 
-                $updateQuantityStmt->bind_param('ii', $quantityDifference, $data['IdSP']);
+                $calculatedPrice = $data['ImportPrice'] * $productUpdatingData['Ratio'] / 100;
+                $updateQuantityStmt->bind_param('iii', $quantityDifference, $calculatedPrice, $data['IdSP']);
                 $updateQuantityResult = $updateQuantityStmt->execute();
 
                 if (!$updateQuantityResult) {

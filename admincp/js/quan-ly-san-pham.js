@@ -135,7 +135,7 @@ function editProduct(event, productID) {
   const name = formData.get("name");
   const category = formData.get("category");
   const brand = formData.get("brand");
-  const price = formData.get("price");
+  const price = formData.get("ratio");
   const quantity = formData.get("quantity");
   const description = formData.get("description");
   const image = document.getElementById("output-image-edit").src;
@@ -239,7 +239,7 @@ addProductForm.addEventListener("submit", (event) => {
   const name = formData.get("name");
   const type = formData.get("type");
   console.log(type);
-  const price = formData.get("price");
+  const price = formData.get("ratio");
   // const quantity = formData.get("quantity");
   const releaseDate = formData.get("releaseDate");
   const info = formData.get("info");
