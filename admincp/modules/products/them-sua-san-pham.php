@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Name: " . $name . "<br>";
     echo "Type: " . $type . "<br>";
     echo "Ratio: " . $ratio . "<br>";
-    echo "Quantity: " . $quantity . "<br>";
     echo "Released Date: " . $releasedDate . "<br>";
     echo "Info: " . $info . "<br>";
     echo "Image: " . $IMG . "<br>";
@@ -84,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['addSP'])) {
-        mysqli_stmt_bind_param($stmt, 'issiisssi', $IdGRP, $name, $type, $ratio, $quantity, $releasedDate, $info, $filename, $status);
+        mysqli_stmt_bind_param($stmt, 'ississsi', $IdGRP, $name, $type, $ratio, $releasedDate, $info, $filename, $status);
     } else {
         // Get the lastest import of old product
         $lastestImportOfProductQuery = "SELECT * FROM nhaphang where IdSP = ? LIMIT 1";
