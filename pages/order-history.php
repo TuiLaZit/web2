@@ -124,11 +124,26 @@ function getPaymentMethod($method) {
         .view-details-btn:hover {
             background: #45a049;
         }
+                .back-btn {
+            background: #666;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .back-btn:hover {
+            background: #555;
+        }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="order-history">
+            <a href="cart.php" class="back-btn">← Quay lại</a>
             <h1>Lịch sử mua hàng</h1>
             <?php if (empty($orders)): ?>
                 <p>Bạn chưa có đơn hàng nào.</p>
