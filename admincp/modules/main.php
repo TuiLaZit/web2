@@ -63,7 +63,16 @@
             
             // Quản lý hóa đơn
             case 'orders':
-                include("modules/orders/list.php");
+                $query = isset($_GET['query']) ? $_GET['query'] : '';
+                
+                switch ($query) {
+                    case 'details':
+                        include 'orders/chi-tiet-don-hang.php';
+                        break;
+                    default:
+                        include 'orders/danh-sach-don-hang.php';
+                        break;
+                }
                 break;
                 
             default:
