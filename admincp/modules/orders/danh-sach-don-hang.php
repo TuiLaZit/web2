@@ -68,18 +68,23 @@ if (!empty($searchTerm)) {
 }
 
 if (!empty($locationFilter)) {
-    $sql .= " AND (k.District LIKE '%" . $mysqli->real_escape_string($locationFilter) . "%'
-                OR k.Provinces LIKE '%" . $mysqli->real_escape_string($locationFilter) . "%')";
+    $escapedLocation = $mysqli->real_escape_string($locationFilter);
+    $sql .= " AND h.AddressLine LIKE '%" . $escapedLocation . "%'";
 }
 
 if (!empty($provinceFilter)) {
-    $sql .= " AND k.Provinces = '" . $mysqli->real_escape_string($provinceFilter) . "'";
+    $escapedProvince = $mysqli->real_escape_string($provinceFilter);
+    $sql .= " AND h.Provinces = '" . $escapedProvince . "'";
 }
+
 if (!empty($districtFilter)) {
-    $sql .= " AND k.District = '" . $mysqli->real_escape_string($districtFilter) . "'";
+    $escapedDistrict = $mysqli->real_escape_string($districtFilter);
+    $sql .= " AND h.District = '" . $escapedDistrict . "'";
 }
+
 if (!empty($wardFilter)) {
-    $sql .= " AND k.Ward = '" . $mysqli->real_escape_string($wardFilter) . "'";
+    $escapedWard = $mysqli->real_escape_string($wardFilter);
+    $sql .= " AND h.Ward = '" . $escapedWard . "'";
 }
 
 $sql .= " ORDER BY h.Date DESC";
