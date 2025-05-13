@@ -3,7 +3,7 @@
     if (isset($_GET['quanly'])) {
         switch ($_GET['quanly']) {
             case 'giohang':
-                include __DIR__ . './../cart.php';
+                include __DIR__ . '../../cart.php';
                 break;
             default:
                 include("banner.php");
