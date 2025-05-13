@@ -219,9 +219,23 @@ const deleteGroupEles = document.getElementsByClassName("delete-group");
 for (let i = 0; i < deleteGroupEles.length; i++) {
   const groupID = deleteGroupEles[i].dataset.groupid;
   deleteGroupEles[i].addEventListener("click", (e) => {
-    // Tạm thời không làm gì khi click vào nút xóa
-    console.log("Delete button clicked for group:", groupID);
+    deleteGroupById(groupID);
   });
+}
+
+async function deleteGroupById(groupID) {
+    const response = await fetch(`./modules/groups/del.php?IdGRP=${groupID}`);
+    if (!response.ok) {
+        alert("Bị lỗi không xác định!");
+        return;
+    }
+    const data = await response.json();
+        
+    alert(data.message);
+    if (data.success) {
+        window.location.reload();
+    }
+
 }
 
 // --------------------------------------------------------------------------------- //

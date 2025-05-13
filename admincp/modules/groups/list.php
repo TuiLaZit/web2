@@ -6,7 +6,7 @@ $query_get_groups = mysqli_query($mysqli, $sql_get_groups);
 
 // Kiểm tra lỗi query
 if (!$query_get_groups) {
-    die("Lỗi truy vấn: " . mysqli_error($mysqli));
+  die("Lỗi truy vấn: " . mysqli_error($mysqli));
 }
 
 // Debug data
@@ -22,6 +22,9 @@ if (!$query_get_groups) {
   }
 </style>
 
+<link rel="stylesheet" type="text/css" href="./css/quan-ly-nhom.css?v=<?php echo time(); ?>">
+
+
 <div style="position: relative; width: 100%; height: calc(100vh - 110px);">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
@@ -33,10 +36,10 @@ if (!$query_get_groups) {
       <div style="display: flex">
         <p class="title-page">Nhóm</p>
 
-        <?php if(isset($_GET['status']) && $_GET['status'] == 'success'): ?>
-        <div style="margin: auto; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
-          Thêm nhóm thành công!
-        </div>
+        <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
+          <div style="margin: auto; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+            Thêm nhóm thành công!
+          </div>
         <?php endif; ?>
 
         <div style="margin-left: auto; padding: 20px">
@@ -63,11 +66,11 @@ if (!$query_get_groups) {
 
           <?php
           if (mysqli_num_rows($query_get_groups) > 0) {
-            $stt=1;
-              while ($row = mysqli_fetch_assoc($query_get_groups)) {
+            $stt = 1;
+            while ($row = mysqli_fetch_assoc($query_get_groups)) {
           ?>
               <tr>
-                <td><?php echo $stt++?></td>
+                <td><?php echo $row['IdGRP'] ?></td>
                 <td>
                   <img
                     src="./img/groups/<?php echo $row['IMG']; ?>"
@@ -85,13 +88,13 @@ if (!$query_get_groups) {
                   </div>
                 </td>
               </tr>
-          <?php
-              }
+            <?php
+            }
           } else {
-          ?>
-              <tr>
-                <td colspan="6" class="no-data">Không có dữ liệu nhóm</td>
-              </tr>
+            ?>
+            <tr>
+              <td colspan="6" class="no-data">Không có dữ liệu nhóm</td>
+            </tr>
           <?php
           }
           ?>
@@ -370,6 +373,6 @@ if (!$query_get_groups) {
       src="https://kit.fontawesome.com/793699135f.js"
       crossorigin="anonymous"></script>
 
-    <script src="./js/quanlygrp.js"></script>
+    <script src="./js/quanlygrp.js?v=<?php echo time() ?>"></script>
   </div>
 </div>

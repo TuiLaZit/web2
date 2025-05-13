@@ -1,37 +1,65 @@
 <?php
 require_once('../../config/config.php');
+require_once('../../../utils.php');
 
-function executeQuery($mysqli, $query)
-{
-    if (mysqli_query($mysqli, $query)) {
-        header('Location: ../../index.php?action=groups');
-        exit();
-    } else {
-        die('Database error: ' . mysqli_error($mysqli));
-    }
-}
-
-if (isset($_GET['IdSP'])) {
+if (isset($_GET['IdGRP'])) {
     $IdGRP = $_GET['IdGRP'];
-
-    $query = "DELETE FROM nhom WHERE IdGRP = ?";
-
-    $stmt = mysqli_prepare($mysqli, $query);
-    if (!$stmt) {
-        die('SQL prepare error: ' . mysqli_error($mysqli));
+    
+    // First check if there are any products in this group
+    $check_query = "SELECT COUNT(*) as count FROM sanpham WHERE IdGRP = ?";
+    
+    $check_stmt = mysqli_prepare($mysqli, $check_query);
+    if (!$check_stmt) {
+        responseJson([
+            'success' => false,
+            'message' => 'SQL prepare error: ' . mysqli_error($mysqli)
+        ]);
     }
-
-    mysqli_stmt_bind_param($stmt, 'i', $IdSP);
-
-    if (mysqli_stmt_execute($stmt)) {
-        header('Location: ../../index.php?action=products');
-        exit();
+    
+    mysqli_stmt_bind_param($check_stmt, 'i', $IdGRP);
+    mysqli_stmt_execute($check_stmt);
+    $result = mysqli_stmt_get_result($check_stmt);
+    $row = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($check_stmt);
+    
+    // If products exist in this group, don't delete and return message
+    if ($row['count'] > 0) {
+        responseJson([
+            'success' => false,
+            'message' => 'Có sản phẩm thuộc nhóm này trong hệ thống. Không thể xóa nhóm này!'
+        ]);
+    }
+    
+    // No products in this group, proceed with deletion
+    $delete_query = "DELETE FROM nhom WHERE IdGRP = ?";
+    
+    $delete_stmt = mysqli_prepare($mysqli, $delete_query);
+    if (!$delete_stmt) {
+        responseJson([
+            'success' => false,
+            'message' => 'SQL prepare error: ' . mysqli_error($mysqli)
+        ]);
+    }
+    
+    mysqli_stmt_bind_param($delete_stmt, 'i', $IdGRP);
+    
+    if (mysqli_stmt_execute($delete_stmt)) {
+        responseJson([
+            'success' => true,
+            'message' => 'Xóa nhóm thành công!'
+        ]);
     } else {
-        die('Database error: ' . mysqli_stmt_error($stmt));
+        responseJson([
+            'success' => false,
+            'message' => 'Database error: ' . mysqli_stmt_error($delete_stmt)
+        ]);
     }
-
-    mysqli_stmt_close($stmt);
+    
+    mysqli_stmt_close($delete_stmt);
     mysqli_close($mysqli);
 } else {
-    die('Invalid request id.');
+    responseJson([
+        'success' => false,
+        'message' => 'Invalid request id.'
+    ]);
 }
