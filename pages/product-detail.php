@@ -1,6 +1,32 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
     include("../admincp/config/config.php");
     include("../class/product_page.php");
+    
+    // Handle add to cart
+    if(isset($_POST['add_to_cart'])) {
+        $product_id = $_POST['product_id'];
+        $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+        
+        // Initialize cart if not exists
+        if(!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
+        
+        // Add or update quantity in cart
+        if(isset($_SESSION['cart'][$product_id])) {
+            $_SESSION['cart'][$product_id] += $quantity;
+        } else {
+            $_SESSION['cart'][$product_id] = $quantity;
+        }
+        
+        // Redirect to cart page
+        header('Location: ../index.php?quanly=giohang');
+        exit();
+    }
+
     if(isset($_GET['id'])){
         $id=$_GET['id'];
         $sanpham = productPage::getProductById($id);
@@ -30,9 +56,13 @@
                     <p>Loại: <?php echo htmlspecialchars($sanpham->type); ?></p>
                     <p>Nhóm sản phẩm: <?php echo htmlspecialchars($sanpham->grpname); ?></p>
                     <p>Số lượng: <?php echo htmlspecialchars($sanpham->quant); ?></p>
-                    <p>Thông tin: <?php echo htmlspecialchars($sanpham->info); ?></>
+                    <p>Thông tin: <?php echo htmlspecialchars($sanpham->info); ?></p>
                     <p>Ngày phát hành: <?php echo htmlspecialchars($sanpham->releaseDate); ?></p>
-                    <button class="add-to-cart-button">thêm vào giỏ hàng</button>
+                    <form method="POST" action="">
+                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($sanpham->id); ?>">
+                        <input type="number" name="quantity" value="1" min="1" max="<?php echo htmlspecialchars($sanpham->quant); ?>" style="width: 60px; margin-right: 10px;">
+                        <button type="submit" name="add_to_cart" class="add-to-cart-button">Thêm vào giỏ hàng</button>
+                    </form>
                 </div>
             </div>
         <?php
