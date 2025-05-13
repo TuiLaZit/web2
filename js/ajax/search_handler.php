@@ -26,8 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['query'])) {
 
     $groupsHtml = "";
     while ($row = mysqli_fetch_assoc($result)) {
-        $groupsHtml .= "<a class='group-item' href='/../pages/group.php?idgrp=" . htmlspecialchars($row['IdGRP']) . "'>";
-        $groupsHtml .= "<img src='/../admincp/img/groups/" . htmlspecialchars($row['IMG']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
+        $groupsHtml .= "<a class='group-item' href='./pages/group.php?idgrp=" . htmlspecialchars($row['IdGRP']) . "'>";
+        $groupsHtml .= "<img src='./admincp/img/groups/" . htmlspecialchars($row['IMG']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
         $groupsHtml .= "<h3>" . htmlspecialchars($row['Name']) . "</h3>";
         $groupsHtml .= "</a>";
     }

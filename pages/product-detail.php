@@ -48,7 +48,7 @@ if (session_status() === PHP_SESSION_NONE) {
         ?>
             <div class="product-detail">
                 <div class="prod-img">
-                    <img src="/../admincp/img/products/<?php echo htmlspecialchars($sanpham->image); ?>" alt="<?php echo htmlspecialchars($sanpham->name); ?>">
+                    <img src="./../admincp/img/products/<?php echo htmlspecialchars($sanpham->image); ?>" alt="<?php echo htmlspecialchars($sanpham->name); ?>">
                 </div>
                 <div class="prod-info">
                     <h1><?php echo htmlspecialchars($sanpham->name); ?></h1>

@@ -76,7 +76,7 @@ function renderCartItem($product, $quantity) {
     return '
     <div class="cart-item">
         <div class="product-info">
-            <img src="../admincp/img/products/' . htmlspecialchars($product['IMG']) . '" alt="' . htmlspecialchars($product['Name']) . '" class="product-image">
+            <img src="./admincp/img/products/' . htmlspecialchars($product['IMG']) . '" alt="' . htmlspecialchars($product['Name']) . '" class="product-image">
             <div>
                 <h3>' . htmlspecialchars($product['Name']) . '</h3>
                 <p>' . htmlspecialchars($product['Type']) . '</p>
@@ -128,7 +128,7 @@ function renderCartSummary($total) {
             <span>Tổng cộng:</span>
             <span>' . formatPrice($total) . '</span>
         </div>
-        <a href="../pages/checkout.php" class="checkout-btn">Thanh toán</a>
+        <a href="./pages/checkout.php" class="checkout-btn">Thanh toán</a>
     </div>';
 }
 

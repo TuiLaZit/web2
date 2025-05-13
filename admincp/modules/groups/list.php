@@ -49,60 +49,6 @@ if (!$query_get_groups) {
         </div>
       </div>
 
-      <!-- Search options -->
-      <form class="search-options-style" onsubmit="filterGroup(event)">
-        <!-- Search by group name -->
-        <div class="search-option">
-          <input
-            name="name"
-            type="text"
-            placeholder="Tìm theo tên nhóm"
-            style="padding: 5px" />
-        </div>
-
-        <!-- Search by company-->
-        <div class="search-option">
-          <input
-            name="brand"
-            type="text"
-            placeholder="Tìm theo tên công ty"
-            style="padding: 5px" />
-        </div>
-
-
-        <!-- Filter button -->
-        <div class="search-option">
-          <button
-            class="button-style"
-            type="submit"
-            style="background-color: #15803d">
-            <i
-              class="fa-solid fa-filter"
-              style="font-size: 13px; padding-top: 1px"></i>
-            <div style="padding-left: 10px; font-size: 15px">
-              Lọc nhóm
-            </div>
-          </button>
-        </div>
-
-        <!-- Refresh button -->
-        <div class="search-option">
-          <button
-            class="button-style flex-container"
-            type="button"
-            style="background-color: #d1d5db"
-            onclick="showGroupData()">
-            <i
-              class="fa-solid fa-rotate-right"
-              style="font-size: 13px; padding-top: 1px; color: black"></i>
-
-            <div style="padding-left: 10px; font-size: 15px; color: black">
-              Làm mới
-            </div>
-          </button>
-        </div>
-      </form>
-
       <!-- Table group container -->
       <div class="table-group-container">
         <table>
@@ -124,7 +70,7 @@ if (!$query_get_groups) {
                 <td><?php echo $stt++?></td>
                 <td>
                   <img
-                    src="../../../admincp/img/groups/<?php echo $row['IMG']; ?>"
+                    src="./img/groups/<?php echo $row['IMG']; ?>"
                     width="64"
                     height="64"
                     alt="nhom" />

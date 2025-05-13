@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/js/ajax/filter_products.php?idgrp=${groupId}&name=${encodeURIComponent(name)}&min=${minPrice}&max=${maxPrice}&page=${page}`, true);
+        xhr.open("GET", `../js/ajax/filter_products.php?idgrp=${groupId}&name=${encodeURIComponent(name)}&min=${minPrice}&max=${maxPrice}&page=${page}`, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 try {

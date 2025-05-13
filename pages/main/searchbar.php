@@ -9,4 +9,4 @@
         <div id="searchResults"></div>
     </div>
 </div>
-<script src='./js/search.js'></script>
+<script src='./js/search.js?v=<?php echo time() ?>'></script>

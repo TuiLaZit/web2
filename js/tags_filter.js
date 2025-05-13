@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const paginationContainer = document.getElementById("pagination_switch");
 
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/js/ajax/filter_products.php?idgrp=${groupId}&name=${encodeURIComponent(name)}&min=${minPrice}&max=${maxPrice}&tag=${encodeURIComponent(tag)}&page=${page}`, true);
+        xhr.open("GET", `../js/ajax/filter_products.php?idgrp=${groupId}&name=${encodeURIComponent(name)}&min=${minPrice}&max=${maxPrice}&tag=${encodeURIComponent(tag)}&page=${page}`, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);

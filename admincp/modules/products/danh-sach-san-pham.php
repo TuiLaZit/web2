@@ -363,9 +363,6 @@ $listStatus =  [
           </select>
         </div>
 
-        <!-- Rounded switch -->
-
-
         <!-- Model footer -->
         <div class="model-footer">
           <button type="submit" class="confirm-button">Xác nhận</button>

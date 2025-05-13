@@ -22,7 +22,7 @@
         ?>
         <div id="main-page">
             <div id="group">
-                <img src="/../admincp/img/groups/<?php echo htmlspecialchars($group->img); ?>" alt="<?php echo htmlspecialchars($group->name); ?>">
+                <img src="./admincp/img/groups/<?php echo htmlspecialchars($group->img); ?>" alt="<?php echo htmlspecialchars($group->name); ?>">
                 <div id="group-info">
                     <h1><?php echo htmlspecialchars($group->name); ?></h1>
                     <p>Công Ty: <?php echo htmlspecialchars($group->company); ?></p>
@@ -67,8 +67,8 @@
             include("footer.php");
         ?>
         </div>
-        <script src="../js/tags_filter.js"></script>
-        <script src="../js/search_filter.js"></script>
+        <script src="../js/tags_filter.js?v=<?php echo time() ?>"></script>
+        <script src="../js/search_filter.js?v=<?php echo time() ?>"></script>
     </div>
 </body> 
 

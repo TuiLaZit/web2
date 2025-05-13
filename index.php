@@ -14,10 +14,14 @@
     <div class="wrapper">
         <?php
             include("./admincp/config/config.php");
+            include("./utils.php");
 
             session_start();
             if (isset($_SESSION["user"])) {
                 $user = $_SESSION["user"];
+                if (isset($user['isAdmin']) && $user['isAdmin']) {
+                    redirect("./admincp");
+                }
             }
 
             include("pages/header.php");

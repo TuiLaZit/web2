@@ -13,7 +13,7 @@
         echo "<div id='group-container-" . htmlspecialchars($group->id) . "' class='group-container'>";
             
             // Tên nhóm
-            echo "<a href='/../pages/group.php?idgrp=" . htmlspecialchars($group->id) . "' class='group-name'>";
+            echo "<a href='./../pages/group.php?idgrp=" . htmlspecialchars($group->id) . "' class='group-name'>";
                 echo "<p>" . htmlspecialchars($group->name) . "</p>";
             echo "</a>";
         

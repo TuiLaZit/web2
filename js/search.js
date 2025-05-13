@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch("/js/ajax/search_handler.php", {
+        fetch("./js/ajax/search_handler.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

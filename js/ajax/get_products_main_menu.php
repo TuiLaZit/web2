@@ -20,7 +20,7 @@ $resultProducts = mysqli_query($mysqli, $queryProducts);
 
 $productsHtml = '';
 while ($row = mysqli_fetch_assoc($resultProducts)) {
-    $productsHtml .= "<a href='/pages/product-detail.php?id=" . htmlspecialchars($row['IdSP']) . "' class='product-item'>";
+    $productsHtml .= "<a href='./pages/product-detail.php?id=" . htmlspecialchars($row['IdSP']) . "' class='product-item'>";
     $productsHtml .= "<img src='./admincp/img/products/" . htmlspecialchars($row['Img']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
     $productsHtml .= "<div class='product-name'>" . htmlspecialchars($row['Name']) . "</div>";
     $productsHtml .= "<div class='product-price'>" . htmlspecialchars($row['Price']) . " VND</div>";
