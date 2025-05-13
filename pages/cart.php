@@ -27,7 +27,7 @@ $user = $_SESSION['user'];
             <p><strong>Họ tên:</strong> <?php echo htmlspecialchars($user['Name']); ?></p>
             <p><strong>Email:</strong> <?php echo htmlspecialchars($user['Email']); ?></p>
             <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($user['PNumber']); ?></p>
-            <a href="../pages/order-history.php" class="view-history-btn" style="display: inline-block; background: #4CAF50; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; margin-top: 10px;">Xem lịch sử mua hàng</a>
+            <a href="<?php echo $baseUrl ?>/pages/order-history.php" class="view-history-btn" style="display: inline-block; background: #4CAF50; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; margin-top: 10px;">Xem lịch sử mua hàng</a>
         </div>
 
         <div class="cart-container">
