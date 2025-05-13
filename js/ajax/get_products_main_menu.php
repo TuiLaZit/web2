@@ -15,7 +15,7 @@ $paginationHtml = $pagination->generatePaginationHtml();
 
 // Tính vị trí bắt đầu
 $startIndex = ($page - 1) * $itemsPerPage;
-$queryProducts = "SELECT IdSP, Img, Name, Price FROM sanpham WHERE IdGRP = '$idGroup' ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
+$queryProducts = "SELECT IdSP, Img, Name, Price FROM sanpham WHERE IdGRP = '$idGroup' AND Quantity > 0 ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
 $resultProducts = mysqli_query($mysqli, $queryProducts);
 
 $productsHtml = '';
