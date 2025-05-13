@@ -79,6 +79,34 @@
     text-align: center;
 }
 
+#tags{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.tag-item{
+    width: 10em;
+    height: 3em;
+    text-align: center;
+}
+
+#search{
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+#search input{
+    width: 25%;
+}
+
+#search button{
+    width: 15%;
+}
+
 /* Phần bổ sung cho responsive */
 @media (max-width: 1024px) {
     .product-item {
