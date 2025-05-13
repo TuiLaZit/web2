@@ -34,7 +34,7 @@ $paginator = new Pagination($totalItems, $itemsPerPage, $page);
 $paginationHtml = $paginator->generatePaginationHtml();
 
 $startIndex = ($page - 1) * $itemsPerPage;
-$queryProducts = "SELECT DISTINCT IdSP, Name, IMG, Price FROM sanpham WHERE $whereClause ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
+$queryProducts = "SELECT DISTINCT IdSP, Name, IMG, Price FROM sanpham WHERE $whereClause AND Quantity > 0 ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
 $resultProducts = mysqli_query($mysqli, $queryProducts);
 
 $productsHtml = '';
