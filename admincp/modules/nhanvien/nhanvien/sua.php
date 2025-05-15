@@ -2,6 +2,8 @@
     $sql_sua_nhanvien = "SELECT * FROM nhanvien WHERE IdNV='$_GET[idstaff]' LIMIT 1";
     $query_sua_nhanvien = mysqli_query($mysqli,$sql_sua_nhanvien);
 ?>
+<link rel="stylesheet" type="text/css" href="./css/quan-ly-nhan-vien.css?v=<?php echo time(); ?>">
+<a href="javascript:history.back()" class=" btn btn-secondary">Quay lại</a>
 <p>Sửa Nhân Viên</p>
 <table class="tableadmin" border="1" style="width:50%" style="border-collapse: collapse;">
     <form method="POST" action="modules/nhanvien/nhanvien/xuly.php?IdNV=<?php echo $_GET['idstaff']?>">
