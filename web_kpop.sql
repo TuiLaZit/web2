@@ -131,7 +131,7 @@ CREATE TABLE `nhom` (
 CREATE TABLE `sanpham` (
   `IdSP` int(11) NOT NULL,
   `IdGRP` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL,
+  `Name` varchar(100) NOT NULL,
   `Type` varchar(50) NOT NULL,
   `Ratio` int(11) NOT NULL,
   `Price` int(11) NOT NULL,
