@@ -1,7 +1,7 @@
 <div class="header">
     <div class="left-section">
         <div class="logo">
-            <a href="./index.php"><img src="<?php echo $baseUrl ?>/img/logo.png" alt="Logo"></a>
+            <a href="/./index.php"><img src="<?php echo $baseUrl ?>/img/logo.png" alt="Logo"></a>
         </div>
     </div>
     <div class="right-tab">
