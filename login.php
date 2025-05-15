@@ -9,6 +9,7 @@
 
 <?php
 require_once("./utils.php");
+include("./admincp/config/config.php");
 // Start the session to access error messages
 session_start();
 
@@ -43,7 +44,7 @@ if (isset($_SESSION['login_data'])) {
     <div class="right-panel">
       <div class="login-form">
         <div class="logo">
-          <img src="" alt="Logo" />
+          <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="border-radius: 35%"/>
           <h2>CHÀO MỪNG ĐẾN VỚI</h2>
           <p>KCorner - Góc nhỏ, chất mơ!</p>
         </div>

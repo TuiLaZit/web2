@@ -2,13 +2,13 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once(__DIR__ . '/../admincp/config/config.php');
+include(__DIR__ . '/../admincp/config/config.php');
+
 
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
     exit();
 }
-
 $user = $_SESSION['user'];
 ?>
 <!DOCTYPE html>
@@ -127,13 +127,14 @@ $user = $_SESSION['user'];
                     }
 
                     // Hàm tạo chuỗi HTML cho thông báo khi giỏ hàng trống
-                    function renderEmptyCart() {
-                        return '
-                        <div class="empty-cart">
+                    function renderEmptyCart($baseUrl) {
+                        
+                        return "
+                        <div class='empty-cart'>
                             <h2>Giỏ hàng của bạn đang trống</h2>
                             <p>Hãy thêm sản phẩm vào giỏ hàng để xem chúng ở đây.</p>
-                            <a href="../index.php" class="checkout-btn">Tiếp tục mua sắm</a>
-                        </div>';
+                            <a href='$baseUrl/index.php' class='checkout-btn'>Tiếp tục mua sắm</a>
+                        </div>";
                     }
 
                     // Hàm tạo chuỗi HTML cho phần tóm tắt tổng giá trị đơn hàng
@@ -158,7 +159,7 @@ $user = $_SESSION['user'];
                     }
 
                     if (empty($_SESSION['cart'])) {
-                        echo renderEmptyCart();
+                        echo renderEmptyCart($baseUrl);
                     } else {
                         echo '<div class="cart-header">
                                 <div class="product">Sản phẩm</div>
@@ -182,7 +183,7 @@ $user = $_SESSION['user'];
                         if ($total > 0) {
                            echo renderCartSummary($total);
                         } else {
-                            echo renderEmptyCart();
+                            echo renderEmptyCart($baseUrl);
                         }
                     }
                     ?>

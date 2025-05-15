@@ -22,6 +22,7 @@
     <?php
     // Start the session to access error messages
     session_start();
+    include ('./admincp/config/config.php');
     ?>
   </script>
 
@@ -46,7 +47,7 @@
     <div class="container">
       <div class="registration-form">
         <div class="logo">
-          <img src="/assets/Image/logo.png" alt="SGU Click Logo" />
+          <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="padding: 10px; border-radius: 35%"/>
           <h2>Đăng Ký Khách Hàng</h2>
         </div>
         <form>

@@ -44,7 +44,7 @@
                 <div class="col-right">
                     <div class="login-form">
                         <!-- Logo -->
-                        <img src="/assets/Image/logo.png" alt="Logo" class="logo">
+                        <img src="<?php echo $baseUrl?>/img/logo.png?v=<?php echo time()?>" alt="Logo" class="logo" style="border-radius: 35%;">
                         <h2>Trang quản trị</h2>
                         <p class="slogan">Kiểm soát mọi vấn đề của bạn!</p>
                         <form id="formLogin" action="./modules/login-handler.php" method="post">

@@ -25,7 +25,7 @@ if (!$query_get_groups) {
 <link rel="stylesheet" type="text/css" href="./css/quan-ly-nhom.css?v=<?php echo time(); ?>">
 
 
-<div style="position: relative; width: 100%; height: calc(100vh - 110px);">
+<div style="position: relative; width: 100%; height: calc(100vh - 54px);">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
     <!-- Body page -->

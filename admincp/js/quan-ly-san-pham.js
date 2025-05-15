@@ -313,20 +313,41 @@ function getProduct() {}
 // --------------------------------------------------------------------------------- //
 
 // Delete product
-function deleteProduct(productID) {
-  window.location.href = `./modules/products/xoa-san-pham.php?IdSP=${productID}`;
-
-  showProductData();
-  cancelDeleteProduct();
+async function deleteProduct(productID) {
+  const response = await fetch(
+    `./modules/products/xoa-san-pham.php?IdSP=${productID}&confirm=1`
+  );
+  const data = await response.json();
+  if (data.success) {
+    alert(data.messages);
+    cancelDeleteProduct();
+    window.location.reload();
+  } else {
+    alert(data.messages);
+  }
 }
 
-function openConfirmDeleteModel(productID) {
-  document
-    .getElementsByClassName("model-confirm-delete-container")[0]
-    .classList.add("open");
-  const confirmDeleteEle = document.getElementById("cofirm-delete-product");
+async function openConfirmDeleteModel(productID) {
+  const response = await fetch(
+    `./modules/products/xoa-san-pham.php?IdSP=${productID}`
+  );
+  const data = await response.json();
 
-  confirmDeleteEle.addEventListener("click", () => deleteProduct(productID));
+  if (data.isOpenDialog) {
+    document
+      .getElementsByClassName("model-confirm-delete-container")[0]
+      .classList.add("open");
+    const confirmDeleteEle = document.getElementById("cofirm-delete-product");
+
+    confirmDeleteEle.addEventListener("click", () => deleteProduct(productID));
+  } else {
+    if (data.success) {
+      alert(data.messages);
+      window.location.reload();
+    } else {
+      alert(data.messages);
+    }
+  }
 }
 
 function cancelDeleteProduct() {

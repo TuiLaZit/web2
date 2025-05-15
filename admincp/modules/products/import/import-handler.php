@@ -59,8 +59,9 @@ class ImportHandler
 
         try {
             // Prepare query with named parameters for better readability
-            $query = "INSERT INTO nhaphang (IdSP, ImportPrice, ImportQuantity, ImportDate) 
-                 VALUES (?, ?, ?, ?)";
+            $productData = $this->findProductById($data['IdSP']);
+            $query = "INSERT INTO nhaphang (IdSP, ImportPrice, ImportQuantity, ImportDate, ProductName) 
+                 VALUES (?, ?, ?, ?, ?)";
 
             $stmt = $this->mysqli->prepare($query);
 
@@ -71,11 +72,12 @@ class ImportHandler
 
             // Bind parameters
             $stmt->bind_param(
-                'iiis',
+                'iiiss',
                 $data['IdSP'],
                 $data['ImportPrice'],
                 $data['ImportQuantity'],
-                $data['ImportDate']
+                $data['ImportDate'],
+                $productData['Name']
             );
 
             // Execute query
@@ -152,8 +154,9 @@ class ImportHandler
             $oldQuantity = $oldImport['ImportQuantity'];
             $getStmt->close();
 
+            $productData = $this->findProductById($data['IdSP']);
             // Update the import record
-            $updateQuery = "UPDATE nhapHang SET IdSP = ?, ImportPrice = ?, ImportQuantity = ?, ImportDate = ?
+            $updateQuery = "UPDATE nhapHang SET IdSP = ?, ImportPrice = ?, ImportQuantity = ?, ImportDate = ?, ProductName = ?
                         WHERE idNhapHang = ?";
 
             $updateStmt = $this->mysqli->prepare($updateQuery);
@@ -165,11 +168,12 @@ class ImportHandler
 
             // Bind parameters
             $updateStmt->bind_param(
-                'iiisi',
+                'iiissi',
                 $data['IdSP'],
                 $data['ImportPrice'],
                 $data['ImportQuantity'],
                 $data['ImportDate'],
+                $productData['Name'],
                 $idNhapHang
             );
 
@@ -199,7 +203,7 @@ class ImportHandler
                 $lastestImportOfProductStmt->bind_param('i', $oldIdSP);
                 $lastestImportOfProductStmt->execute(); // Just execute, don't chain get_result()
                 $lastestImportOfProductResult = $lastestImportOfProductStmt->get_result(); // Get result separately
-        
+
                 $lastestImportPrice = 0;
                 if ($lastestImportOfProductResult->num_rows !== 0) {
                     $lastestImportOfProductData = $lastestImportOfProductResult->fetch_assoc();

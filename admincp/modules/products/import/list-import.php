@@ -1,7 +1,7 @@
 <?php
-$sql_get_imports = "SELECT *
+$sql_get_imports = "SELECT nhapHang.*, sp.*
 FROM `nhaphang` nhapHang
-JOIN `sanpham` sp ON sp.`IdSP` = nhapHang.`IdSP`";
+LEFT JOIN `sanpham` sp ON sp.`IdSP` = nhapHang.`IdSP`";
 $query_get_imports = mysqli_query($mysqli, $sql_get_imports);
 
 $imports = [];
@@ -60,7 +60,7 @@ $listStatus = [
     }
 </style>
 
-<div style="position: relative; width: 100%; height: calc(100vh - 110px);">
+<div style="position: relative; width: 100%; height: calc(100vh - 54px);">
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
         <!-- Body page -->
@@ -103,12 +103,25 @@ $listStatus = [
                             <tr>
                                 <td><?php echo $import['IdNhapHang'] ?></td>
                                 <td><?php echo $import['IdSP'] ?></td>
-                                <td><?php echo $import['Name'] ?></td>
+                                <td>
+                                    <?php
+                                    // Kiểm tra xem 'Name' có tồn tại và không rỗng không
+                                    if (isset($import['Name']) && !empty($import['Name'])) {
+                                        echo $import['Name'];
+                                    } else {
+                                        echo $import['ProductName'];
+                                    }
+                                    ?>
+                                </td>
                                 <td><?php echo $import['ImportPrice'] ?></td>
                                 <td><?php echo $import['ImportQuantity'] ?></td>
                                 <td><?php echo $import['ImportDate'] ?></td>
                                 <td style="display: flex; justify-content: center">
-                                    <i class="fa-solid fa-edit edit-import" style="cursor: pointer;" data-id-nhap-hang="<?php echo $import['IdNhapHang'] ?>"></i>
+                                    <?php if (isset($import['IdSP'])) : ?>
+                                        <i class="fa-solid fa-edit edit-import" style="cursor: pointer;" data-id-nhap-hang="<?php echo $import['IdNhapHang'] ?>"></i>
+                                    <?php else : ?>
+                                        <span style="font-size: 11px; font-style: italic;">Sản phẩm đã bị xóa</span>
+                                    <?php endif ?>
                                     <!-- <i class="fa-solid fa-trash-can delete-product" data-id-nhap-hang="<?php echo $import['IdNhapHang'] ?>"></i> -->
                                 </td>
                                 </td>

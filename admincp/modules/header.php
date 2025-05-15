@@ -1,10 +1,8 @@
 <div class="header">
     <div class="header-left">
-        <div class="logo">
-            <a href="index.php"><img src="" alt="Logo Admin"></a>
-        </div>
-        <div class="admin-title">
-            <h2>Trang Quản Trị</h2>
+        <div style="display: flex; align-items: center;">
+            <a href="<?php echo $baseUrl ?>/index.php"><img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="logo" style="height: 40px; width: auto; border-radius: 35%; margin-right: 10px"></a>
+            <h2 style="margin: 0px;">Trang Quản Trị</h2>
         </div>
     </div>
     <div class="header-right">

@@ -103,7 +103,7 @@ $listStatus =  [
   }
 </style>
 
-<div style="position: relative; width: 100%; height: calc(100vh - 60px); ">
+<div style="position: relative; width: 100%; height: calc(100vh - 54px); ">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
     <!-- Body page -->
