@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const dateFrom = document.getElementById("dateFrom");
     const dateTo = document.getElementById("dateTo");
+    const sortOrder = document.getElementById("sortOrder");
     const searchStat = document.getElementById("searchStat");
     const listStat = document.getElementById("liststat");
 
@@ -9,15 +10,16 @@ document.addEventListener("DOMContentLoaded", function () {
     searchStat.addEventListener("click", function () {
         const fromDate = dateFrom.value;
         const toDate = dateTo.value;
+        const order = sortOrder.value; // Lấy giá trị của sortOrder
 
-        if (!fromDate || !toDate) {
-            alert("Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
+        if (fromDate > toDate) {
+            alert("Ngày đến phải sau ngày bắt đầu!");
             return;
         }
 
-        // Tạo request AJAX
+        // Gửi request AJAX có kèm theo sortOrder
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `../admincp/js/ajax/getStatistics.php?datefrom=${encodeURIComponent(fromDate)}&dateto=${encodeURIComponent(toDate)}`, true);
+        xhr.open("GET", `../admincp/js/ajax/getStatistics.php?datefrom=${encodeURIComponent(fromDate)}&dateto=${encodeURIComponent(toDate)}&sortOrder=${order}`, true);
         
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -39,8 +41,3 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.send();
     });
 });
-
-// Hàm xem chi tiết hóa đơn
-function viewOrderDetails(orderID) {
-    window.location.href = `index.php?action=orders&query=details&id=${orderID}`;
-}
