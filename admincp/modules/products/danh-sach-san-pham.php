@@ -2,7 +2,8 @@
 $sql_get_products = "SELECT DISTINCT 
     sp.`IdSP`, sp.`IdGRP`, nh.`name` AS `group_name`,
     sp.`name`, 0, latest_import.`ImportPrice`, sp.`Type` as `type`, sp.`Quantity` as `quantity`,
-    sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`, sp.`Ratio` as `Ratio`
+    sp.`Status` as `status`, sp.`Info` as `info`, sp.`IMG` as `IMG`, sp.`Price` as `price`, sp.`Ratio` as `Ratio`,
+    sp.`ReleaseDate` as `releaseDate`
 FROM `sanpham` sp
 JOIN `nhom` nh ON sp.`IdGRP` = nh.`IdGRP`
 LEFT JOIN (
@@ -298,7 +299,7 @@ $listStatus =  [
                 type="date"
                 name="releaseDate"
                 placeholder="Ngày phát hành"
-                value="2025-01-01"
+                value="<?php echo date('Y-m-d'); ?>"
                 style="
                 margin-left: 40px;
                 padding: 3px;
@@ -415,6 +416,10 @@ $listStatus =  [
               <div class="product-attribute">
                 <h2 class="attribute-header">Nhóm:</h2>
                 <p class="attribute-body"><?php echo $productFound['group_name']; ?></p>
+              </div>
+              <div class="product-attribute">
+                <h2 class="attribute-header">Ngày phát hành:</h2>
+                <p class="attribute-body"><?php echo $productFound['releaseDate']; ?></p>
               </div>
               <div class="product-attribute">
                 <h2 class="attribute-header">Số lượng:</h2>
@@ -540,6 +545,17 @@ $listStatus =  [
             </div>
 
             <div class="model-body">
+              <label for="releaseDate" style="width: 15%; margin-left: 20px">Ngày phát hành</label>
+              <div>
+                <input type="date" name="releaseDate" id="releaseDate"
+                  style="margin-left: 40px; padding: 3px; border-radius: 5px; border: 1px solid #636262; width: 100%;"
+                  placeholder="10"
+                  value="<?php echo $productFound['releaseDate'] ?? ''; ?>" />
+              </div>
+              <p id="price-alert-edit" class="alert"></p>
+            </div>
+
+            <div class="model-body">
               <label for="quantity" style="width: 15%; margin-left: 20px">Số lượng</label>
               <div>
                 <input
@@ -584,7 +600,9 @@ $listStatus =  [
             ">
                 <?php
                 foreach ($listStatus as $status) {
-                  if ($status['id'] == 3) {continue;}
+                  if ($status['id'] == 3) {
+                    continue;
+                  }
                   $selectedStatus = ($productFound['status'] ?? '') == $status['id'] ? 'selected' : '';
                   echo "<option value='{$status['id']}' $selectedStatus>{$status['name']}</option>";
                 }
