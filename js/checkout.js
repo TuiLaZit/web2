@@ -12,6 +12,11 @@ const bankInfoId = 'bank-info';
 const paymentCodValue = 'cod';
 const paymentOnlineValue = 'online';
 
+// THÊM MỚI: ID cho nút xác nhận thanh toán và vùng hiển thị thông báo
+const confirmPaymentButtonId = 'confirm-payment-button';
+const paymentStatusMessageId = 'payment-status-message';
+
+
 // Hàm tiện ích lấy phần tử DOM bằng ID
 const getElement = (id) => document.getElementById(id);
 // Hàm tiện ích ẩn phần tử DOM
@@ -177,6 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const addressOptionEl = getElement('address_option');
     if (addressOptionEl) {
         toggleNewAddress(addressOptionEl.value);
+         // Thêm listener để gọi toggleNewAddress khi lựa chọn thay đổi
+        addressOptionEl.addEventListener('change', function() {
+            toggleNewAddress(this.value);
+        });
     }
 
     const paymentRadios = document.querySelectorAll('input[name="checkout_payment"]');
@@ -186,11 +195,48 @@ document.addEventListener('DOMContentLoaded', () => {
         paymentRadios.forEach(radio => {
             radio.addEventListener('change', function() {
                 bankInfoEl.style.display = this.value === paymentOnlineValue ? 'block' : 'none';
+                 // Reset trạng thái nút và thông báo khi thay đổi phương thức thanh toán
+                const confirmBtn = getElement(confirmPaymentButtonId);
+                const statusMsg = getElement(paymentStatusMessageId);
+                if (this.value !== paymentOnlineValue) {
+                    if (confirmBtn) {
+                        confirmBtn.style.display = 'block'; // Hoặc 'inline-block' tùy theo CSS của bạn
+                        confirmBtn.disabled = false;
+                        confirmBtn.textContent = 'Đã thanh toán';
+                    }
+                    if (statusMsg) {
+                        statusMsg.textContent = '';
+                    }
+                }
             });
         });
         const checkedPayment = document.querySelector('input[name="checkout_payment"]:checked');
         if (checkedPayment) {
             bankInfoEl.style.display = checkedPayment.value === paymentOnlineValue ? 'block' : 'none';
         }
+    }
+
+    // THÊM MỚI: Xử lý cho nút "Đã thanh toán"
+    const confirmPaymentButtonEl = getElement(confirmPaymentButtonId);
+    const paymentStatusMessageEl = getElement(paymentStatusMessageId);
+
+    if (confirmPaymentButtonEl && paymentStatusMessageEl) {
+        confirmPaymentButtonEl.addEventListener('click', function() {
+            // Vô hiệu hóa nút và hiển thị trạng thái đang xử lý
+            this.disabled = true;
+            this.textContent = 'Đang xử lý...';
+            paymentStatusMessageEl.textContent = ''; // Xóa thông báo cũ
+
+            // Giả lập thời gian chờ xử lý
+            setTimeout(() => {
+                // Hiển thị thông báo thành công
+                paymentStatusMessageEl.textContent = 'Xác nhận thanh toán thành công!';
+                paymentStatusMessageEl.style.color = 'green';
+                
+                // Ẩn nút "Đã thanh toán" sau khi xác nhận
+                this.style.display = 'none'; 
+
+            }, 2500); // Thời gian chờ 2.5 giây
+        });
     }
 });
