@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2025 at 06:59 AM
+-- Generation Time: May 15, 2025 at 07:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,19 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `web_kpop`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `banner`
---
-
-CREATE TABLE `banner` (
-  `IdBN` int(11) NOT NULL,
-  `IdSP` int(11) NOT NULL,
-  `Date` date NOT NULL,
-  `Status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -160,13 +147,6 @@ CREATE TABLE `sanpham` (
 --
 
 --
--- Indexes for table `banner`
---
-ALTER TABLE `banner`
-  ADD PRIMARY KEY (`IdBN`),
-  ADD KEY `BN_SP` (`IdSP`);
-
---
 -- Indexes for table `chitiethoadon`
 --
 ALTER TABLE `chitiethoadon`
@@ -221,12 +201,6 @@ ALTER TABLE `sanpham`
 --
 
 --
--- AUTO_INCREMENT for table `banner`
---
-ALTER TABLE `banner`
-  MODIFY `IdBN` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `chitiethoadon`
 --
 ALTER TABLE `chitiethoadon`
@@ -271,12 +245,6 @@ ALTER TABLE `sanpham`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `banner`
---
-ALTER TABLE `banner`
-  ADD CONSTRAINT `BN_SP` FOREIGN KEY (`IdSP`) REFERENCES `sanpham` (`IdSP`);
 
 --
 -- Constraints for table `chitiethoadon`
