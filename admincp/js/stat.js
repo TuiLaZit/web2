@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchStat = document.getElementById("searchStat");
     const listStat = document.getElementById("liststat");
 
+    dateTo.value = new Date().toISOString().split("T")[0];
+
     searchStat.addEventListener("click", function () {
         const fromDate = dateFrom.value;
         const toDate = dateTo.value;
