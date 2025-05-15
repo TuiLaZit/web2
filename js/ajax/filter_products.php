@@ -10,7 +10,7 @@ $minPrice = isset($_GET['min']) ? (float)$_GET['min'] : 0;
 $maxPrice = isset($_GET['max']) ? (float)$_GET['max'] : 100000000;
 $tag = isset($_GET['tag']) ? trim($_GET['tag']) : 'Tất cả';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$itemsPerPage = 10;
+$itemsPerPage = 6;
 
 // Xây dựng điều kiện lọc
 $whereClause = "IdGRP = '$idGroup'";
