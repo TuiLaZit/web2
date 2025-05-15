@@ -8,7 +8,7 @@ $itemsPerPage = 4;
 
 $resultCount = mysqli_query($mysqli, "SELECT COUNT(*) as total FROM sanpham WHERE IdGRP = '$idGroup'");
 $rowCount = mysqli_fetch_assoc($resultCount);
-$totalItems = $rowCount['total'] ?? 0;
+$totalItems = min(12,$rowCount['total']) ?? 0;
 
 $pagination = new Pagination($totalItems, $itemsPerPage, $page);
 $paginationHtml = $pagination->generatePaginationHtml();

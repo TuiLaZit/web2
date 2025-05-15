@@ -10,7 +10,7 @@ $minPrice = isset($_GET['min']) ? (float)$_GET['min'] : 0;
 $maxPrice = isset($_GET['max']) ? (float)$_GET['max'] : 100000000;
 $tag = isset($_GET['tag']) ? trim($_GET['tag']) : 'Tất cả';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$itemsPerPage = 6;
+$itemsPerPage = 6; // Hiển thị 6 sản phẩm mỗi trang
 
 // Xây dựng điều kiện lọc
 $whereClause = "IdGRP = '$idGroup'";
@@ -25,28 +25,38 @@ if ($tag !== 'Tất cả') {
 $whereClause .= " AND Price BETWEEN $minPrice AND $maxPrice";
 
 // Tính tổng số sản phẩm theo bộ lọc
-$queryCount = "SELECT COUNT(*) as total FROM sanpham WHERE $whereClause";
+$queryCount = "SELECT COUNT(DISTINCT IdSP) as total FROM sanpham WHERE $whereClause And Quantity > 0";
 $resultCount = mysqli_query($mysqli, $queryCount);
 $rowCount = mysqli_fetch_assoc($resultCount);
 $totalItems = $rowCount['total'] ?? 0;
 
+// Khởi tạo phân trang
 $paginator = new Pagination($totalItems, $itemsPerPage, $page);
 $paginationHtml = $paginator->generatePaginationHtml();
 
-$startIndex = ($page - 1) * $itemsPerPage;
-$queryProducts = "SELECT DISTINCT IdSP, Name, IMG, Price FROM sanpham WHERE $whereClause AND Quantity > 0 ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
+// Tính vị trí bắt đầu cho truy vấn LIMIT
+$startIndex = max(0, ($page - 1) * $itemsPerPage);
+
+// Truy vấn sản phẩm theo điều kiện lọc, sắp xếp và phân trang
+$queryProducts = "SELECT IdSP, Name, IMG, Price 
+                  FROM sanpham 
+                  WHERE $whereClause AND Quantity > 0 
+                  GROUP BY IdSP
+                  ORDER BY MAX(ReleaseDate) DESC 
+                  LIMIT $startIndex, $itemsPerPage";
+
 $resultProducts = mysqli_query($mysqli, $queryProducts);
 
 $productsHtml = '';
 while ($row = mysqli_fetch_assoc($resultProducts)) {
     $productsHtml .= "<a href='/pages/product-detail.php?id=" . htmlspecialchars($row['IdSP']) . "' class='product-item'>";
-        $productsHtml .= "<img src='../../admincp/img/products/" . htmlspecialchars($row['IMG']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
-        $productsHtml .= "<h3 class='product-name'>" . htmlspecialchars($row['Name']) . "</h3>";
-        $productsHtml .= "<p class='product-price'>" . htmlspecialchars($row['Price']) . " VND</p>";
+    $productsHtml .= "<img src='../../admincp/img/products/" . htmlspecialchars($row['IMG']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
+    $productsHtml .= "<h3 class='product-name'>" . htmlspecialchars($row['Name']) . "</h3>";
+    $productsHtml .= "<p class='product-price'>" . number_format($row['Price']) . " VND</p>";
     $productsHtml .= "</a>";
 }
 
-// Trả JSON
+// Trả JSON để hiển thị sản phẩm và phân trang
 echo json_encode([
     'productsHtml' => $productsHtml ?: "<p>Không tìm thấy sản phẩm.</p>",
     'paginationHtml' => $paginationHtml
