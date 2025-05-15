@@ -1,60 +1,258 @@
 .product-detail {
-    width: 100%;
     display: flex;
-    background-color: aliceblue;
-    justify-content: space-evenly;
     flex-wrap: wrap;
+    margin: 30px auto;
+    padding: 25px;
+    max-width: 950px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    gap: 25px;
 }
 
-/* Hình ảnh sẽ tự động co giãn */
+.prod-img {
+    flex: 0 1 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    align-self: flex-start;
+}
+
 .prod-img img {
-    width: 100%;
-    max-width: 50em; /* Đảm bảo kích thước tối đa */
-    height: auto; /* Tự điều chỉnh chiều cao theo tỉ lệ */
+    max-width: 100%;
+    max-height: 350px;
+    height: auto;
     object-fit: contain;
-    margin-left: 3em;
+    border-radius: 6px;
 }
 
-/* Phần thông tin sản phẩm */
 .prod-info {
-    flex: 1;
-    margin-left: 3em;
-    margin-right: 3em;
-    align-self: center;
-    text-align: left;
+    flex: 1 1 60%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Điều chỉnh chữ khi màn hình nhỏ hơn */
 .prod-info h1 {
-    font-size: 2em;
+    font-size: 26px;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    line-height: 1.3;
 }
 
-.prod-info p {
-    font-size: 1.5em;
+/* Giá Sản Phẩm */
+.prod-info p:first-of-type {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 20px;
 }
 
-/* Media Query cho màn hình nhỏ */
+/* Số lượng (Tình trạng kho hàng) - giờ là p:nth-of-type(2) do PHP thay đổi */
+.prod-info p:nth-of-type(2) {
+    font-size: 16px;
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 15px;
+    padding: 8px;
+    background-color: #e9f7ef;
+    border-left: 3px solid #27ae60;
+    border-radius: 4px;
+}
+
+/* Loại sản phẩm - giờ là p:nth-of-type(3) */
+.prod-info p:nth-of-type(3) {
+    font-size: 14px;
+    color: #3498db;
+    padding: 3px 0;
+    margin-bottom: 8px;
+}
+
+/* Nhóm sản phẩm - giờ là p:nth-of-type(4) */
+.prod-info p:nth-of-type(4) {
+    font-size: 14px;
+    color: #3498db;
+    padding: 3px 0;
+    margin-bottom: 8px;
+}
+
+/* Thông tin chi tiết sản phẩm - vẫn là p:nth-of-type(5) */
+.prod-info p:nth-of-type(5) {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.7;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* Ngày phát hành - vẫn là p:nth-of-type(6) */
+.prod-info p:nth-of-type(6) {
+    font-size: 13px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+.prod-info form {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.prod-info input[type="number"] {
+    width: 70px; /* Sẽ bị ghi đè bởi inline style trong PHP nếu không dùng !important */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.add-to-cart-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-grow: 1;
+    min-width: 180px;
+}
+
+.add-to-cart-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.add-to-cart-button:active {
+    transform: translateY(0);
+}
+
+.wrapper > p {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    padding: 40px 20px;
+}
+
 @media (max-width: 768px) {
     .product-detail {
-        flex-direction: column; /* Xếp chồng các phần */
-        align-items: center; /* Căn giữa phần tử */
+        flex-direction: column;
+        margin: 20px 15px;
+        padding: 20px;
+        gap: 20px;
     }
 
-    .prod-info {
-        margin-left: 1em;
-        margin-right: 1em;
-        text-align: center; /* Chuyển sang căn giữa cho màn hình nhỏ */
+    .prod-img {
+        flex-basis: auto;
+        width: 100%;
+        max-height: 300px;
+        margin-bottom: 0;
     }
 
     .prod-img img {
-        margin-left: 0; /* Loại bỏ khoảng cách không cần thiết */
+        max-height: 280px;
+    }
+
+    .prod-info {
+        flex-basis: auto;
+        text-align: center;
     }
 
     .prod-info h1 {
-        font-size: 1.5em; /* Giảm kích thước chữ */
+        font-size: 22px;
     }
 
+    .prod-info p:first-of-type {
+        font-size: 22px;
+    }
+
+    /* Số lượng - giờ là p:nth-of-type(2) */
+    .prod-info p:nth-of-type(2) {
+        text-align: left;
+        display: inline-block;
+        width: auto;
+        max-width: 90%;
+    }
+    /* Thông tin chi tiết - giờ là p:nth-of-type(5) */
+     .prod-info p:nth-of-type(5) {
+        text-align: left;
+    }
+
+    .prod-info form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .prod-info input[type="number"] {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 100%; /* Sẽ bị ghi đè bởi inline style trong PHP nếu không dùng !important */
+    }
+
+    .add-to-cart-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .prod-info h1 {
+        font-size: 20px;
+    }
     .prod-info p {
-        font-size: 1.2em;
+        font-size: 14px;
+    }
+    .prod-info p:first-of-type { /* Giá */
+        font-size: 20px;
+    }
+    /* Số lượng - giờ là p:nth-of-type(2) */
+    .prod-info p:nth-of-type(2) {
+        font-size: 15px;
+        padding: 6px;
+    }
+    /* Loại - giờ là p:nth-of-type(3) */
+    .prod-info p:nth-of-type(3) {
+        font-size: 13px;
+    }
+    /* Nhóm sản phẩm - giờ là p:nth-of-type(4) */
+    .prod-info p:nth-of-type(4) {
+        font-size: 13px;
+    }
+    /* Thông tin - giờ là p:nth-of-type(5) */
+     .prod-info p:nth-of-type(5) {
+        font-size: 14px;
+    }
+    /* Ngày phát hành - giờ là p:nth-of-type(6) */
+    .prod-info p:nth-of-type(6) {
+        font-size: 12px;
+    }
+
+    .add-to-cart-button {
+        padding: 10px 18px;
+        font-size: 15px;
+    }
+    .prod-info input[type="number"] {
+        padding: 8px;
+        font-size: 15px;
+    }
+    .product-detail {
+        margin: 15px 10px;
+        padding: 15px;
+    }
+    .prod-img {
+        max-height: 250px;
+    }
+    .prod-img img {
+        max-height: 230px;
     }
 }
