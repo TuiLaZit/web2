@@ -76,10 +76,10 @@
                 break;
                 
             default:
-                include("modules/dashboard.php");
+                include("modules/statistics.php");
         }
     } else {
-        include("modules/dashboard.php");
+        include("modules/statistics.php");
     }
     ?>
 </div>

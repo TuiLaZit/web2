@@ -5,14 +5,14 @@ body {
     min-height: 100vh;
     display: flex;
     font-family: 'Poppins', 'Quicksand', sans-serif;
-    background-color: #f5f5f5;
+    background-color: #F8F8E1;
     color: #333;
 }
 
 .wrapper {
     width: 100%;
     height: 100vh;
-    background-color: #dbdbdb;
+    background-color: #F8F8E1;
     margin: auto;
     flex-direction: column;
     align-items: center;
@@ -20,8 +20,8 @@ body {
 
 .header {
     width: 100%;
-    height: 8vh;
-    background-color: rgb(36, 211, 241);
+    height: 6em;
+    background-color: #FF90BB;
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -37,8 +37,8 @@ body {
 }
 
 .logo {
-    width: 2.5em; 
-    height: 2.5em;
+    width: 5em; 
+    height: 5em;
     flex-shrink: 0;
 }
 
@@ -86,13 +86,13 @@ body {
 
 .main{
     width: 100%;
-    background-color: #fff;
+    background-color: #F8F8E1;
 }
 
 .footer{
     width: 100%;
     height: 450px;
-    background-color: #2ab8d1;
+    background-color: #FFC1DA;
 }
 
 /* Products Grid */
@@ -141,7 +141,7 @@ body {
 .product-price {
     margin: 0;
     font-size: 18px;
-    color: #2d8fdf;
+    color: rgba(255,102,196,255);
     font-weight: bold;
 }
 

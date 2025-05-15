@@ -115,7 +115,7 @@ $items_result = $items_stmt->get_result();
     </div>
 
     <div class="mt-3">
-        <a href="?action=orders" class="btn btn-secondary">Quay lại</a>
+        <a href="javascript:history.back()" class="btn btn-secondary">Quay lại</a>
         <?php if ($order['Status'] != 3 && $order['Status'] != 4): ?>
         <a href="?action=orders&query=update&id=<?php echo $order_id; ?>" class="btn btn-primary">Cập nhật trạng thái</a>
         <?php endif; ?>

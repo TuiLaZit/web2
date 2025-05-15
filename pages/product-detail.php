@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <link rel="stylesheet" type="text/css" href="../css/product-detail-style.css">
-    <title><?php echo isset($sanpham) ? htmlspecialchars($sanpham->name) . " - NJZ gShop" : "NJZ gShop"; ?></title>
+    <title><?php echo isset($sanpham) ? htmlspecialchars($sanpham->name) . " - KCorner" : "KCorner"; ?></title>
 </head>
 <body>
     <div class="wrapper">

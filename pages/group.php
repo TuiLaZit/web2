@@ -26,7 +26,7 @@ if (isset($_GET['idgrp'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../css/style.css">
         <link rel="stylesheet" type="text/css" href="../css/group.css">
-        <title><?php echo isset($group) ? htmlspecialchars($group->name) .  "- NJZ" : "NJZ gShop"; ?></title>
+        <title><?php echo isset($group) ? htmlspecialchars($group->name) .  "- KCorner" : "KCorner"; ?></title>
     </head>
 
     <body>
@@ -37,7 +37,7 @@ if (isset($_GET['idgrp'])) {
             ?>
                 <div id="main-page">
                     <div id="group">
-                        <img src="<?php echo $baseUrl ?>/admincp/img/groups/<?php echo htmlspecialchars($group->img); ?>" alt="<?php echo htmlspecialchars($group->name); ?>">
+                        <img src="<?php echo $baseUrl ?>/./admincp/img/groups/<?php echo htmlspecialchars($group->img); ?>" alt="<?php echo htmlspecialchars($group->name); ?>">
                         <div id="group-info">
                             <h1><?php echo htmlspecialchars($group->name); ?></h1>
                             <p>Công Ty: <?php echo htmlspecialchars($group->company); ?></p>
