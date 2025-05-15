@@ -159,6 +159,7 @@ function formatPrice($price) {
 $total = 0; 
 ?>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../css/cart.css">
 <script src="../admincp/js/vietnamese-provinces-data.js"></script> 
 <div class="wrapper">
     <div class="cart-container" style="max-width:700px;">
@@ -278,7 +279,10 @@ $total = 0;
                             <p><strong>Chi nhánh:</strong> Hà Nội</p>
                             <p><strong>Nội dung chuyển khoản:</strong> [Mã đơn hàng] - [Tên khách hàng]</p>
                             <p style="color: #dc3545; font-style: italic;">* Vui lòng chuyển khoản đúng số tiền và nội dung để đơn hàng được xử lý nhanh chóng.</p>
-                        </div>
+                            
+                            <button type="button" id="confirm-payment-button" style="margin-top: 15px; padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Đã thanh toán</button>
+                            <p id="payment-status-message" style="margin-top: 10px; font-weight: bold;"></p>
+                            </div>
                     </div>
                 </div>
             </div>
