@@ -13,9 +13,8 @@ if ($sql_get_imports && mysqli_num_rows($query_get_imports) > 0) {
     }
 }
 
-$sql_get_products = "SELECT * from sanpham";
+$sql_get_products = "SELECT * FROM sanpham ORDER BY Name ASC";
 $query_get_products = mysqli_query($mysqli, $sql_get_products);
-
 $products = []; // Mảng lưu trữ
 
 // Nếu có dữ liệu
