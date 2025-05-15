@@ -399,4 +399,140 @@
     color: #842029;
 }
 
-/* Chi tiết đơn hàng */
+/* Thông báo xác nhận*/
+.confirm-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    z-index: 1040; /* Dưới modal, trên các phần tử khác */
+    display: none; /* Ẩn ban đầu */
+}
+
+.centered-confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Căn giữa tuyệt đối */
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px; /* Bo góc mềm mại */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    z-index: 1050; /* Nổi lên trên overlay */
+    width: 90%;
+    max-width: 450px; /* Độ rộng tối đa */
+    display: none; /* Ẩn ban đầu */
+    color: #212529;
+    font-size: 1rem; /* Sử dụng rem cho font-size dễ scale */
+}
+
+.confirm-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem; /* ~16px 20px */
+    border-bottom: 1px solid #e9ecef; /* Đường kẻ mỏng */
+    background-color: #f8f9fa; /* Màu nền nhẹ cho header */
+    border-top-left-radius: calc(8px - 1px); /* Điều chỉnh bo góc cho khớp */
+    border-top-right-radius: calc(8px - 1px);
+}
+
+.confirm-dialog-title {
+    margin: 0;
+    font-size: 1.125rem; /* ~18px */
+    font-weight: 500;
+    color: #343a40;
+}
+
+.btn-close-dialog { /* Style cho nút đóng trên header */
+    background: transparent;
+    border: 0;
+    font-size: 1.5rem; /* Kích thước dấu X */
+    font-weight: bold;
+    line-height: 1;
+    color: #6c757d;
+    opacity: 0.7;
+    padding: 0.5rem; /* Tăng vùng click */
+    margin: -0.5rem; /* Bù trừ padding để căn chỉnh */
+    cursor: pointer;
+}
+.btn-close-dialog:hover {
+    opacity: 1;
+    color: #000;
+}
+
+.confirm-dialog-body {
+    padding: 1.25rem; /* ~20px */
+    line-height: 1.6;
+}
+
+.confirm-dialog-body .confirm-message {
+    margin: 0;
+    font-size: 0.95rem; /* ~15px */
+}
+
+.confirm-dialog-footer {
+    display: flex;
+    justify-content: flex-end; /* Nút căn phải */
+    align-items: center;
+    padding: 0.75rem 1.25rem; /* ~12px 20px */
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa; /* Màu nền nhẹ cho footer */
+    border-bottom-left-radius: calc(8px - 1px);
+    border-bottom-right-radius: calc(8px - 1px);
+    gap: 0.5rem; /* Khoảng cách giữa các nút */
+}
+
+/* Các nút trong footer sẽ sử dụng class .btn, .btn-primary, .btn-secondary từ CSS bạn đã cung cấp */
+.confirm-dialog-footer .btn {
+    font-size: 0.875rem; /* ~14px */
+    padding: 0.375rem 0.9rem; /* Điều chỉnh padding cho vừa vặn */
+}
+
+/* Đảm bảo style cho .btn-secondary nếu bạn dùng nó (từ lần trước) */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+.btn-primary { /* Đảm bảo style btn-primary cũng nhất quán */
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Animation cho modal (tùy chọn, thêm nếu muốn) */
+.centered-confirm-dialog {
+    /* ... các thuộc tính khác ... */
+    animation: fadeInModal 0.3s ease-out forwards;
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%); /* Hơi dịch lên trên một chút */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.confirm-dialog-overlay {
+    /* ... các thuộc tính khác ... */
+    animation: fadeInOverlay 0.3s ease-out forwards;
+}
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
