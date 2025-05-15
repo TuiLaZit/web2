@@ -4,26 +4,37 @@ include (__DIR__ . '/../../config/config.php');
 header('Content-Type: application/json');
 
 $DateFrom = $_GET['datefrom'] ?? null;
-$DateTo = $_GET['dateto'] ?? null;
+$DateTo = $_GET['dateto'] ?? date('Y-m-d'); // Nếu không có ngày kết thúc, mặc định lấy ngày hiện tại
+$sortOrder = $_GET['sortOrder'] ?? 'DESC'; // Nếu không có giá trị, mặc định là giảm dần
 
-if (!$DateFrom || !$DateTo) {
-    echo json_encode(["statHTML" => "<p>Vui lòng nhập ngày hợp lệ.</p>"]);
-    exit;
+if (!$DateFrom) {
+    // Nếu không có DateFrom, bỏ điều kiện WHERE h.Date BETWEEN ? AND ?
+    $StatQuery = "
+        SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
+        FROM HoaDon h
+        JOIN KhachHang k ON h.IDKH = k.IDKH
+        GROUP BY h.IDKH, k.Name
+        ORDER BY TongTien $sortOrder
+        LIMIT 5;
+    ";
+
+    $stmt = $mysqli->prepare($StatQuery);
+} else {
+    // Nếu có DateFrom, sử dụng điều kiện lọc theo ngày
+    $StatQuery = "
+        SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
+        FROM HoaDon h
+        JOIN KhachHang k ON h.IDKH = k.IDKH
+        WHERE h.Date BETWEEN ? AND ?
+        GROUP BY h.IDKH, k.Name
+        ORDER BY TongTien $sortOrder
+        LIMIT 5;
+    ";
+
+    $stmt = $mysqli->prepare($StatQuery);
+    $stmt->bind_param("ss", $DateFrom, $DateTo);
 }
 
-// Truy vấn để lấy 5 khách hàng có tổng tiền mua nhiều nhất
-$StatQuery = "
-    SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
-    FROM HoaDon h
-    JOIN KhachHang k ON h.IDKH = k.IDKH
-    WHERE h.Date BETWEEN ? AND ?
-    GROUP BY h.IDKH, k.Name
-    ORDER BY TongTien DESC
-    LIMIT 5;
-";
-
-$stmt = $mysqli->prepare($StatQuery);
-$stmt->bind_param("ss", $DateFrom, $DateTo);
 $stmt->execute();
 $resultStat = $stmt->get_result();
 
@@ -35,16 +46,22 @@ while ($row = $resultStat->fetch_assoc()) {
     $statHTML .= "<li>";
     $statHTML .= "<h3 class='statIDguest'>" . htmlspecialchars($row['Name']) . " - Tổng tiền: " . number_format($row['TongTien']) . " VNĐ</h3>";
     
-    // Truy vấn lấy danh sách hóa đơn của từng khách hàng
+    // Truy vấn lấy danh sách hóa đơn của từng khách hàng theo thứ tự đã chọn
     $InvoiceQuery = "
         SELECT IDHD, Total 
         FROM HoaDon 
-        WHERE IDKH = ? AND Date BETWEEN ? AND ?
-        ORDER BY Date DESC;
+        WHERE IDKH = ? " . ($DateFrom ? "AND Date BETWEEN ? AND ?" : "") . "
+        ORDER BY Total $sortOrder;
     ";
     
     $invoiceStmt = $mysqli->prepare($InvoiceQuery);
-    $invoiceStmt->bind_param("sss", $customerID, $DateFrom, $DateTo);
+
+    if ($DateFrom) {
+        $invoiceStmt->bind_param("sss", $customerID, $DateFrom, $DateTo);
+    } else {
+        $invoiceStmt->bind_param("s", $customerID);
+    }
+
     $invoiceStmt->execute();
     $invoiceResult = $invoiceStmt->get_result();
 
