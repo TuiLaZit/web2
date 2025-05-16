@@ -10,25 +10,33 @@ $sortOrder = $_GET['sortOrder'] ?? 'DESC'; // Nếu không có giá trị, mặc
 if (!$DateFrom) {
     // Nếu không có DateFrom, bỏ điều kiện WHERE h.Date BETWEEN ? AND ?
     $StatQuery = "
-        SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
-        FROM HoaDon h
-        JOIN KhachHang k ON h.IDKH = k.IDKH
-        GROUP BY h.IDKH, k.Name
-        ORDER BY TongTien $sortOrder
-        LIMIT 5;
+        SELECT IDKH, Name, TongTien
+        FROM (
+                SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
+            FROM HoaDon h
+            JOIN KhachHang k ON h.IDKH = k.IDKH
+            GROUP BY h.IDKH, k.Name
+            ORDER BY TongTien DESC
+            LIMIT 5
+        ) AS TopCustomers
+        ORDER BY TongTien $sortOrder;
     ";
 
     $stmt = $mysqli->prepare($StatQuery);
 } else {
     // Nếu có DateFrom, sử dụng điều kiện lọc theo ngày
     $StatQuery = "
-        SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
-        FROM HoaDon h
-        JOIN KhachHang k ON h.IDKH = k.IDKH
-        WHERE h.Date BETWEEN ? AND ?
-        GROUP BY h.IDKH, k.Name
-        ORDER BY TongTien $sortOrder
-        LIMIT 5;
+        SELECT IDKH, Name, TongTien
+        FROM (
+            SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
+            FROM HoaDon h
+            JOIN KhachHang k ON h.IDKH = k.IDKH
+            WHERE h.Date BETWEEN ? AND ?
+            GROUP BY h.IDKH, k.Name
+            ORDER BY TongTien DESC
+            LIMIT 5
+        ) AS TopCustomers
+        ORDER BY TongTien $sortOrder;
     ";
 
     $stmt = $mysqli->prepare($StatQuery);
