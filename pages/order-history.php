@@ -143,7 +143,7 @@ function getPaymentMethod($method) {
 <body>
     <div class="wrapper">
         <div class="order-history">
-            <a href="cart.php" class="back-btn">← Quay lại</a>
+            <a href="../index.php?quanly=giohang" class="back-btn">← Quay lại</a>
             <h1>Lịch sử mua hàng</h1>
             <?php if (empty($orders)): ?>
                 <p>Bạn chưa có đơn hàng nào.</p>

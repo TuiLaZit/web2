@@ -91,7 +91,7 @@ function format_address_display($user_data) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin tài khoản - <?php echo e($user['Name']); ?></title>
-    <link rel="stylesheet" type="text/css" href="../css/user_info.css">
+    <link rel="stylesheet" type="text/css" href="./css/user_info.css">
 </head>
 <body>
     <?php include_once(__DIR__ . '/header.php'); // Include header ?>
@@ -166,7 +166,7 @@ function format_address_display($user_data) {
         </div>
     </div>
 
-    <script src="../admincp/js/vietnamese-provinces-data.js"></script> 
-    <script srs="../js/user_info.js"></script>
+    <script src="./admincp/js/vietnamese-provinces-data.js"></script> 
+    <script srs="./js/user_info.js"></script>
 </body>
 </html>
