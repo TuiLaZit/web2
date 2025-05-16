@@ -77,7 +77,7 @@ while ($row = $resultStat->fetch_assoc()) {
     while ($invoiceRow = $invoiceResult->fetch_assoc()) {
         $statHTML .= "<li>";
         $statHTML .= "Mã hóa đơn: <b>" . htmlspecialchars($invoiceRow['IDHD']) . "</b> - Giá: " . number_format($invoiceRow['Total']) . " VNĐ";
-        $statHTML .= " <button onclick='viewOrderDetails(" . $invoiceRow['IDHD'] . ")'>Xem chi tiết</button>";
+        $statHTML .= "<a href='index.php?action=orders&query=details&id=" . htmlspecialchars($invoiceRow['IDHD']) . "' class='detail-button'>Xem chi tiết</a>";
         $statHTML .= "</li>";
     }
     $statHTML .= "</ul>";
