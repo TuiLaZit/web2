@@ -210,7 +210,7 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
                     <a href="checkout.php" class="checkout-btn">Thử lại</a>
                 </div>
             <?php endif; ?>
-<a href="javascript:history.back()" class="back-btn">← Quay lại</a>
+            <a href="javascript:history.back()" class="back-btn">← Quay lại</a>
             <div class="checkout-wrapper" <?php if (isset($_POST['confirm_order']) && !$order_success) echo 'style="display:none;"'; ?> >
                 <div class="checkout-left">
                     <div class="checkout-section">
