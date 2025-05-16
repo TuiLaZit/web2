@@ -7,19 +7,19 @@ $DateFrom = $_GET['datefrom'] ?? date('Y-m-d');
 $DateTo = $_GET['dateto'] ?? date('Y-m-d'); // Nếu không có ngày kết thúc, mặc định lấy ngày hiện tại
 $sortOrder = $_GET['sortOrder'] ?? 'DESC'; // Nếu không có giá trị, mặc định là giảm dần
 
-$StatQuery = "
-    SELECT IDKH, Name, TongTien
-    FROM (
-        SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
-        FROM HoaDon h
-        JOIN KhachHang k ON h.IDKH = k.IDKH
-        WHERE h.Date BETWEEN ? AND ?
-        GROUP BY h.IDKH, k.Name
-        ORDER BY TongTien DESC
-        LIMIT 5
-    ) AS TopCustomers
-    ORDER BY TongTien $sortOrder;
-";
+    $StatQuery = "
+        SELECT IDKH, Name, TongTien
+        FROM (
+            SELECT h.IDKH, k.Name, SUM(h.Total) AS TongTien
+            FROM HoaDon h
+            JOIN KhachHang k ON h.IDKH = k.IDKH
+            WHERE h.Status = 3 AND h.Date BETWEEN ? AND ?
+            GROUP BY h.IDKH, k.Name
+            ORDER BY TongTien DESC
+            LIMIT 5
+        )AS TopCustomers
+        ORDER BY TongTien $sortOrder;
+    ";
 
     $stmt = $mysqli->prepare($StatQuery);
     $stmt->bind_param("ss", $DateFrom, $DateTo);
