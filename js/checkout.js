@@ -1,5 +1,5 @@
 // Lấy giá trị addressOptionsCount từ đối tượng config được truyền từ PHP
-const addressOptionsCount = window.checkoutPageConfig.addressOptionsCount;
+const addressOptionsCount = window.checkoutPageConfig ? window.checkoutPageConfig.addressOptionsCount : 0; // Default to 0 if undefined
 
 const savedAddressPrefix = 'saved_address_';
 const newAddressContainerId = 'new_address';
@@ -12,10 +12,9 @@ const bankInfoId = 'bank-info';
 const paymentCodValue = 'cod';
 const paymentOnlineValue = 'online';
 
-// THÊM MỚI: ID cho nút xác nhận thanh toán và vùng hiển thị thông báo
 const confirmPaymentButtonId = 'confirm-payment-button';
 const paymentStatusMessageId = 'payment-status-message';
-
+const checkoutFormId = 'checkoutForm'; // ID for the main checkout form
 
 // Hàm tiện ích lấy phần tử DOM bằng ID
 const getElement = (id) => document.getElementById(id);
@@ -29,6 +28,9 @@ const showElement = (id) => {
     const el = getElement(id);
     if (el) el.style.display = 'block';
 };
+
+// State variable for online payment confirmation
+let onlinePaymentAcknowledged = false;
 
 // Hàm xử lý việc hiển thị/ẩn form nhập địa chỉ mới hoặc ô hiển thị địa chỉ đã lưu
 function toggleNewAddress(selectedValue) {
@@ -51,14 +53,15 @@ function toggleNewAddress(selectedValue) {
         showElement(newAddressContainerId);
         const provinceEl = getElement(provinceInputId);
         if (provinceEl) provinceEl.value = '';
-        populateDistricts('');
-        populateWards('');  
+        populateDistricts(''); // Reset and disable districts
+        populateWards('');   // Reset and disable wards
         const addressDetailEl = getElement(addressDetailInputId);
         if (addressDetailEl) {
             addressDetailEl.value = '';
-            addressDetailEl.disabled = true;
+            addressDetailEl.disabled = true; // Should be enabled only when ward is selected
         }
     }
+    updateCheckoutAddress(); // Ensure hidden input is updated even if no specific new/saved path is taken
 }
 
 // Hàm chung để điền các lựa chọn (options) vào một thẻ select
@@ -67,21 +70,29 @@ function populateOptions(selectElement, options, defaultText) {
     selectElement.innerHTML = `<option value="">${defaultText}</option>`;
     if (options && Array.isArray(options)) {
         options.forEach(option => {
-            const optionValue = option && option.FullName ? option.FullName : '';
-            selectElement.innerHTML += `<option value="${optionValue}">${optionValue}</option>`;
+            // Assuming 'option' objects have a 'Name' property based on previous PHP context for provinces data.
+            // If your 'vietnameseProvincesData' structure uses 'FullName', adjust accordingly.
+            // For this example, I'll assume 'Name' or 'FullName' might be used.
+            const optionValue = option && (option.FullName || option.Name) ? (option.FullName || option.Name) : '';
+            const optionText = option && (option.FullName || option.Name) ? (option.FullName || option.Name) : '';
+            if(optionValue) { // Only add if value is not empty
+                 selectElement.innerHTML += `<option value="${optionValue}">${optionText}</option>`;
+            }
         });
     }
 }
 
 // Hàm điền danh sách Tỉnh/Thành phố vào dropdown
 function populateProvinces() {
-    if (typeof vietnameseProvinces !== 'undefined') {
-        populateOptions(getElement(provinceInputId), vietnameseProvinces, 'Tỉnh / Thành phố (*)');
+    if (typeof vietnameseProvincesData !== 'undefined' && vietnameseProvincesData.provinces) { // Assuming global 'vietnameseProvincesData'
+        populateOptions(getElement(provinceInputId), vietnameseProvincesData.provinces, 'Tỉnh / Thành phố (*)');
+    } else if (typeof vietnameseProvinces !== 'undefined') { // Fallback for 'vietnameseProvinces' directly
+         populateOptions(getElement(provinceInputId), vietnameseProvinces, 'Tỉnh / Thành phố (*)');
     }
 }
 
 // Hàm điền danh sách Quận/Huyện dựa trên Tỉnh/Thành phố đã chọn
-function populateDistricts(provinceFullName) {
+function populateDistricts(provinceName) {
     const districtSelect = getElement(districtInputId);
     const wardSelect = getElement(wardInputId);
     const addressDetailInput = getElement(addressDetailInputId);
@@ -89,37 +100,42 @@ function populateDistricts(provinceFullName) {
     if (!districtSelect || !wardSelect || !addressDetailInput) return;
 
     let districts = [];
-    if (provinceFullName && typeof vietnameseProvinces !== 'undefined') {
-        const province = vietnameseProvinces.find(p => p.FullName === provinceFullName);
-        districts = province?.District || [];
+    const dataSource = (typeof vietnameseProvincesData !== 'undefined' && vietnameseProvincesData.provinces) ? vietnameseProvincesData.provinces : (typeof vietnameseProvinces !== 'undefined' ? vietnameseProvinces : []);
+
+    if (provinceName && dataSource.length > 0) {
+        const province = dataSource.find(p => (p.FullName === provinceName || p.Name === provinceName));
+        districts = province?.District || province?.Districts || []; // Accommodate 'District' or 'Districts'
     }
     populateOptions(districtSelect, districts, 'Quận / Huyện (*)');
-    populateOptions(wardSelect, [], 'Xã / Phường / Thị trấn (*)');
+    populateOptions(wardSelect, [], 'Xã / Phường / Thị trấn (*)'); // Clear wards
 
-    districtSelect.disabled = !provinceFullName || districts.length === 0;
+    districtSelect.disabled = !provinceName || districts.length === 0;
     wardSelect.disabled = true;
     addressDetailInput.disabled = true;
     updateCheckoutAddress();
 }
 
 // Hàm điền danh sách Xã/Phường dựa trên Quận/Huyện đã chọn
-function populateWards(districtFullName) {
+function populateWards(districtName) {
     const wardSelect = getElement(wardInputId);
     const addressDetailInput = getElement(addressDetailInputId);
     const provinceSelect = getElement(provinceInputId);
     if (!wardSelect || !addressDetailInput || !provinceSelect) return;
 
-    const provinceFullName = provinceSelect.value;
+    const provinceName = provinceSelect.value;
     let wards = [];
-    if (districtFullName && provinceFullName && typeof vietnameseProvinces !== 'undefined') {
-        const province = vietnameseProvinces.find(p => p.FullName === provinceFullName);
-        const district = province?.District.find(d => d.FullName === districtFullName);
-        wards = district?.Ward || [];
+    const dataSource = (typeof vietnameseProvincesData !== 'undefined' && vietnameseProvincesData.provinces) ? vietnameseProvincesData.provinces : (typeof vietnameseProvinces !== 'undefined' ? vietnameseProvinces : []);
+
+
+    if (districtName && provinceName && dataSource.length > 0) {
+        const province = dataSource.find(p => (p.FullName === provinceName || p.Name === provinceName));
+        const district = province?. (province.District || province.Districts).find(d => (d.FullName === districtName || d.Name === districtName));
+        wards = district?.Ward || district?.Wards || []; // Accommodate 'Ward' or 'Wards'
     }
     populateOptions(wardSelect, wards, 'Xã / Phường / Thị trấn (*)');
 
-    wardSelect.disabled = !districtFullName || wards.length === 0;
-    addressDetailInput.disabled = true;
+    wardSelect.disabled = !districtName || wards.length === 0;
+    addressDetailInput.disabled = true; // Keep address detail disabled until ward is selected
     updateCheckoutAddress();
 }
 
@@ -130,24 +146,72 @@ function updateCheckoutAddress() {
     const wardEl = getElement(wardInputId);
     const addressDetailEl = getElement(addressDetailInputId);
     const checkoutAddressInputEl = getElement(checkoutAddressHiddenInputId);
+    const addressOptionEl = getElement('address_option');
 
-    if (!checkoutAddressInputEl) return;
 
-    const province = provinceEl ? provinceEl.value : '';
-    const district = districtEl ? districtEl.value : '';
-    const ward = wardEl ? wardEl.value : '';
-    const address = addressDetailEl ? addressDetailEl.value : '';
+    if (!checkoutAddressInputEl || !addressOptionEl) return;
 
-    if (province && district && ward && address.trim() !== '') {
-        checkoutAddressInputEl.value = `${address.trim()}, ${ward}, ${district}, ${province}`;
+    const selectedAddressOptionValue = addressOptionEl.value;
+
+    if (selectedAddressOptionValue && selectedAddressOptionValue.startsWith('saved_')) {
+        const index = selectedAddressOptionValue.split('_')[1];
+        const savedAddressDivId = savedAddressPrefix + index;
+        const inputElement = getElement(savedAddressDivId)?.querySelector('input');
+        if (inputElement) {
+            checkoutAddressInputEl.value = inputElement.value;
+        } else {
+            checkoutAddressInputEl.value = '';
+        }
+    } else if (selectedAddressOptionValue === 'new') {
+        const province = provinceEl ? provinceEl.value : '';
+        const district = districtEl ? districtEl.value : '';
+        const ward = wardEl ? wardEl.value : '';
+        const address = addressDetailEl ? addressDetailEl.value.trim() : '';
+
+        if (province && district && ward && address !== '') {
+            checkoutAddressInputEl.value = `${address}, ${ward}, ${district}, ${province}`;
+        } else {
+            checkoutAddressInputEl.value = '';
+        }
     } else {
-        checkoutAddressInputEl.value = '';
+         checkoutAddressInputEl.value = ''; // Clear if no valid option
     }
 }
+
 
 // Hàm thực thi khi toàn bộ DOM đã được tải
 document.addEventListener('DOMContentLoaded', () => {
     populateProvinces();
+
+    const mainConfirmOrderButton = document.querySelector('button[name="confirm_order"]');
+    const paymentStatusMessageEl = getElement(paymentStatusMessageId);
+    const confirmPaymentButtonEl = getElement(confirmPaymentButtonId);
+
+    function setMainOrderButtonState() {
+        if (!mainConfirmOrderButton) return;
+        const selectedPaymentRadio = document.querySelector('input[name="checkout_payment"]:checked');
+        if (!selectedPaymentRadio) { // No payment method selected
+            mainConfirmOrderButton.disabled = true;
+            return;
+        }
+        const selectedPaymentMethod = selectedPaymentRadio.value;
+
+        if (selectedPaymentMethod === paymentOnlineValue) {
+            if (onlinePaymentAcknowledged) {
+                mainConfirmOrderButton.disabled = false;
+            } else {
+                mainConfirmOrderButton.disabled = true;
+                if (paymentStatusMessageEl && getElement(bankInfoId).style.display === 'block') {
+                     paymentStatusMessageEl.textContent = 'Vui lòng xác nhận đã chuyển khoản bằng cách nhấn "Đã thanh toán".';
+                     paymentStatusMessageEl.style.color = 'orange'; // Or some other prompt color
+                }
+            }
+        } else { // COD or other non-online methods
+            mainConfirmOrderButton.disabled = false;
+            if (paymentStatusMessageEl) paymentStatusMessageEl.textContent = ''; // Clear any pending messages
+        }
+    }
+
 
     const provinceEl = getElement(provinceInputId);
     if (provinceEl) {
@@ -169,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const addressDetailInputEl = getElement(addressDetailInputId);
             if (addressDetailInputEl) {
                 addressDetailInputEl.disabled = !this.value;
+                 if(this.value) addressDetailInputEl.focus(); // Focus on address line when ward is selected
             }
             updateCheckoutAddress();
         });
@@ -181,8 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addressOptionEl = getElement('address_option');
     if (addressOptionEl) {
-        toggleNewAddress(addressOptionEl.value);
-         // Thêm listener để gọi toggleNewAddress khi lựa chọn thay đổi
+        toggleNewAddress(addressOptionEl.value); // Initial call
         addressOptionEl.addEventListener('change', function() {
             toggleNewAddress(this.value);
         });
@@ -191,52 +255,115 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentRadios = document.querySelectorAll('input[name="checkout_payment"]');
     const bankInfoEl = getElement(bankInfoId);
 
-    if (bankInfoEl) {
-        paymentRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                bankInfoEl.style.display = this.value === paymentOnlineValue ? 'block' : 'none';
-                 // Reset trạng thái nút và thông báo khi thay đổi phương thức thanh toán
-                const confirmBtn = getElement(confirmPaymentButtonId);
-                const statusMsg = getElement(paymentStatusMessageId);
-                if (this.value !== paymentOnlineValue) {
-                    if (confirmBtn) {
-                        confirmBtn.style.display = 'block'; // Hoặc 'inline-block' tùy theo CSS của bạn
-                        confirmBtn.disabled = false;
-                        confirmBtn.textContent = 'Đã thanh toán';
-                    }
-                    if (statusMsg) {
-                        statusMsg.textContent = '';
-                    }
+    paymentRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            onlinePaymentAcknowledged = false; // Reset on any payment method change
+            const isOnline = this.value === paymentOnlineValue;
+            if (bankInfoEl) bankInfoEl.style.display = isOnline ? 'block' : 'none';
+
+            if (isOnline) {
+                if (confirmPaymentButtonEl) {
+                    confirmPaymentButtonEl.style.display = 'block'; // Or 'inline-block' or ''
+                    confirmPaymentButtonEl.disabled = false;
+                    confirmPaymentButtonEl.textContent = 'Đã thanh toán';
                 }
-            });
+                if (paymentStatusMessageEl) {
+                    paymentStatusMessageEl.textContent = 'Vui lòng xác nhận đã chuyển khoản bằng cách nhấn "Đã thanh toán".';
+                    paymentStatusMessageEl.style.color = 'orange';
+                }
+            } else { // COD or other
+                if (paymentStatusMessageEl) {
+                    paymentStatusMessageEl.textContent = '';
+                }
+            }
+            setMainOrderButtonState();
         });
-        const checkedPayment = document.querySelector('input[name="checkout_payment"]:checked');
-        if (checkedPayment) {
-            bankInfoEl.style.display = checkedPayment.value === paymentOnlineValue ? 'block' : 'none';
+    });
+
+    // Initial state for payment section and main order button
+    const checkedPayment = document.querySelector('input[name="checkout_payment"]:checked');
+    if (bankInfoEl && checkedPayment) {
+        const isOnlineInitial = checkedPayment.value === paymentOnlineValue;
+        bankInfoEl.style.display = isOnlineInitial ? 'block' : 'none';
+        if (isOnlineInitial) {
+             if (paymentStatusMessageEl) {
+                 paymentStatusMessageEl.textContent = 'Vui lòng xác nhận đã chuyển khoản bằng cách nhấn "Đã thanh toán".';
+                 paymentStatusMessageEl.style.color = 'orange';
+             }
         }
     }
-
-    // THÊM MỚI: Xử lý cho nút "Đã thanh toán"
-    const confirmPaymentButtonEl = getElement(confirmPaymentButtonId);
-    const paymentStatusMessageEl = getElement(paymentStatusMessageId);
+    setMainOrderButtonState(); // Set initial button state
 
     if (confirmPaymentButtonEl && paymentStatusMessageEl) {
         confirmPaymentButtonEl.addEventListener('click', function() {
-            // Vô hiệu hóa nút và hiển thị trạng thái đang xử lý
             this.disabled = true;
             this.textContent = 'Đang xử lý...';
-            paymentStatusMessageEl.textContent = ''; // Xóa thông báo cũ
+            paymentStatusMessageEl.textContent = '';
 
-            // Giả lập thời gian chờ xử lý
             setTimeout(() => {
-                // Hiển thị thông báo thành công
-                paymentStatusMessageEl.textContent = 'Xác nhận thanh toán thành công!';
+                paymentStatusMessageEl.textContent = 'Xác nhận thanh toán thành công! Bạn có thể tiếp tục đặt hàng.';
                 paymentStatusMessageEl.style.color = 'green';
-                
-                // Ẩn nút "Đã thanh toán" sau khi xác nhận
-                this.style.display = 'none'; 
+                this.style.display = 'none'; // Hide "Đã thanh toán" button after success
 
-            }, 2500); // Thời gian chờ 2.5 giây
+                onlinePaymentAcknowledged = true;
+                setMainOrderButtonState(); // Enable main order button
+            }, 1500); // Reduced timeout for quicker feedback
+        });
+    }
+
+    // Form submission listener
+    const checkoutFormEl = getElement(checkoutFormId);
+    if (checkoutFormEl) {
+        checkoutFormEl.addEventListener('submit', function(event) {
+            // 1. Address Validation
+            updateCheckoutAddress(); // Ensure hidden input is current
+            const currentCheckoutAddress = getElement(checkoutAddressHiddenInputId)?.value;
+            const selectedAddressOption = getElement('address_option')?.value;
+
+            let isAddressValid = true;
+            if (!selectedAddressOption) {
+                isAddressValid = false;
+                alert('Lỗi: Không tìm thấy lựa chọn địa chỉ.');
+            } else if (selectedAddressOption === 'new' && (!currentCheckoutAddress || currentCheckoutAddress.split(',').length < 4)) {
+                // Basic check for new address; more specific field checks can be added here
+                isAddressValid = false;
+                alert('Vui lòng điền đầy đủ thông tin địa chỉ giao hàng mới (Số nhà, Phường/Xã, Quận/Huyện, Tỉnh/Thành phố).');
+                // Highlight individual empty fields if desired
+                if(!getElement(provinceInputId)?.value) getElement(provinceInputId)?.focus();
+                else if(!getElement(districtInputId)?.value) getElement(districtInputId)?.focus();
+                else if(!getElement(wardInputId)?.value) getElement(wardInputId)?.focus();
+                else if(!getElement(addressDetailInputId)?.value.trim()) getElement(addressDetailInputId)?.focus();
+
+            } else if (selectedAddressOption.startsWith('saved_') && !currentCheckoutAddress) {
+                isAddressValid = false;
+                alert('Địa chỉ đã lưu không hợp lệ. Vui lòng chọn lại hoặc nhập địa chỉ mới.');
+            }
+
+
+            if (!isAddressValid) {
+                event.preventDefault();
+                return;
+            }
+
+            // 2. Payment Validation
+            const selectedPaymentRadio = document.querySelector('input[name="checkout_payment"]:checked');
+            if (!selectedPaymentRadio) {
+                event.preventDefault();
+                alert('Vui lòng chọn phương thức thanh toán.');
+                return;
+            }
+            const selectedPaymentMethod = selectedPaymentRadio.value;
+
+            if (selectedPaymentMethod === paymentOnlineValue && !onlinePaymentAcknowledged) {
+                event.preventDefault();
+                alert('Thanh toán trực tuyến yêu cầu bạn xác nhận đã chuyển khoản. Vui lòng nhấn nút "Đã thanh toán" trong mục thông tin chuyển khoản.');
+                if (bankInfoEl) bankInfoEl.style.display = 'block';
+                if (paymentStatusMessageEl) {
+                    paymentStatusMessageEl.textContent = 'Bạn cần xác nhận đã thanh toán!';
+                    paymentStatusMessageEl.style.color = 'red';
+                }
+                confirmPaymentButtonEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         });
     }
 });
