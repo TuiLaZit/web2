@@ -189,7 +189,7 @@ $listStatus = [
                                     width: 100%;
                                 "
                                 onchange="isNotEmpty(event, 'giá nhập', 'ImportPrice-alert-edit')" />
-                            <p id="ImportPrice-alert-edit" class="alert"></p>
+                            <p id="ImportPrice-alert" class="alert"></p>
                         </div>
                     </div>
 
@@ -208,7 +208,7 @@ $listStatus = [
                                     width: 100%;
                                 "
                                 onchange="isNotEmpty(event, 'số lượng', 'ImportQuantity-alert-edit')" />
-                            <p id="ImportQuantity-alert-edit" class="alert"></p>
+                            <p id="ImportQuantity-alert" class="alert"></p>
                         </div>
                     </div>
 
@@ -227,7 +227,7 @@ $listStatus = [
                                     width: 100%;
                                 "
                                 onchange="isNotEmpty(event, 'ngày nhập', 'ImportDate-alert-edit')" />
-                            <p id="ImportDate-alert-edit" class="alert"></p>
+                            <p id="ImportDate-alert" class="alert"></p>
                         </div>
                     </div>
 
@@ -320,7 +320,7 @@ $listStatus = [
                                     width: 100%;
                                 "
                                         onchange="isNotEmpty(event, 'giá nhập', 'ImportPrice-alert')" />
-                                    <p id="ImportPrice-alert" class="alert"></p>
+                                    <p id="ImportPrice-alert-edit" class="alert"></p>
                                 </div>
                             </div>
 

@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 session_start();
                 $_SESSION['login_errors'] = $errors;
                 $_SESSION['login_data'] = ['username' => $loginData['username']]; // Keep username for repopulating
-                $loginHandler->redirect('../login.php?action=login&status=error');
+                $loginHandler->redirect('../login-admin.php?action=login&status=error');
             }
         } else {
             // Validation error
