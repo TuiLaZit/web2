@@ -3,7 +3,7 @@ include (__DIR__ . '/../../config/config.php');
 
 header('Content-Type: application/json');
 
-$DateFrom = $_GET['datefrom'] ?? null;
+$DateFrom = $_GET['datefrom'] ?? date('Y-m-d');
 $DateTo = $_GET['dateto'] ?? date('Y-m-d'); // Nếu không có ngày kết thúc, mặc định lấy ngày hiện tại
 $sortOrder = $_GET['sortOrder'] ?? 'DESC'; // Nếu không có giá trị, mặc định là giảm dần
 
