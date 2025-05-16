@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['addSP'])) {
         $query = "INSERT INTO sanpham (IdGRP, name, type, Ratio, quantity, releaseDate, info, IMG, status, Price) 
-          VALUES (?, ?, ?, ?, 0, ?, ?, ?, ?, 0)";
+          VALUES (?, ?, ?, ?, 0, ?, ?, ?, 2, 0)";
     } elseif (isset($_POST['updateSP']) && isset($_GET['IdSP'])) {
         $IdSP = $_GET['IdSP'];
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['addSP'])) {
-        mysqli_stmt_bind_param($stmt, 'ississsi', $IdGRP, $name, $type, $ratio, $releasedDate, $info, $filename, $status);
+        mysqli_stmt_bind_param($stmt, 'ississs', $IdGRP, $name, $type, $ratio, $releasedDate, $info, $filename);
     } else {
         // Get the lastest import of old product
         $lastestImportOfProductQuery = "SELECT * FROM nhaphang where IdSP = ? LIMIT 1";

@@ -92,7 +92,7 @@ class ImportHandler
 
             // After successful insert, update quantity in sanpham table
             $productUpdatedData = $this->findProductById($data['IdSP']);
-            $updateQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ? WHERE IdSP = ?";
+            $updateQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ?, Status = 1 WHERE IdSP = ?";
             $updateStmt = $this->mysqli->prepare($updateQuery);
 
             if (!$updateStmt) {
@@ -214,7 +214,11 @@ class ImportHandler
 
                 // Subtract old quantity from old product
                 $productUpdatingData = $this->findProductById($oldIdSP);
-                $updateOldQuery = "UPDATE sanpham SET Quantity = Quantity - ?, Price = ? WHERE IdSP = ?";
+                $status = 1;
+                if ($productUpdatingData['Quantity'] - $oldQuantity <= 0) {
+                    $status = 2;
+                }
+                $updateOldQuery = "UPDATE sanpham SET Quantity = Quantity - ?, Price = ?, Status = $status WHERE IdSP = ?";
                 $updateOldStmt = $this->mysqli->prepare($updateOldQuery);
 
                 if (!$updateOldStmt) {
@@ -235,7 +239,7 @@ class ImportHandler
 
                 // Add new quantity to new product
                 $productUpdatingData = $this->findProductById($data['IdSP']);
-                $updateNewQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ? WHERE IdSP = ?";
+                $updateNewQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ?, Status = 1 WHERE IdSP = ?";
                 $updateNewStmt = $this->mysqli->prepare($updateNewQuery);
 
                 if (!$updateNewStmt) {

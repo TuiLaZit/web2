@@ -43,7 +43,6 @@ if ($query_get_nhoms && mysqli_num_rows($query_get_nhoms) > 0) {
 $listStatus =  [
   ['id' => 1, 'name' => 'Đang bán'],
   ['id' => 2, 'name' => 'Ẩn'],
-  ['id' => 3, 'name' => 'Hết hàng']
 ];
 ?>
 
