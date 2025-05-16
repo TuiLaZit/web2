@@ -7,20 +7,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     dateTo.value = new Date().toISOString().split("T")[0];
 
-    searchStat.addEventListener("click", function () {
-        const fromDate = dateFrom.value;
-        const toDate = dateTo.value;
-        const order = sortOrder.value; // Lấy giá trị của sortOrder
+    loadStatistics(null, dateTo.value, sortOrder.value);
 
-        if (fromDate > toDate) {
+    searchStat.addEventListener("click", function () {
+        const fromDate = dateFrom.value || null; // Nếu rỗng thì gửi null
+        const toDate = dateTo.value;
+        const order = sortOrder.value;
+
+        if (fromDate && fromDate > toDate) {
             alert("Ngày đến phải sau ngày bắt đầu!");
             return;
         }
 
-        // Gửi request AJAX có kèm theo sortOrder
+        loadStatistics(fromDate, toDate, order);
+    });
+
+    function loadStatistics(fromDate, toDate, order) {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `../admincp/js/ajax/getStatistics.php?datefrom=${encodeURIComponent(fromDate)}&dateto=${encodeURIComponent(toDate)}&sortOrder=${order}`, true);
-        
+
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -39,5 +44,5 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         xhr.send();
-    });
+    }
 });
