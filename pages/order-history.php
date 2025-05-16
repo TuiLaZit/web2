@@ -38,10 +38,8 @@ function getStatusText($status) {
         case 2:
             return 'Đã xác nhận';
         case 3:
-            return 'Đang giao hàng';
-        case 4:
             return 'Đã giao hàng';
-        case 5:
+        case 4:
             return 'Đã hủy';
         default:
             return 'Không xác định';
@@ -108,9 +106,8 @@ function getPaymentMethod($method) {
         }
         .status-1 { background: #fff3cd; color: #856404; }
         .status-2 { background: #cce5ff; color: #004085; }
-        .status-3 { background: #d4edda; color: #155724; }
-        .status-4 { background: #d1e7dd; color: #0f5132; }
-        .status-5 { background: #f8d7da; color: #721c24; }
+        .status-3 { background: #d1e7dd; color: #0f5132; }
+        .status-4 { background: #f8d7da; color: #721c24; }
         .view-details-btn {
             background: #4CAF50;
             color: white;
