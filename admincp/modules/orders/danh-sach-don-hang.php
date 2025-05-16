@@ -96,11 +96,13 @@ if (!empty($wardFilter)) {
     $sql .= " AND h.Ward = '" . $escapedWard . "'";
 }
 
-$sql .= " ORDER BY h.Date DESC";
+$sql .= " ORDER BY h.Date DESC";    
 $result = $mysqli->query($sql);
 ?>
-
-<div id="toast-notification-container">
+<div style="position: relative; width: 100%; height: calc(100vh - 54px);">
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+    <div style="height: 100vh;padding-left:1em; width: 100%; overflow-y: auto; position: relative;">
+<div id="toast-notification-container" >
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="toast-notification toast-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -126,7 +128,7 @@ $result = $mysqli->query($sql);
     <?php endif; ?>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid" >
     <h2 class="mb-4">Quản lý đơn hàng</h2>
 
     <form method="GET" action="" class="mb-3 row gx-3 gy-2 align-items-center filter-form">
@@ -251,7 +253,9 @@ $result = $mysqli->query($sql);
         </table>
     </div>
 </div>
-
+</div>
+</div>
+</div>
 <link rel="stylesheet" type="text/css" href="./css/quan-ly-hoa-don.css?v=<?php echo time(); ?>">
 
 <script>
