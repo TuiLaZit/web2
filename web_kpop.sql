@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2025 at 10:26 AM
+-- Generation Time: May 16, 2025 at 12:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -102,36 +102,36 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`IdHD`, `IdKH`, `Total`, `Date`, `ExpectDate`, `Status`, `PTTT`, `AddressLine`, `Ward`, `Provinces`, `District`) VALUES
-(1, 1, 1740000, '2025-05-16', '2025-05-19', 1, 2, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(2, 1, 2550000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(3, 1, 585000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(4, 1, 1260000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(5, 1, 5700000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(6, 1, 1500000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(7, 1, 2700000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(8, 1, 450000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(9, 1, 225000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(10, 1, 525000, '2025-05-16', '2025-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(11, 2, 1800000, '2025-05-16', '2025-05-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
-(12, 2, 450000, '2025-05-16', '2025-05-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
-(13, 2, 450000, '2025-05-16', '2025-05-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
-(14, 3, 900000, '2025-05-16', '2025-05-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(15, 3, 2700000, '2025-05-16', '2025-05-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(16, 3, 1200000, '2025-05-16', '2025-05-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(17, 4, 960000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(18, 4, 1500000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(19, 4, 1500000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(1, 1, 1740000, '2025-03-02', '2025-05-05', 1, 2, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(2, 1, 2550000, '2024-05-16', '2024-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(3, 1, 585000, '2024-05-16', '2024-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(4, 1, 1260000, '2024-05-16', '2024-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(5, 1, 5700000, '2025-02-16', '2025-02-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(6, 1, 1500000, '2025-02-16', '2025-02-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(7, 1, 2700000, '2025-01-16', '2025-01-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(8, 1, 450000, '2025-05-02', '2025-05-05', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(9, 1, 225000, '2025-05-12', '2025-05-15', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(10, 1, 0, '2025-04-16', '2025-04-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(11, 2, 1800000, '2025-04-16', '2025-04-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
+(12, 2, 450000, '2025-01-16', '2025-01-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
+(13, 2, 450000, '2024-05-16', '2024-05-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
+(14, 3, 900000, '2025-03-16', '2025-03-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(15, 3, 2700000, '2025-02-16', '2025-02-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(16, 3, 1200000, '2025-05-10', '2025-05-13', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(17, 4, 960000, '2025-05-10', '2025-05-13', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(18, 4, 1500000, '2025-03-16', '2025-03-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(19, 4, 0, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
 (20, 4, 390000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
 (21, 4, 420000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
 (22, 4, 560000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(23, 4, 1260000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(23, 4, 1260000, '2024-12-16', '2024-12-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
 (24, 4, 1800000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
 (25, 5, 600000, '2025-05-16', '2025-05-19', 1, 1, '888', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
 (26, 5, 1800000, '2025-05-16', '2025-05-19', 1, 1, '888', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
 (27, 6, 150000, '2025-05-16', '2025-05-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
 (28, 6, 450000, '2025-05-16', '2025-05-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
-(29, 6, 450000, '2025-05-16', '2025-05-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
-(30, 6, 1800000, '2025-05-16', '2025-05-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh');
+(29, 6, 450000, '2025-01-16', '2025-01-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
+(30, 6, 1800000, '2025-03-20', '2025-03-23', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh');
 
 -- --------------------------------------------------------
 
