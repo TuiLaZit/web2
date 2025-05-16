@@ -8,7 +8,7 @@ $DateTo = $_GET['dateto'] ?? date('Y-m-d'); // Nếu không có ngày kết thú
 $sortOrder = $_GET['sortOrder'] ?? 'DESC'; // Nếu không có giá trị, mặc định là giảm dần
 
 if (!$DateFrom) {
-    // Nếu không có DateFrom, bỏ điều kiện WHERE h.Date BETWEEN ? AND ?
+    // Nếu không có DateFrom, bỏ điều kiện lọc theo ngày
     $StatQuery = "
         SELECT IDKH, Name, TongTien
         FROM (
@@ -46,6 +46,11 @@ if (!$DateFrom) {
 $stmt->execute();
 $resultStat = $stmt->get_result();
 
+//Kiểm tra nếu không có kết quả
+if ($resultStat->num_rows === 0) {
+    echo json_encode(["statHTML" => "<p style='text-align: center; font-style: italic;'>Không có dữ liệu hợp lệ.</p>"]);
+    exit;
+}
 // Tạo danh sách HTML khách hàng + hóa đơn
 $statHTML = '<ul>';
 while ($row = $resultStat->fetch_assoc()) {
