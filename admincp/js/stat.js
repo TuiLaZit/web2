@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     searchStat.addEventListener("click", function () {
         const fromDate = dateFrom.value || null; // Nếu rỗng thì gửi null
-        const toDate = dateTo.value;
+        const toDate = dateTo.value || new Date().toISOString().split("T")[0];
         const order = sortOrder.value;
 
         if (fromDate && fromDate > toDate) {
