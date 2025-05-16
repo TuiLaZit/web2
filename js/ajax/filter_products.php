@@ -25,7 +25,7 @@ if ($tag !== 'Tất cả') {
 $whereClause .= " AND Price BETWEEN $minPrice AND $maxPrice";
 
 // Tính tổng số sản phẩm theo bộ lọc
-$queryCount = "SELECT COUNT(DISTINCT IdSP) as total FROM sanpham WHERE $whereClause And Quantity > 0";
+$queryCount = "SELECT COUNT(DISTINCT IdSP) as total FROM sanpham WHERE $whereClause And Quantity > 0 AND Status = 1";
 $resultCount = mysqli_query($mysqli, $queryCount);
 $rowCount = mysqli_fetch_assoc($resultCount);
 $totalItems = $rowCount['total'] ?? 0;
@@ -40,7 +40,7 @@ $startIndex = max(0, ($page - 1) * $itemsPerPage);
 // Truy vấn sản phẩm theo điều kiện lọc, sắp xếp và phân trang
 $queryProducts = "SELECT IdSP, Name, IMG, Price 
                   FROM sanpham 
-                  WHERE $whereClause AND Quantity > 0 
+                  WHERE $whereClause AND Quantity > 0 AND Status = 1
                   GROUP BY IdSP
                   ORDER BY MAX(ReleaseDate) DESC 
                   LIMIT $startIndex, $itemsPerPage";

@@ -6,7 +6,7 @@ $idGroup = isset($_GET['idgrp']) ? (int)$_GET['idgrp'] : 0;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $itemsPerPage = 4;
 
-$resultCount = mysqli_query($mysqli, "SELECT COUNT(*) as total FROM sanpham WHERE IdGRP = '$idGroup'");
+$resultCount = mysqli_query($mysqli, "SELECT COUNT(*) as total FROM sanpham WHERE IdGRP = '$idGroup' AND Status = 1");
 $rowCount = mysqli_fetch_assoc($resultCount);
 $totalItems = min(12,$rowCount['total']) ?? 0;
 
@@ -15,7 +15,7 @@ $paginationHtml = $pagination->generatePaginationHtml();
 
 // Tính vị trí bắt đầu
 $startIndex = ($page - 1) * $itemsPerPage;
-$queryProducts = "SELECT IdSP, Img, Name, Price FROM sanpham WHERE IdGRP = '$idGroup' AND Quantity > 0 ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
+$queryProducts = "SELECT IdSP, Img, Name, Price FROM sanpham WHERE IdGRP = '$idGroup' AND Quantity > 0 AND Status = 1  ORDER BY ReleaseDate DESC LIMIT $startIndex, $itemsPerPage";
 $resultProducts = mysqli_query($mysqli, $queryProducts);
 
 $productsHtml = '';
