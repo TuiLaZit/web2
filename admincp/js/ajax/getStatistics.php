@@ -44,7 +44,7 @@ while ($row = $resultStat->fetch_assoc()) {
     $InvoiceQuery = "
         SELECT IDHD, Total 
         FROM HoaDon 
-        WHERE IDKH = ? " . ($DateFrom ? "AND Date BETWEEN ? AND ?" : "") . "
+        WHERE Status = 3 AND IDKH = ? " . ($DateFrom ? "AND Date BETWEEN ? AND ?" : "") . "
         ORDER BY Total $sortOrder;
     ";
     
