@@ -87,6 +87,7 @@ body {
 .main{
     width: 100%;
     background-color: #F8F8E1;
+    min-height: 65vh;
 }
 
 .footer{
