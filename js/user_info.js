@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Elements for main form display
             const currentAddressDisplay = document.getElementById('current-address-display');
             const openAddressModalBtn = document.getElementById('open-address-modal-btn');
-            
             // Hidden fields in main form
             const hiddenProvinces = document.getElementById('hidden_provinces');
             const hiddenDistrict = document.getElementById('hidden_district');

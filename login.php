@@ -41,7 +41,7 @@ if (isset($_SESSION['login_data'])) {
       <img src="./img/login-banner.jpg" alt="login-banner">
     </div>
     <!-- Phần Form Đăng Nhập -->
-    <div class="right-panel">
+    <div class="right-panel" >
       <div class="login-form">
         <div class="logo">
           <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="border-radius: 35%"/>

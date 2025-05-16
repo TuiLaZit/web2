@@ -37,7 +37,7 @@ if (isset($_GET['idgrp'])) {
             ?>
                 <div id="main-page">
                     <div id="group">
-                        <img src="<?php echo $baseUrl ?>/./admincp/img/groups/<?php echo htmlspecialchars($group->img); ?>" alt="<?php echo htmlspecialchars($group->name); ?>">
+                        <img src="<?php echo $baseUrl ?>/admincp/img/groups/<?php echo htmlspecialchars($group->img); ?>" alt="<?php echo htmlspecialchars($group->name); ?>">
                         <div id="group-info">
                             <h1><?php echo htmlspecialchars($group->name); ?></h1>
                             <p>Công Ty: <?php echo htmlspecialchars($group->company); ?></p>

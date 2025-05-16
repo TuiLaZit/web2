@@ -167,6 +167,6 @@ function format_address_display($user_data) {
     </div>
 
     <script src="./admincp/js/vietnamese-provinces-data.js"></script> 
-    <script srs="./js/user_info.js"></script>
+    <script src="./js/user_info.js"></script>
 </body>
 </html>

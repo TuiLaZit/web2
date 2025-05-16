@@ -49,8 +49,8 @@ $resultProducts = mysqli_query($mysqli, $queryProducts);
 
 $productsHtml = '';
 while ($row = mysqli_fetch_assoc($resultProducts)) {
-    $productsHtml .= "<a href='/pages/product-detail.php?id=" . htmlspecialchars($row['IdSP']) . "' class='product-item'>";
-    $productsHtml .= "<img src='../../admincp/img/products/" . htmlspecialchars($row['IMG']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
+    $productsHtml .= "<a href='$baseUrl/pages/product-detail.php?id=" . htmlspecialchars($row['IdSP']) . "' class='product-item'>";
+    $productsHtml .= "<img src='$baseUrl/admincp/img/products/" . htmlspecialchars($row['IMG']) . "' alt='" . htmlspecialchars($row['Name']) . "'>";
     $productsHtml .= "<h3 class='product-name'>" . htmlspecialchars($row['Name']) . "</h3>";
     $productsHtml .= "<p class='product-price'>" . number_format($row['Price']) . " VND</p>";
     $productsHtml .= "</a>";

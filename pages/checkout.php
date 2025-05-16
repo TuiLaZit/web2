@@ -160,7 +160,6 @@ $total = 0;
 ?>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="../css/cart.css">
-<script src="../admincp/js/vietnamese-provinces-data.js"></script> 
 <div class="wrapper">
     <div class="cart-container" style="max-width:700px;">
         <h1>Xác nhận đơn hàng</h1>

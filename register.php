@@ -22,7 +22,7 @@
     <?php
     // Start the session to access error messages
     session_start();
-    include ('./admincp/config/config.php');
+    include('./admincp/config/config.php');
     ?>
   </script>
 
@@ -45,15 +45,15 @@
     style="position: absolute; bottom: 20px; right: 100px; width: 250px" />
   <section>
     <div class="container">
-      <div class="registration-form">
+      <div class="registration-form" style="width: 100%">
         <div class="logo">
-          <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="padding: 10px; border-radius: 35%"/>
+          <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="padding: 10px; border-radius: 35%" />
           <h2>Đăng Ký Khách Hàng</h2>
         </div>
         <form>
           <input name="register" value="true" hidden />
           <div style="display: flex; padding: 50px">
-            <div style="margin-right: 50px">
+            <div style="margin-right: 50px; flex: 1;">
               <input name="account" type="text" placeholder="Tên đăng nhập (*)" />
               <p id="account-alert" class="alert" style="color: red;">
               </p>
@@ -67,7 +67,7 @@
               <p id="pNumber-alert" class="alert" style="color: red;">
               </p>
             </div>
-            <div>
+            <div style="flex: 1;">
               <select name="province" id="province-input">
                 <option value="">Tỉnh / Thành phố (*)</option>
               </select>
