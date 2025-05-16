@@ -1,49 +1,128 @@
 <?php
-require_once(__DIR__ . '/../../config/config.php');
+require_once(__DIR__ . '/../../config/config.php'); // Đảm bảo đường dẫn này chính xác
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Xử lý cập nhật trạng thái đơn hàng
 if (isset($_POST['update_status']) && isset($_POST['order_id']) && isset($_POST['new_status'])) {
-    $orderId = $_POST['order_id'];
+    $orderId = intval($_POST['order_id']);
     $newStatus = intval($_POST['new_status']);
 
-    $sql_get_current_status = "SELECT Status FROM hoadon WHERE IdHD = " . intval($orderId);
-    $result_current_status = $mysqli->query($sql_get_current_status);
+    $stmt_get_current = $mysqli->prepare("SELECT Status FROM hoadon WHERE IdHD = ?");
+    if (!$stmt_get_current) {
+        $_SESSION['error_message'] = "Lỗi hệ thống: Không thể chuẩn bị truy vấn. Vui lòng thử lại sau.";
+        error_log("Prepare failed (get_current_status): " . $mysqli->error);
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
+    }
+    $stmt_get_current->bind_param("i", $orderId);
+    $stmt_get_current->execute();
+    $result_current_status = $stmt_get_current->get_result();
 
     if ($result_current_status && $result_current_status->num_rows > 0) {
         $row_current_status = $result_current_status->fetch_assoc();
         $currentStatus = intval($row_current_status['Status']);
 
-        if ($newStatus > $currentStatus) {
-            $sql_update = "UPDATE hoadon SET Status = " . $newStatus . " WHERE IdHD = " . intval($orderId);
-            if ($mysqli->query($sql_update)) {
-                $_SESSION['success_message'] = "Cập nhật trạng thái đơn hàng #" . $orderId . " thành công.";
-            } else {
-                $_SESSION['error_message'] = "Lỗi khi cập nhật trạng thái đơn hàng #" . $orderId . ": " . $mysqli->error;
+        // Kiểm tra điều kiện mới: Không cho phép hủy đơn đã giao
+        if ($currentStatus == 3 && $newStatus == 4) { // Status 3: Đã giao, Status 4: Đã hủy
+            $_SESSION['error_message'] = "Đơn hàng #" . $orderId . " đã được giao, không thể cập nhật thành Đã Hủy.";
+        } elseif ($newStatus > $currentStatus) { // Chỉ cho phép cập nhật nếu trạng thái mới "tiến triển" hơn trạng thái hiện tại
+            $mysqli->begin_transaction();
+            try {
+                $stmt_update_hoadon = $mysqli->prepare("UPDATE hoadon SET Status = ? WHERE IdHD = ?");
+                if (!$stmt_update_hoadon) {
+                    throw new Exception("Lỗi chuẩn bị truy vấn cập nhật hóa đơn: " . $mysqli->error);
+                }
+                $stmt_update_hoadon->bind_param("ii", $newStatus, $orderId);
+
+                if ($stmt_update_hoadon->execute()) {
+                    $mainUpdateSuccess = true;
+
+                    // Nếu trạng thái mới là "Đã hủy" (Status = 4)
+                    if ($newStatus == 4) {
+                        $stmt_get_items = $mysqli->prepare("SELECT IdSP, Quantity FROM chitiethoadon WHERE IdHD = ?");
+                        if (!$stmt_get_items) {
+                            throw new Exception("Lỗi chuẩn bị truy vấn lấy chi tiết đơn hàng: " . $mysqli->error);
+                        }
+                        $stmt_get_items->bind_param("i", $orderId);
+                        $stmt_get_items->execute();
+                        $result_items = $stmt_get_items->get_result();
+
+                        if ($result_items->num_rows > 0) {
+                            while ($item = $result_items->fetch_assoc()) {
+                                $productId = intval($item['IdSP']);
+                                $quantityInOrder = intval($item['Quantity']);
+
+                                $stmt_update_stock = $mysqli->prepare("UPDATE sanpham SET Quantity = Quantity + ? WHERE IdSP = ?");
+                                if (!$stmt_update_stock) {
+                                    throw new Exception("Lỗi chuẩn bị truy vấn cập nhật kho: " . $mysqli->error);
+                                }
+                                $stmt_update_stock->bind_param("ii", $quantityInOrder, $productId);
+                                if (!$stmt_update_stock->execute()) {
+                                    $mainUpdateSuccess = false;
+                                    $_SESSION['error_message'] = "Lỗi khi hoàn lại số lượng cho sản phẩm ID " . $productId . ". Trạng thái đơn hàng chưa được cập nhật hoàn toàn.";
+                                    error_log("Stock update failed for product ID $productId, order ID $orderId: " . $stmt_update_stock->error);
+                                    $stmt_update_stock->close();
+                                    break; 
+                                }
+                                $stmt_update_stock->close();
+                            }
+                        }
+                        if (isset($stmt_get_items)) $stmt_get_items->close();
+                    }
+
+                    if ($mainUpdateSuccess) {
+                        $mysqli->commit();
+                        if ($newStatus == 4) {
+                            $_SESSION['success_message'] = "Đơn hàng #" . $orderId . " đã được hủy. Số lượng sản phẩm đã được hoàn lại kho.";
+                        } else {
+                            $_SESSION['success_message'] = "Cập nhật trạng thái đơn hàng #" . $orderId . " thành công.";
+                        }
+                    } else {
+                        $mysqli->rollback();
+                        if (empty($_SESSION['error_message'])) { 
+                            $_SESSION['error_message'] = "Có lỗi xảy ra khi cập nhật kho cho đơn hàng #" . $orderId . ". Thay đổi đã được hoàn tác.";
+                        }
+                    }
+                } else { 
+                    $mysqli->rollback();
+                    $_SESSION['error_message'] = "Lỗi khi cập nhật trạng thái đơn hàng #" . $orderId . ": " . $stmt_update_hoadon->error;
+                    error_log("Hoadon status update execute failed for order ID $orderId: " . $stmt_update_hoadon->error);
+                }
+                if (isset($stmt_update_hoadon)) $stmt_update_hoadon->close();
+            } catch (Exception $e) {
+                $mysqli->rollback();
+                $_SESSION['error_message'] = "Lỗi giao dịch: " . $e->getMessage();
+                error_log("Transaction error for order ID $orderId: " . $e->getMessage());
             }
-        } else {
-            $_SESSION['error_message'] = "Không thể cập nhật trạng thái đơn hàng #" . $orderId . " về trạng thái trước đó hoặc hiện tại.";
+        } elseif ($newStatus == $currentStatus) {
+            $_SESSION['error_message'] = "Đơn hàng #" . $orderId . " đã ở trạng thái này.";
+        } else { // $newStatus < $currentStatus
+            $_SESSION['error_message'] = "Không thể cập nhật đơn hàng #" . $orderId . " về trạng thái trước đó.";
         }
     } else {
         $_SESSION['error_message'] = "Không tìm thấy đơn hàng #" . $orderId . ".";
     }
+    if (isset($stmt_get_current)) $stmt_get_current->close();
+
     header("Location: " . $_SERVER['REQUEST_URI']);
     exit();
 }
 
+// Lấy các biến filter
 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
 $fromDate = isset($_GET['from_date']) ? $_GET['from_date'] : '';
 $toDate = isset($_GET['to_date']) ? $_GET['to_date'] : '';
 $searchTerm = isset($_GET['search_term']) ? trim($_GET['search_term']) : '';
 $locationFilter = isset($_GET['location']) ? trim($_GET['location']) : '';
 
-// Các biến này vẫn được dùng để lọc SQL và truyền cho JavaScript
 $provinceFilter = isset($_GET['province']) ? $_GET['province'] : '';
 $districtFilter = isset($_GET['district']) ? $_GET['district'] : '';
 $wardFilter = isset($_GET['ward']) ? $_GET['ward'] : '';
 
+// Xây dựng câu lệnh SQL
 $sql = "SELECT h.IdHD, h.IdKH, h.Total, h.Date, h.ExpectDate, h.Status, h.PTTT,
         k.Name as CustomerName,
         k.Email,
@@ -56,7 +135,9 @@ FROM hoadon h
 JOIN khachhang k ON h.IdKH = k.IdKH
 WHERE 1";
 
-$sql .= " AND h.Date < h.ExpectDate";
+// Điều kiện này sẽ loại bỏ những đơn hàng có ngày đặt bằng hoặc sau ngày dự kiến giao.
+// Hãy chắc chắn đây là logic bạn mong muốn.
+$sql .= " AND h.Date < h.ExpectDate"; 
 
 if (!empty($statusFilter)) {
     $sql .= " AND h.Status = " . intval($statusFilter);
@@ -69,16 +150,16 @@ if (!empty($fromDate) && !empty($toDate)) {
 if (!empty($searchTerm)) {
     $escapedSearchTerm = $mysqli->real_escape_string($searchTerm);
     $sql .= " AND (k.Name LIKE '%" . $escapedSearchTerm . "%' 
-                OR k.PNumber LIKE '%" . $escapedSearchTerm . "%'
-                OR k.Email LIKE '%" . $escapedSearchTerm . "%')";
+            OR k.PNumber LIKE '%" . $escapedSearchTerm . "%'
+            OR k.Email LIKE '%" . $escapedSearchTerm . "%')";
 }
 
 if (!empty($locationFilter)) {
     $escapedLocation = $mysqli->real_escape_string($locationFilter);
     $sql .= " AND (h.AddressLine LIKE '%" . $escapedLocation . "%' 
-              OR h.Ward LIKE '%" . $escapedLocation . "%' 
-              OR h.District LIKE '%" . $escapedLocation . "%' 
-              OR h.Provinces LIKE '%" . $escapedLocation . "%')";
+            OR h.Ward LIKE '%" . $escapedLocation . "%' 
+            OR h.District LIKE '%" . $escapedLocation . "%' 
+            OR h.Provinces LIKE '%" . $escapedLocation . "%')";
 }
 
 if (!empty($provinceFilter)) {
@@ -96,7 +177,7 @@ if (!empty($wardFilter)) {
     $sql .= " AND h.Ward = '" . $escapedWard . "'";
 }
 
-$sql .= " ORDER BY h.Date DESC";    
+$sql .= " ORDER BY h.Date DESC";     
 $result = $mysqli->query($sql);
 ?>
 <div style="position: relative; width: 100%; height: calc(100vh - 54px);">
@@ -129,7 +210,7 @@ $result = $mysqli->query($sql);
 </div>
 
 <div class="container-fluid" >
-    <h2>Quản lý đơn hàng</h2>
+    <h2 class="mb-4">Quản lý đơn hàng</h2>
 
     <form method="GET" action="" class="mb-3 row gx-3 gy-2 align-items-center filter-form">
         <?php
@@ -154,11 +235,11 @@ $result = $mysqli->query($sql);
 
         <div class="col-sm-auto">
             <label class="visually-hidden" for="from_date">Từ ngày:</label>
-            <input type="date" class="form-control" name="from_date" id="from_date" value="<?php echo $fromDate; ?>">
+            <input type="date" class="form-control" name="from_date" id="from_date" value="<?php echo htmlspecialchars($fromDate); ?>">
         </div>
         <div class="col-sm-auto">
             <label class="visually-hidden" for="to_date">Đến ngày:</label>
-            <input type="date" class="form-control" name="to_date" id="to_date" value="<?php echo $toDate; ?>">
+            <input type="date" class="form-control" name="to_date" id="to_date" value="<?php echo htmlspecialchars($toDate); ?>">
         </div>
         
         <div class="col-sm-auto">
@@ -224,7 +305,8 @@ $result = $mysqli->query($sql);
                             <td><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($row['ExpectDate'])); ?></td>
                             <td>
-                                <form method="post" style="margin: 0;" class="form-update-status"> <input type="hidden" name="order_id" value="<?php echo $row['IdHD']; ?>">
+                                <form method="post" action="" style="margin: 0;" class="form-update-status">
+                                    <input type="hidden" name="order_id" value="<?php echo $row['IdHD']; ?>">
                                     <select name="new_status" 
                                             class="form-select form-select-sm" 
                                             data-current-status="<?php echo $row['Status']; ?>"
