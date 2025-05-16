@@ -1,31 +1,39 @@
-#group{
-    width:100%;
-    background-color:aliceblue;
+#group {
+    width: 100%;
+    background-color: #8ACCD5;
     display: flex;
-    justify-content: space-around;
+    justify-content: center; /* Căn giữa các phần tử */
+    align-items: center; /* Căn giữa theo chiều dọc */
     margin-bottom: 2em;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Đảm bảo các phần tử xuống dòng khi cần */
 }
 
-#group img{
+#group img {
     height: 20em;
-    width: auto;
+    width: 20em;
     object-fit: contain;
+    flex-shrink: 0; /* Ngăn không cho hình ảnh bị co lại */
 }
 
-#group-info{
+#group-info {
     text-align: left;
     align-self: center;
     display: flex;
     flex-direction: column;
+    flex: 1; /* Để phần văn bản chiếm không gian còn lại */
+    min-width: 250px; /* Giới hạn kích thước nhỏ nhất để không bị thu nhỏ quá mức */
 }
 
-#group-info h1{
-    font-size: 2em;
-}
+@media screen and (max-width: 600px) {
+    #group {
+        flex-direction: column; /* Khi màn hình nhỏ, chuyển thành cột */
+        align-items: center; /* Đảm bảo nội dung được căn giữa */
+    }
 
-#group-info p{
-    font-size: 1.5em;
+    #group img {
+        width: 100%;
+        height: auto;
+    }
 }
 
 #main-page{
