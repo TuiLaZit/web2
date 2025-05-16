@@ -10,7 +10,7 @@
                 <a href="<?php echo $baseUrl ?>/index.php?quanly=giohang" class="rightbutton">Giỏ Hàng</a>
             </li>
             <li>
-                <a href="./index.php?quanly=thongbao" class="rightbutton">Thông Báo</a>
+                <a href="<?php echo $baseUrl ?>/index.php?quanly=taikhoan" class="rightbutton">Tài Khoản</a>
             </li>
 
             <?php if (isset($_SESSION["user"])): ?>
@@ -22,9 +22,6 @@
                     <a href="./login.php" class="rightbutton">Đăng Nhập</a>
                 </li>
             <?php endif  ?>
-
-
-
         </ul>
     </div>
 </div>

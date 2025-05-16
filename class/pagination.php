@@ -6,7 +6,7 @@ class Pagination {
     private $totalPages;
 
     public function __construct($totalItems, $itemsPerPage, $currentPage) {
-        $this->totalItems = min($totalItems, 12); // Giới hạn tối đa 12 sản phẩm
+        $this->totalItems = $totalItems;// Giới hạn tối đa 12 sản phẩm
         $this->itemsPerPage = $itemsPerPage;
         $this->currentPage = max(1, $currentPage);
         $this->totalPages = ceil($this->totalItems / $this->itemsPerPage);

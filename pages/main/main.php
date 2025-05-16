@@ -5,6 +5,9 @@
             case 'giohang':
                 include __DIR__ . '../../cart.php';
                 break;
+            case 'taikhoan':
+                include __DIR__ . '../../user_info.php';
+                break;
             default:
                 include("banner.php");
                 echo '<div id="main-page">';

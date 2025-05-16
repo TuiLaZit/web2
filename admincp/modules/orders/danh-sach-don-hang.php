@@ -29,13 +29,17 @@ if (isset($_POST['update_status']) && isset($_POST['order_id']) && isset($_POST[
     } else {
         $_SESSION['error_message'] = "Không tìm thấy đơn hàng #" . $orderId . ".";
     }
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
 }
 
 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
 $fromDate = isset($_GET['from_date']) ? $_GET['from_date'] : '';
 $toDate = isset($_GET['to_date']) ? $_GET['to_date'] : '';
-$searchTerm = isset($_GET['search_term']) ? trim($_GET['search_term']) : ''; 
-$locationFilter = isset($_GET['location']) ? $_GET['location'] : ''; 
+$searchTerm = isset($_GET['search_term']) ? trim($_GET['search_term']) : '';
+$locationFilter = isset($_GET['location']) ? trim($_GET['location']) : '';
+
+// Các biến này vẫn được dùng để lọc SQL và truyền cho JavaScript
 $provinceFilter = isset($_GET['province']) ? $_GET['province'] : '';
 $districtFilter = isset($_GET['district']) ? $_GET['district'] : '';
 $wardFilter = isset($_GET['ward']) ? $_GET['ward'] : '';
@@ -51,6 +55,8 @@ $sql = "SELECT h.IdHD, h.IdKH, h.Total, h.Date, h.ExpectDate, h.Status, h.PTTT,
 FROM hoadon h
 JOIN khachhang k ON h.IdKH = k.IdKH
 WHERE 1";
+
+$sql .= " AND h.Date < h.ExpectDate";
 
 if (!empty($statusFilter)) {
     $sql .= " AND h.Status = " . intval($statusFilter);
@@ -69,7 +75,10 @@ if (!empty($searchTerm)) {
 
 if (!empty($locationFilter)) {
     $escapedLocation = $mysqli->real_escape_string($locationFilter);
-    $sql .= " AND h.AddressLine LIKE '%" . $escapedLocation . "%'";
+    $sql .= " AND (h.AddressLine LIKE '%" . $escapedLocation . "%' 
+              OR h.Ward LIKE '%" . $escapedLocation . "%' 
+              OR h.District LIKE '%" . $escapedLocation . "%' 
+              OR h.Provinces LIKE '%" . $escapedLocation . "%')";
 }
 
 if (!empty($provinceFilter)) {
@@ -89,33 +98,6 @@ if (!empty($wardFilter)) {
 
 $sql .= " ORDER BY h.Date DESC";
 $result = $mysqli->query($sql);
-
-$sql_provinces = "SELECT DISTINCT Provinces FROM khachhang ORDER BY Provinces ASC";
-$result_provinces = $mysqli->query($sql_provinces);
-$provinces = [];
-if ($result_provinces && $result_provinces->num_rows > 0) {
-    while ($row_province = $result_provinces->fetch_assoc()) {
-        $provinces[] = $row_province['Provinces'];
-    }
-}
-
-$sql_districts = "SELECT DISTINCT District FROM khachhang ORDER BY District ASC";
-$result_districts = $mysqli->query($sql_districts);
-$districts = [];
-if ($result_districts && $result_districts->num_rows > 0) {
-    while ($row_district = $result_districts->fetch_assoc()) {
-        $districts[] = $row_district['District'];
-    }
-}
-
-$sql_wards = "SELECT DISTINCT Ward FROM khachhang ORDER BY Ward ASC";
-$result_wards = $mysqli->query($sql_wards);
-$wards = [];
-if ($result_wards && $result_wards->num_rows > 0) {
-    while ($row_ward = $result_wards->fetch_assoc()) {
-        $wards[] = $row_ward['Ward'];
-    }
-}
 ?>
 
 <div id="toast-notification-container">
@@ -149,9 +131,9 @@ if ($result_wards && $result_wards->num_rows > 0) {
 
     <form method="GET" action="" class="mb-3 row gx-3 gy-2 align-items-center filter-form">
         <?php
-        $currentAction = $_GET['action'] ?? 'orders'; 
+        $currentAction = htmlspecialchars(isset($_GET['action']) ? $_GET['action'] : 'orders'); 
         ?>
-        <input type="hidden" name="action" value="<?php echo htmlspecialchars($currentAction); ?>">
+        <input type="hidden" name="action" value="<?php echo $currentAction; ?>">
 
         <div class="col-sm-auto">
             <label class="visually-hidden" for="search_term">Tìm kiếm (Tên, SĐT, Email):</label>
@@ -181,33 +163,24 @@ if ($result_wards && $result_wards->num_rows > 0) {
             <label class="visually-hidden" for="province">Tỉnh/Thành phố:</label>
             <select class="form-select" name="province" id="province">
                 <option value="">Tất cả Tỉnh/TP</option>
-                <?php foreach ($provinces as $province): ?>
-                    <option value="<?php echo htmlspecialchars($province); ?>" <?php if ($provinceFilter == $province) echo 'selected'; ?>><?php echo htmlspecialchars($province); ?></option>
-                <?php endforeach; ?>
-            </select>
+                </select>
         </div>
         <div class="col-sm-auto">
             <label class="visually-hidden" for="district">Quận/Huyện:</label>
-            <select class="form-select" name="district" id="district">
+            <select class="form-select" name="district" id="district" disabled>
                 <option value="">Tất cả Quận/Huyện</option>
-                <?php foreach ($districts as $district): ?>
-                    <option value="<?php echo htmlspecialchars($district); ?>" <?php if ($districtFilter == $district) echo 'selected'; ?>><?php echo htmlspecialchars($district); ?></option>
-                <?php endforeach; ?>
-            </select>
+                </select>
         </div>
         <div class="col-sm-auto">
             <label class="visually-hidden" for="ward">Xã/Phường/Thị trấn:</label>
-            <select class="form-select" name="ward" id="ward">
+            <select class="form-select" name="ward" id="ward" disabled>
                 <option value="">Tất cả Xã/Phường</option>
-                <?php foreach ($wards as $ward): ?>
-                    <option value="<?php echo htmlspecialchars($ward); ?>" <?php if ($wardFilter == $ward) echo 'selected'; ?>><?php echo htmlspecialchars($ward); ?></option>
-                <?php endforeach; ?>
-            </select>
+                </select>
         </div>
 
         <div class="col-sm-auto">
-            <label class="visually-hidden" for="location">Địa điểm (chung Q/H, TP):</label>
-            <input type="text" class="form-control" name="location" id="location" placeholder="Địa chỉ cụ th" value="<?php echo htmlspecialchars($locationFilter); ?>">
+            <label class="visually-hidden" for="location">Địa điểm:</label>
+            <input type="text" class="form-control" name="location" id="location" placeholder="Địa chỉ cụ thể/chung" value="<?php echo htmlspecialchars($locationFilter); ?>">
         </div>
         
         <div class="col-sm-auto">
@@ -249,9 +222,11 @@ if ($result_wards && $result_wards->num_rows > 0) {
                             <td><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($row['ExpectDate'])); ?></td>
                             <td>
-                                <form method="post" style="margin: 0;">
-                                    <input type="hidden" name="order_id" value="<?php echo $row['IdHD']; ?>">
-                                    <select name="new_status" class="form-control form-control-sm" onchange="this.form.submit()">
+                                <form method="post" style="margin: 0;" class="form-update-status"> <input type="hidden" name="order_id" value="<?php echo $row['IdHD']; ?>">
+                                    <select name="new_status" 
+                                            class="form-select form-select-sm" 
+                                            data-current-status="<?php echo $row['Status']; ?>"
+                                            onchange="confirmOrderStatusUpdate(this, '<?php echo $row['IdHD']; ?>', this.options[this.selectedIndex].text)">
                                         <option value="1" <?php if ($row['Status'] == 1) echo 'selected'; ?>>Chưa xác nhận</option>
                                         <option value="2" <?php if ($row['Status'] == 2) echo 'selected'; ?>>Đã xác nhận</option>
                                         <option value="3" <?php if ($row['Status'] == 3) echo 'selected'; ?>>Đã giao</option>
@@ -278,45 +253,12 @@ if ($result_wards && $result_wards->num_rows > 0) {
 </div>
 
 <link rel="stylesheet" type="text/css" href="./css/quan-ly-hoa-don.css?v=<?php echo time(); ?>">
+
 <script>
-// Hàm thực thi khi toàn bộ DOM đã được tải, xử lý hiển thị và đóng thông báo toast
-document.addEventListener('DOMContentLoaded', function() {
-    const toastContainer = document.getElementById('toast-notification-container');
-    if (toastContainer) {
-        const toasts = toastContainer.querySelectorAll('.toast-notification');
-        
-        toasts.forEach(function(toast, index) {
-            setTimeout(function() {
-                // Có thể thêm hiệu ứng xuất hiện tại đây nếu muốn
-            }, index * 100); // Hiển thị các toast nối tiếp nhau nếu có nhiều
-
-            const autoDismissTimeout = setTimeout(function() {
-                dismissToast(toast);
-            }, 7000); // Tự động đóng sau 7 giây
-
-            const closeButton = toast.querySelector('.btn-close-toast');
-            if (closeButton) {
-                closeButton.addEventListener('click', function() {
-                    clearTimeout(autoDismissTimeout); // Hủy tự động đóng nếu người dùng nhấn nút
-                    dismissToast(toast);
-                });
-            }
-        });
-    }
-});
-
-// Hàm xử lý việc đóng và xóa một thông báo toast cụ thể
-function dismissToast(toastElement) {
-    toastElement.classList.add('fade-out'); // Thêm class để chạy animation fade-out
-    toastElement.addEventListener('animationend', function() {
-        if (toastElement.parentNode) {
-            toastElement.parentNode.removeChild(toastElement); // Xóa hẳn element khỏi DOM
-        }
-        // Kiểm tra nếu không còn toast nào thì có thể xóa container hoặc làm gì đó khác
-        const container = document.getElementById('toast-notification-container');
-        if (container && container.children.length === 0) {
-            // container.style.display = 'none'; // Ví dụ: ẩn container nếu trống
-        }
-    }, { once: true }); // Đảm bảo event listener chỉ chạy một lần
-}
+  const currentSelectedProvince = "<?php echo htmlspecialchars($provinceFilter, ENT_QUOTES, 'UTF-8'); ?>";
+  const currentSelectedDistrict = "<?php echo htmlspecialchars($districtFilter, ENT_QUOTES, 'UTF-8'); ?>";
+  const currentSelectedWard = "<?php echo htmlspecialchars($wardFilter, ENT_QUOTES, 'UTF-8'); ?>";
 </script>
+
+<script src="../admincp/js/vietnamese-provinces-data.js?v=<?php echo time(); ?>"></script> 
+<script src="./js/quan-ly-don-hang.js?v=<?php echo time(); ?>"></script>

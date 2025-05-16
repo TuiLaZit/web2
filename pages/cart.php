@@ -16,12 +16,11 @@ $user = $_SESSION['user'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
     <link rel="stylesheet" type="text/css" href="../css/cart.css">
     <title>Giỏ hàng - NJZ gShop</title>
 </head>
 <body>
-    <div class="wrapper">
+    <div class="cart_wrapper">
         <div class="user-info">
             <h2>Thông tin người dùng</h2>
             <p><strong>Tên đăng nhập:</strong> <?php echo htmlspecialchars($user['Account']); ?></p>
@@ -30,8 +29,8 @@ $user = $_SESSION['user'];
             <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($user['PNumber']); ?></p>
             <a href="<?php echo $baseUrl ?>/pages/order-history.php" class="view-history-btn" style="display: inline-block; background: #4CAF50; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; margin-top: 10px;">Xem lịch sử mua hàng</a>
         </div>
-
         <div class="cart-container">
+            
             <div class="cart-content">
                 <div class="cart-main">
                     <h1>Giỏ hàng</h1>

@@ -37,6 +37,9 @@ $items_stmt->execute();
 $items_result = $items_stmt->get_result();
 ?>
 
+<div class="mt-3">
+        <a href="javascript:history.back()" class="btn btn-secondary">Quay lại</a>
+    </div>
 <div class="container-fluid">
     <h2 class="mb-4">Chi tiết đơn hàng #<?php echo $order_id; ?></h2>
     
@@ -114,12 +117,7 @@ $items_result = $items_stmt->get_result();
         </div>
     </div>
 
-    <div class="mt-3">
-        <a href="javascript:history.back()" class="btn btn-secondary">Quay lại</a>
-        <?php if ($order['Status'] != 3 && $order['Status'] != 4): ?>
-        <a href="?action=orders&query=update&id=<?php echo $order_id; ?>" class="btn btn-primary">Cập nhật trạng thái</a>
-        <?php endif; ?>
-    </div>
+    
 </div> 
 <style>
 .container-fluid {
