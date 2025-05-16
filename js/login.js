@@ -38,5 +38,6 @@ async function createNewPassword(e) {
     return;
   }
 
-  return alert("Thay đổi mật khẩu thành công!");
+  alert("Thay đổi mật khẩu thành công!");
+  window.location.href = "./login.php?action=login&status=password_reset_success";
 }

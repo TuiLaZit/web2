@@ -43,7 +43,10 @@ if (isset($_POST['confirm_order'])) {
     }
 
     $addressType = $_POST['address_option'] ?? 'not_set';
-    $addressLine = ''; $ward = ''; $district = ''; $province = '';
+    $addressLine = '';
+    $ward = '';
+    $district = '';
+    $province = '';
 
     if (strpos($addressType, 'saved_') === 0) {
         // Use the address components from the $user session array
@@ -68,7 +71,7 @@ if (isset($_POST['confirm_order'])) {
 
     if ($can_proceed && isset($_SESSION['cart']) && !empty($_SESSION['cart']) && $total_calc > 0) {
         $stmt = $mysqli->prepare("INSERT INTO hoadon (IdKH, Total, Date, ExpectDate, Status, PTTT, AddressLine, Ward, Provinces, District) VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, ?, ?, ?, ?, ?)");
-        if($stmt) {
+        if ($stmt) {
             $paymentMethod = ($_POST['checkout_payment'] ?? 'cod') === 'cod' ? 1 : 2; // 1 for COD, 2 for Online
             // Ensure correct binding order and types: IdKH (i), Total (d or i), PTTT (i), AddressLine (s), Ward (s), Provinces (s), District (s)
             // Assuming Total is integer, if it can be decimal, use "d"
@@ -85,14 +88,14 @@ if (isset($_POST['confirm_order'])) {
                             $price = $product['Price'];
                             $sumPrice = $price * $quantity;
                             $stmtItem = $mysqli->prepare("INSERT INTO chitiethoadon (IdHD, IdSP, Quantity, Price, SumPrice) VALUES (?, ?, ?, ?, ?)");
-                            if($stmtItem){
+                            if ($stmtItem) {
                                 $stmtItem->bind_param("iiiii", $orderId, $productId, $quantity, $price, $sumPrice);
                                 $stmtItem->execute();
                                 $stmtItem->close();
                             }
 
                             $updateQuantity = $mysqli->prepare("UPDATE sanpham SET Quantity = Quantity - ? WHERE IdSP = ?");
-                            if($updateQuantity){
+                            if ($updateQuantity) {
                                 $updateQuantity->bind_param("ii", $quantity, $productId);
                                 $updateQuantity->execute();
                                 $updateQuantity->close();
@@ -113,7 +116,7 @@ if (isset($_POST['confirm_order'])) {
                         'total' => $total_calc,
                         'created_at' => date('Y-m-d H:i:s') // Use current datetime for order creation
                     ];
-                    $orderItems = array_map(function ($productId, $quantity){
+                    $orderItems = array_map(function ($productId, $quantity) {
                         // global $mysqli; // Not needed here if getProduct handles its own connection context
                         $product = getProduct($productId); // getProduct needs access to $mysqli
                         return $product ? [
@@ -128,7 +131,7 @@ if (isset($_POST['confirm_order'])) {
                     $order_success = true;
                     unset($_SESSION['cart'], $_SESSION['checkout_address'], $_SESSION['checkout_payment']);
                 } else {
-                     $order_success = false; // Failed to get orderId
+                    $order_success = false; // Failed to get orderId
                 }
             } else {
                 // echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error; // For debugging
@@ -136,7 +139,7 @@ if (isset($_POST['confirm_order'])) {
                 if ($stmt) $stmt->close();
             }
         } else {
-             // echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error; // For debugging
+            // echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error; // For debugging
             $order_success = false;
         }
     } else {
@@ -152,7 +155,8 @@ if (isset($_POST['confirm_order'])) {
 }
 
 
-function getProduct($productId) {
+function getProduct($productId)
+{
     global $mysqli;
     if (!$mysqli || !($mysqli instanceof mysqli)) return null;
 
@@ -170,17 +174,20 @@ function getProduct($productId) {
     return $productData;
 }
 
-function formatPrice($price) {
+function formatPrice($price)
+{
     return number_format($price, 0, ',', '.') . ' VND';
 }
 $total = 0; // This variable $total seems unused, $display_total and $total_calc are used.
 ?>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="../css/cart.css">
+<title>KCorner</title>
+<link rel="icon" href="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" type="image/png">
 <script src="../admincp/js/vietnamese-provinces-data.js"></script>
 <div class="cart_wrapper">
     <div class="cart-container" style="max-width:700px;">
-        
+
         <h1>Xác nhận đơn hàng</h1>
         <?php if ($order_success): ?>
             <div class="checkout-section" style="max-width:600px;margin:40px auto;">
@@ -194,7 +201,7 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
                 <p><strong>Ngày đặt:</strong> <?php echo $orderInfo['created_at']; ?></p>
                 <h3>Chi tiết sản phẩm</h3>
                 <ul>
-                    <?php if(isset($orderItems) && is_array($orderItems)) foreach ($orderItems as $item): ?>
+                    <?php if (isset($orderItems) && is_array($orderItems)) foreach ($orderItems as $item): ?>
                         <li><?php echo htmlspecialchars($item['name']); ?> (<?php echo htmlspecialchars($item['type']); ?>) - x<?php echo $item['quantity']; ?> - <?php echo formatPrice($item['price']); ?></li>
                     <?php endforeach; ?>
                 </ul>
@@ -211,7 +218,7 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
                 </div>
             <?php endif; ?>
             <a href="javascript:history.back()" class="back-btn">← Quay lại</a>
-            <div class="checkout-wrapper" <?php if (isset($_POST['confirm_order']) && !$order_success) echo 'style="display:none;"'; ?> >
+            <div class="checkout-wrapper" <?php if (isset($_POST['confirm_order']) && !$order_success) echo 'style="display:none;"'; ?>>
                 <div class="checkout-left">
                     <div class="checkout-section">
                         <h2>Thông tin giao hàng</h2>
@@ -234,7 +241,7 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
                                     <?php foreach ($address_options as $idx => $addr): ?>
                                         <option value="saved_<?php echo $idx; ?>"><?php echo htmlspecialchars($addr); ?></option>
                                     <?php endforeach; ?>
-                                    <option value="new" <?php if(empty($address_options)) echo 'selected'; ?> >Nhập địa chỉ mới</option>
+                                    <option value="new" <?php if (empty($address_options)) echo 'selected'; ?>>Nhập địa chỉ mới</option>
                                 </select>
                             </div>
                             <?php foreach ($address_options as $idx => $addr): ?>
@@ -242,18 +249,28 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
                                     <input type="text" name="saved_address_input_<?php echo $idx; ?>" value="<?php echo htmlspecialchars($addr); ?>" readonly>
                                 </div>
                             <?php endforeach; ?>
-                             <div class="form-group" id="new_address" style="display:none;">
-                                <select name="province" id="province-input"><option value="">Tỉnh / Thành phố (*)</option></select><p id="province-alert" class="alert" style="color: red;"></p>
-                                <select name="district" id="district-input" disabled><option value="">Quận / Huyện (*)</option></select><p id="district-alert" class="alert" style="color: red;"></p>
-                                <select name="ward" id="ward-input" disabled><option value="">Xã / Phường / Thị trấn (*)</option></select><p id="ward-alert" class="alert" style="color: red;"></p>
-                                <input name="address" type="text" id="address-input-field" placeholder="Số nhà, tên đường (*)" disabled /><p id="address-alert" class="alert" style="color: red;"></p>
+                            <div class="form-group" id="new_address" style="display:none;">
+                                <select name="province" id="province-input">
+                                    <option value="">Tỉnh / Thành phố (*)</option>
+                                </select>
+                                <p id="province-alert" class="alert" style="color: red;"></p>
+                                <select name="district" id="district-input" disabled>
+                                    <option value="">Quận / Huyện (*)</option>
+                                </select>
+                                <p id="district-alert" class="alert" style="color: red;"></p>
+                                <select name="ward" id="ward-input" disabled>
+                                    <option value="">Xã / Phường / Thị trấn (*)</option>
+                                </select>
+                                <p id="ward-alert" class="alert" style="color: red;"></p>
+                                <input name="address" type="text" id="address-input-field" placeholder="Số nhà, tên đường (*)" disabled />
+                                <p id="address-alert" class="alert" style="color: red;"></p>
                             </div>
                             <input type="hidden" name="checkout_address" id="checkout_address_hidden_input" value="">
                             <div class="form-group">
                                 <label>Phương thức thanh toán:</label>
                                 <div class="payment-methods">
-                                    <label><input type="radio" name="checkout_payment" value="cod" <?php echo (!isset($_SESSION['checkout_payment']) || $_SESSION['checkout_payment'] === 'cod') ? 'checked' : ''; ?> > Tiền mặt khi nhận hàng</label>
-                                    <label><input type="radio" name="checkout_payment" value="online" <?php echo (isset($_SESSION['checkout_payment']) && $_SESSION['checkout_payment'] === 'online') ? 'checked' : ''; ?> > Thanh toán trực tuyến</label>
+                                    <label><input type="radio" name="checkout_payment" value="cod" <?php echo (!isset($_SESSION['checkout_payment']) || $_SESSION['checkout_payment'] === 'cod') ? 'checked' : ''; ?>> Tiền mặt khi nhận hàng</label>
+                                    <label><input type="radio" name="checkout_payment" value="online" <?php echo (isset($_SESSION['checkout_payment']) && $_SESSION['checkout_payment'] === 'online') ? 'checked' : ''; ?>> Thanh toán trực tuyến</label>
                                 </div>
                             </div>
                             <button type="submit" name="confirm_order" class="checkout-btn">Xác nhận đặt hàng</button>
@@ -271,26 +288,27 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
                                 if ($product):
                                     $itemTotal = $product['Price'] * $quantity;
                                     $display_total += $itemTotal;
-                                ?>
-                                <div class="order-item">
-                                    <img src="../admincp/img/products/<?php echo htmlspecialchars($product['IMG']); ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
-                                    <div>
-                                        <div class="order-name"><?php echo htmlspecialchars($product['Name']); ?></div>
-                                        <div class="order-type"><?php echo htmlspecialchars($product['Type']); ?></div>
-                                        <div class="order-qty">x<?php echo $quantity; ?></div>
+                        ?>
+                                    <div class="order-item">
+                                        <img src="../admincp/img/products/<?php echo htmlspecialchars($product['IMG']); ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
+                                        <div>
+                                            <div class="order-name"><?php echo htmlspecialchars($product['Name']); ?></div>
+                                            <div class="order-type"><?php echo htmlspecialchars($product['Type']); ?></div>
+                                            <div class="order-qty">x<?php echo $quantity; ?></div>
+                                        </div>
+                                        <div class="order-price"><?php echo formatPrice($itemTotal); ?></div>
                                     </div>
-                                    <div class="order-price"><?php echo formatPrice($itemTotal); ?></div>
-                                </div>
-                            <?php endif; endforeach;
+                        <?php endif;
+                            endforeach;
                         } else {
                             echo "<p>Giỏ hàng của bạn đang trống. Vui lòng <a href='../index.php'>quay lại trang chủ</a> để thêm sản phẩm.</p>";
-                        }?>
+                        } ?>
                         <div class="order-summary">
                             <div class="summary-row"><span>Tạm tính:</span><span><?php echo formatPrice($display_total); ?></span></div>
                             <div class="summary-row"><span>Phí vận chuyển:</span><span>Miễn phí</span></div>
                             <div class="summary-row total"><span>Tổng cộng:</span><span><?php echo formatPrice($display_total); ?></span></div>
                         </div>
-                         <div id="bank-info" style="display: none; margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+                        <div id="bank-info" style="display: none; margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
                             <h3>Thông tin chuyển khoản</h3>
                             <p><strong>Ngân hàng:</strong> Vietcombank</p>
                             <p><strong>Chủ tài khoản:</strong> CÔNG TY TNHH NJZ GSHOP</p>
@@ -302,17 +320,17 @@ $total = 0; // This variable $total seems unused, $display_total and $total_calc
 
                             <button type="button" id="confirm-payment-button" style="margin-top: 15px; padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Đã thanh toán</button>
                             <p id="payment-status-message" style="margin-top: 10px; font-weight: bold;"></p>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         <?php endif; ?>
     </div>
 </div>
-<script src="../admincp/js/vietnamese-provinces-data.js"></script> 
+<script src="../admincp/js/vietnamese-provinces-data.js"></script>
 <script>
     window.checkoutPageConfig = {
         addressOptionsCount: <?php echo count($address_options); ?>
     };
 </script>
-<script src="../js/checkout.js"></script> 
+<script src="../js/checkout.js"></script>

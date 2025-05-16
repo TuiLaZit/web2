@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./css/styleadmincp.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="./css/login-admin.css?v=<?php echo time(); ?>" />
-    <title>Trang Quản Trị</title>
+    <title>KCorner</title>
+    <link rel="icon" href="./img/logo.png?v=<?php echo time() ?>" type="image/png">
 </head>
 
 <body>
@@ -44,7 +45,7 @@
                 <div class="col-right">
                     <div class="login-form">
                         <!-- Logo -->
-                        <img src="<?php echo $baseUrl?>/img/logo.png?v=<?php echo time()?>" alt="Logo" class="logo" style="border-radius: 35%;">
+                        <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="Logo" class="logo" style="border-radius: 35%;">
                         <h2>Trang quản trị</h2>
                         <p class="slogan">Kiểm soát mọi vấn đề của bạn!</p>
                         <form id="formLogin" action="./modules/login-handler.php" method="post">

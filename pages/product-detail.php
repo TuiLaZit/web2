@@ -44,6 +44,7 @@ if (isset($_GET['id'])) {
         <link rel="stylesheet" type="text/css" href="../css/style.css">
         <link rel="stylesheet" type="text/css" href="../css/product-detail-style.css">
         <title><?php echo isset($sanpham) ? htmlspecialchars($sanpham->name) . " - KCorner" : "KCorner"; ?></title>
+        <link rel="icon" href="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" type="image/png">
     </head>
 
     <body>

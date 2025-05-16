@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KCorner</title>
+  <link rel="icon" href="./img/logo.png?v=<?php echo time() ?>" type="image/png">
   <link rel="stylesheet" href="./css/trang-chu.css?v=<?php echo time() ?>" />
 </head>
 
@@ -41,10 +43,10 @@ if (isset($_SESSION['login_data'])) {
       <img src="./img/login-banner.jpg" alt="login-banner">
     </div>
     <!-- Phần Form Đăng Nhập -->
-    <div class="right-panel" >
+    <div class="right-panel">
       <div class="login-form">
         <div class="logo">
-          <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="border-radius: 35%"/>
+          <img src="<?php echo $baseUrl ?>/img/logo.png?v=<?php echo time() ?>" alt="KConner-logo" style="border-radius: 35%" />
           <h2>CHÀO MỪNG ĐẾN VỚI</h2>
           <p>KCorner - Góc nhỏ, chất mơ!</p>
         </div>
@@ -96,17 +98,18 @@ if (isset($_SESSION['login_data'])) {
           <div class="alert-danger" style="color:red;">
 
           </div>
-          <button type="submit" >
+          <button type="submit">
             Tạo mật khẩu mới
           </button>
           <p class="register-link">
             Bạn đã có tài khoản? <a href="./login.php">Đăng nhập ngay</a>
           </p
-        </form>
+            </form>
       </div>
     </div>
   </div>
 
-  <script src="./js/login.js?v=<?php echo time()?>"></script>
+  <script src="./js/login.js?v=<?php echo time() ?>"></script>
 </body>
+
 </html>
