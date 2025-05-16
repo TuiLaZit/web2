@@ -18,21 +18,26 @@ if (!empty($user['AddressLine']) || !empty($user['Ward']) || !empty($user['Distr
     $address_options[] = trim(($user['AddressLine'] ?? '') . ', ' . ($user['Ward'] ?? '') . ', ' . ($user['District'] ?? '') . ', ' . ($user['Provinces'] ?? ''));
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST['checkout_address']) && !empty($_POST['checkout_payment'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST['checkout_address']) && !empty($_POST['checkout_payment']) && !isset($_POST['confirm_order'])) { // Make sure not to overwrite on confirm_order submission
     $_SESSION['checkout_address'] = $_POST['checkout_address'];
     $_SESSION['checkout_payment'] = $_POST['checkout_payment'];
 }
 
 $order_success = false;
+$orderInfo = []; // Initialize orderInfo to prevent errors if order fails early
 
 if (isset($_POST['confirm_order'])) {
+    // For online payment, we assume client-side interaction handles the "Đã thanh toán" prompt.
+    // Actual payment verification is a separate, typically asynchronous process.
+    // The crucial part here is that the form *can* be submitted if client-side checks pass.
+
     $userId = $user['IdKH'];
-    $total_calc = 0; 
+    $total_calc = 0;
 
     if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
         $total_calc = array_sum(array_map(function ($productId, $quantity) {
-            global $mysqli;
-            $product = getProduct($productId); 
+            global $mysqli; // Ensure $mysqli is accessible
+            $product = getProduct($productId);
             return $product ? $product['Price'] * $quantity : 0;
         }, array_keys($_SESSION['cart']), $_SESSION['cart']));
     }
@@ -40,12 +45,13 @@ if (isset($_POST['confirm_order'])) {
     $addressType = $_POST['address_option'] ?? 'not_set';
     $addressLine = ''; $ward = ''; $district = ''; $province = '';
 
-    if (strpos($addressType, 'saved_') === 0) { 
+    if (strpos($addressType, 'saved_') === 0) {
+        // Use the address components from the $user session array
         $addressLine = $user['AddressLine'] ?? '';
         $ward = $user['Ward'] ?? '';
         $district = $user['District'] ?? '';
         $province = $user['Provinces'] ?? '';
-    } elseif ($addressType === 'new') { 
+    } elseif ($addressType === 'new') {
         $addressLine = $_POST['address'] ?? '';
         $ward = $_POST['ward'] ?? '';
         $district = $_POST['district'] ?? '';
@@ -53,20 +59,23 @@ if (isset($_POST['confirm_order'])) {
     }
 
     $can_proceed = false;
-    if (strpos($addressType, 'saved_') === 0) {
-        $can_proceed = true; 
+    if (strpos($addressType, 'saved_') === 0 && !empty($user['AddressLine'])) { // Check if saved address is actually populated
+        $can_proceed = true;
     } elseif ($addressType === 'new' && !empty($addressLine) && !empty($ward) && !empty($district) && !empty($province)) {
-        $can_proceed = true; 
+        $can_proceed = true;
     }
 
-    if ($can_proceed && isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+
+    if ($can_proceed && isset($_SESSION['cart']) && !empty($_SESSION['cart']) && $total_calc > 0) {
         $stmt = $mysqli->prepare("INSERT INTO hoadon (IdKH, Total, Date, ExpectDate, Status, PTTT, AddressLine, Ward, Provinces, District) VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, ?, ?, ?, ?, ?)");
         if($stmt) {
-            $paymentMethod = ($_POST['checkout_payment'] ?? 'cod') === 'cod' ? 1 : 2; 
+            $paymentMethod = ($_POST['checkout_payment'] ?? 'cod') === 'cod' ? 1 : 2; // 1 for COD, 2 for Online
+            // Ensure correct binding order and types: IdKH (i), Total (d or i), PTTT (i), AddressLine (s), Ward (s), Provinces (s), District (s)
+            // Assuming Total is integer, if it can be decimal, use "d"
             $stmt->bind_param("iiissss", $userId, $total_calc, $paymentMethod, $addressLine, $ward, $province, $district);
 
             if ($stmt->execute()) {
-                $orderId = $stmt->insert_id; 
+                $orderId = $stmt->insert_id;
                 $stmt->close();
 
                 if ($orderId > 0) {
@@ -100,13 +109,13 @@ if (isset($_POST['confirm_order'])) {
                         'ward' => $ward,
                         'district' => $district,
                         'province' => $province,
-                        'payment' => $_POST['checkout_payment'],
+                        'payment' => $_POST['checkout_payment'], // 'cod' or 'online'
                         'total' => $total_calc,
-                        'created_at' => date('Y-m-d H:i:s')
+                        'created_at' => date('Y-m-d H:i:s') // Use current datetime for order creation
                     ];
                     $orderItems = array_map(function ($productId, $quantity){
-                        global $mysqli;
-                        $product = getProduct($productId);
+                        // global $mysqli; // Not needed here if getProduct handles its own connection context
+                        $product = getProduct($productId); // getProduct needs access to $mysqli
                         return $product ? [
                             'name' => $product['Name'],
                             'type' => $product['Type'],
@@ -114,26 +123,35 @@ if (isset($_POST['confirm_order'])) {
                             'price' => $product['Price']
                         ] : null;
                     }, array_keys($_SESSION['cart']), $_SESSION['cart']);
-                    $orderItems = array_filter($orderItems); 
+                    $orderItems = array_filter($orderItems);
 
-                    $order_success = true; 
+                    $order_success = true;
                     unset($_SESSION['cart'], $_SESSION['checkout_address'], $_SESSION['checkout_payment']);
                 } else {
-                     $order_success = false; 
+                     $order_success = false; // Failed to get orderId
                 }
             } else {
-                $order_success = false; 
+                // echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error; // For debugging
+                $order_success = false;
                 if ($stmt) $stmt->close();
             }
         } else {
-            $order_success = false; 
+             // echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error; // For debugging
+            $order_success = false;
         }
     } else {
-        $order_success = false; 
+        // Reasons for failure: cart empty, total zero, or address not proceedable
+        if (!$can_proceed) {
+            // echo "Address not valid or not selected."; // For debugging
+        }
+        if (empty($_SESSION['cart'])) {
+            // echo "Cart is empty."; // For debugging
+        }
+        $order_success = false;
     }
 }
 
-// Hàm lấy thông tin sản phẩm từ CSDL dựa trên ID sản phẩm
+
 function getProduct($productId) {
     global $mysqli;
     if (!$mysqli || !($mysqli instanceof mysqli)) return null;
@@ -152,18 +170,17 @@ function getProduct($productId) {
     return $productData;
 }
 
-// Hàm định dạng số tiền sang chuỗi có dấu phân cách và đơn vị VND
 function formatPrice($price) {
     return number_format($price, 0, ',', '.') . ' VND';
 }
-$total = 0; 
+$total = 0; // This variable $total seems unused, $display_total and $total_calc are used.
 ?>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="../css/cart.css">
-<script src="../admincp/js/vietnamese-provinces-data.js"></script> 
+<script src="../admincp/js/vietnamese-provinces-data.js"></script>
 <div class="cart_wrapper">
     <div class="cart-container" style="max-width:700px;">
-        <a href="javascript:history.back()" class="back-btn">← Quay lại</a>
+        
         <h1>Xác nhận đơn hàng</h1>
         <?php if ($order_success): ?>
             <div class="checkout-section" style="max-width:600px;margin:40px auto;">
@@ -189,10 +206,11 @@ $total = 0;
                 <div class="checkout-section" style="max-width:600px;margin:40px auto;border: 1px solid red; padding: 15px; text-align:center;">
                     <h2 style="color:red;">Đặt hàng không thành công!</h2>
                     <p>Đã có lỗi xảy ra trong quá trình xử lý đơn hàng của bạn. Vui lòng kiểm tra lại thông tin, đặc biệt là địa chỉ giao hàng, hoặc thử lại sau.</p>
+                    <p>Nếu bạn chọn thanh toán trực tuyến, hãy đảm bảo bạn đã xác nhận thanh toán.</p>
                     <a href="checkout.php" class="checkout-btn">Thử lại</a>
                 </div>
             <?php endif; ?>
-
+<a href="javascript:history.back()" class="back-btn">← Quay lại</a>
             <div class="checkout-wrapper" <?php if (isset($_POST['confirm_order']) && !$order_success) echo 'style="display:none;"'; ?> >
                 <div class="checkout-left">
                     <div class="checkout-section">
@@ -212,7 +230,7 @@ $total = 0;
                             </div>
                             <div class="form-group">
                                 <label for="address_option">Chọn địa chỉ:</label>
-                                <select name="address_option" id="address_option" onchange="toggleNewAddress(this.value)">
+                                <select name="address_option" id="address_option">
                                     <?php foreach ($address_options as $idx => $addr): ?>
                                         <option value="saved_<?php echo $idx; ?>"><?php echo htmlspecialchars($addr); ?></option>
                                     <?php endforeach; ?>
@@ -228,14 +246,14 @@ $total = 0;
                                 <select name="province" id="province-input"><option value="">Tỉnh / Thành phố (*)</option></select><p id="province-alert" class="alert" style="color: red;"></p>
                                 <select name="district" id="district-input" disabled><option value="">Quận / Huyện (*)</option></select><p id="district-alert" class="alert" style="color: red;"></p>
                                 <select name="ward" id="ward-input" disabled><option value="">Xã / Phường / Thị trấn (*)</option></select><p id="ward-alert" class="alert" style="color: red;"></p>
-                                <input name="address" type="text" id="address-input-field" placeholder="Số nhà, tên đường (*)" disabled /><p id="address-alert" class="alert" style="color: red;"></p> 
+                                <input name="address" type="text" id="address-input-field" placeholder="Số nhà, tên đường (*)" disabled /><p id="address-alert" class="alert" style="color: red;"></p>
                             </div>
-                            <input type="hidden" name="checkout_address" id="checkout_address_hidden_input" value=""> 
+                            <input type="hidden" name="checkout_address" id="checkout_address_hidden_input" value="">
                             <div class="form-group">
                                 <label>Phương thức thanh toán:</label>
                                 <div class="payment-methods">
-                                    <label><input type="radio" name="checkout_payment" value="cod" <?php echo (!isset($_POST['checkout_payment']) || $_POST['checkout_payment'] === 'cod') ? 'checked' : ''; ?> > Tiền mặt khi nhận hàng</label>
-                                    <label><input type="radio" name="checkout_payment" value="online" <?php echo (isset($_POST['checkout_payment']) && $_POST['checkout_payment'] === 'online') ? 'checked' : ''; ?> > Thanh toán trực tuyến</label>
+                                    <label><input type="radio" name="checkout_payment" value="cod" <?php echo (!isset($_SESSION['checkout_payment']) || $_SESSION['checkout_payment'] === 'cod') ? 'checked' : ''; ?> > Tiền mặt khi nhận hàng</label>
+                                    <label><input type="radio" name="checkout_payment" value="online" <?php echo (isset($_SESSION['checkout_payment']) && $_SESSION['checkout_payment'] === 'online') ? 'checked' : ''; ?> > Thanh toán trực tuyến</label>
                                 </div>
                             </div>
                             <button type="submit" name="confirm_order" class="checkout-btn">Xác nhận đặt hàng</button>
@@ -246,8 +264,8 @@ $total = 0;
                     <div class="checkout-section">
                         <h2>Đơn hàng của bạn</h2>
                         <?php
-                        $display_total = 0; 
-                        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+                        $display_total = 0;
+                        if (isset($_SESSION['cart']) && is_array($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                             foreach ($_SESSION['cart'] as $productId => $quantity):
                                 $product = getProduct($productId);
                                 if ($product):
@@ -265,7 +283,7 @@ $total = 0;
                                 </div>
                             <?php endif; endforeach;
                         } else {
-                            echo "<p>Giỏ hàng của bạn đang trống.</p>";
+                            echo "<p>Giỏ hàng của bạn đang trống. Vui lòng <a href='../index.php'>quay lại trang chủ</a> để thêm sản phẩm.</p>";
                         }?>
                         <div class="order-summary">
                             <div class="summary-row"><span>Tạm tính:</span><span><?php echo formatPrice($display_total); ?></span></div>
@@ -278,9 +296,10 @@ $total = 0;
                             <p><strong>Chủ tài khoản:</strong> CÔNG TY TNHH NJZ GSHOP</p>
                             <p><strong>Số tài khoản:</strong> 1234567890</p>
                             <p><strong>Chi nhánh:</strong> Hà Nội</p>
-                            <p><strong>Nội dung chuyển khoản:</strong> [Mã đơn hàng] - [Tên khách hàng]</p>
+                            <p><strong>Nội dung chuyển khoản:</strong> DH [Mã đơn hàng (sẽ được tạo sau)] - [Tên khách hàng]</p>
                             <p style="color: #dc3545; font-style: italic;">* Vui lòng chuyển khoản đúng số tiền và nội dung để đơn hàng được xử lý nhanh chóng.</p>
-                            
+                            <p style="color: #007bff; font-style: italic;">* Sau khi chuyển khoản, vui lòng nhấn nút "Đã thanh toán" bên dưới để xác nhận.</p>
+
                             <button type="button" id="confirm-payment-button" style="margin-top: 15px; padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Đã thanh toán</button>
                             <p id="payment-status-message" style="margin-top: 10px; font-weight: bold;"></p>
                             </div>
