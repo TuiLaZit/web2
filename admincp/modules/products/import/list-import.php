@@ -24,19 +24,6 @@ if ($query_get_products && mysqli_num_rows($query_get_products) > 0) {
     }
 }
 
-// if (isset($_GET['IdNhapHang'])) {
-//     $idNhapHang = $_GET['IdNhapHang'];
-
-//     // Tìm sản phẩm theo IdSP trong mảng $products
-//     $importFound = null;
-//     foreach ($imports as $import) {
-//         if ($import['IdNhapHang'] == $idNhapHang) {
-//             $importFound = $import;
-//             break;
-//         }
-//     }
-// }
-
 $listStatus = [
     ['id' => 1, 'name' => 'Đang bán'],
     ['id' => 2, 'name' => 'Ẩn'],

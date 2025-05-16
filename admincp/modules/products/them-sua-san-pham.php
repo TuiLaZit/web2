@@ -21,22 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $IMG = $_POST['IMG'] ?? '';
     $status = $_POST['status'] ?? '';
 
-    // Printing the values
-    echo "IdGRP: " . $IdGRP . "<br>";
-    echo "Name: " . $name . "<br>";
-    echo "Type: " . $type . "<br>";
-    echo "Ratio: " . $ratio . "<br>";
-    echo "Released Date: " . $releasedDate . "<br>";
-    echo "Info: " . $info . "<br>";
-    echo "Image: " . $IMG . "<br>";
-
     if (isset($_POST['addSP'])) {
         $query = "INSERT INTO sanpham (IdGRP, name, type, Ratio, quantity, releaseDate, info, IMG, status, Price) 
           VALUES (?, ?, ?, ?, 0, ?, ?, ?, 2, 0)";
     } elseif (isset($_POST['updateSP']) && isset($_GET['IdSP'])) {
         $IdSP = $_GET['IdSP'];
-
-
 
         $query = "UPDATE sanpham SET IdGRP = ?, name = ?, type = ?, Ratio = ?, releaseDate = ?, info = ?, IMG = ?, status = ?, Price = ?
                   WHERE IdSP = ?";

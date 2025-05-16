@@ -1,14 +1,4 @@
-const tableHeader = `
-            <tr>
-              <th>Mã sản phẩm</th>
-              <th>Tên sản phẩm</th>
-              <th>Danh mục</th>
-              <th>Hãng</th>
-              <th>Đơn giá</th>
-              <th>Kho hàng</th>
-              <th></th>
-            </tr>  
-  `;
+
 
 // Display model add product
 const addID = document.getElementById("add-product");

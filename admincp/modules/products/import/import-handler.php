@@ -258,7 +258,7 @@ class ImportHandler
 
                 $updateNewStmt->close();
             } else {
-                // Same product, just update the difference in quantity
+                // Same product, just update quantity or importPrice
                 $productUpdatingData = $this->findProductById($data['IdSP']);
                 $quantityDifference = $data['ImportQuantity'] - $oldQuantity;
                 $updateQuantityQuery = "UPDATE sanpham SET Quantity = Quantity + ?, Price = ? WHERE IdSP = ?";

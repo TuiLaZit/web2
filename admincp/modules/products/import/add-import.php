@@ -42,33 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'messages' => $errors
             ]);
         }
-    } else if (isset($_POST['edit']) && isset($_POST['IdNhapHang'])) {
-        $idNhapHang = $_GET['IdNhapHang'];
-        // Validate data
-        if ($importHandler->validateData($importData)) {
-            // Add customer
-            if ($importHandler->editById($importData, $idNhapHang)) {
-                // Success - redirect to customers list
-                responseJson([
-                    'success' => true,
-                    'data' => $importData,
-                ]);
-            } else {
-                // Database error
-                $errors = $importHandler->getErrors();
-                responseJson([
-                    'success' => false,
-                    'messages' => $errors
-                ]);
-            }
-        } else {
-            // Validation error
-            $errors = $importHandler->getErrors();
-            responseJson([
-                'success' => false,
-                'messages' => $errors,
-            ]);
-        }
     } else {
         responseJson([
             'success' => false,

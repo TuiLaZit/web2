@@ -61,21 +61,8 @@ function cancelViewDetails(e) {
 cancelViewDetailsID.addEventListener("click", cancelViewDetails);
 // --------------------------------------------------------------------------------- //
 
-// Display products data from localStorage into table
 const table = document.querySelector(".table-product-container table");
 const viewDetailsID = document.getElementsByClassName("view-details");
-
-//  Get ID trash icon
-const deleteProductEles = document.getElementsByClassName("delete-product");
-
-for (let i = 0; i < deleteProductEles.length; i++) {
-  const productID = deleteProductEles[i].dataset.productid;
-
-  deleteProductEles[i].addEventListener("click", (e) => {
-    openConfirmDeleteModel(productID);
-  });
-}
-// --------------------------------------------------------------------------------- //
 
 const editProductForm = document.querySelector("#edit-product-form");
 
@@ -333,91 +320,7 @@ function isValidPhoneNumber(phone) {
   const phoneRegex = /^[0-9]{10}$/; // Assuming 10-digit phone number
   return phoneRegex.test(phone);
 }
-// --------------------------------------------------------------------------------- /
 
-// Delete product
-function deleteProduct(productID) {
-  window.location.href = `./modules/products/xoa-san-pham.php?IdSP=${productID}`;
-
-  showProductData();
-  cancelDeleteProduct();
-}
-
-function openConfirmDeleteModel(productID) {
-  document
-    .getElementsByClassName("model-confirm-delete-container")[0]
-    .classList.add("open");
-  const confirmDeleteEle = document.getElementById("cofirm-delete-product");
-
-  confirmDeleteEle.addEventListener("click", () => deleteProduct(productID));
-}
-
-function cancelDeleteProduct() {
-  document
-    .getElementsByClassName("model-confirm-delete-container")[0]
-    .classList.remove("open");
-}
-
-// Filter product
-function filterProduct(event) {
-  event.preventDefault();
-
-  const filterProductForm = document.querySelector(".search-options-style");
-  const formData = new FormData(filterProductForm);
-  const name = formData.get("name");
-  const brand = formData.get("brand");
-  const category = formData.get("category");
-  const sort = formData.get("sort");
-
-  const listProduct = getProduct();
-
-  let foundProducts = listProduct.filter((product) => {
-    let isTrue = true;
-
-    if (name != "") {
-      if (product.name === name) {
-        isTrue = true;
-      } else isTrue = false;
-    }
-    return isTrue;
-  });
-
-  foundProducts = foundProducts.filter((product) => {
-    let isTrue = true;
-
-    if (brand != "") {
-      if (product.brand === brand) {
-        isTrue = true;
-      } else isTrue = false;
-    }
-    return isTrue;
-  });
-
-  foundProducts = foundProducts.filter((product) => {
-    let isTrue = true;
-
-    if (category != "all") {
-      if (product.category === category) {
-        isTrue = true;
-      } else isTrue = false;
-    }
-    return isTrue;
-  });
-
-  if (sort != "lastest-product") {
-    if (sort === "price-decrease") {
-      foundProducts.sort(function (a, b) {
-        return b.price - a.price;
-      });
-    } else {
-      foundProducts.sort(function (a, b) {
-        return a.price - b.price;
-      });
-    }
-  }
-
-  showProductData(foundProducts);
-}
 // -------------------Update status-------------------------
 
 const switchEles = document.querySelectorAll(
