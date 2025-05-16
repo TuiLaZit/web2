@@ -9,19 +9,19 @@
                     $query = $_GET['query'];
                     switch($query) {
                         case 'them':
-                            include("modules/nhanvien/nhanvien/them.php");
+                            include("modules/nhanvien/them.php");
                             break;
                         case 'sua':
-                            include("modules/nhanvien/nhanvien/sua.php");
+                            include("modules/nhanvien/sua.php");
                             break;
                         case 'xoa':
-                            include("modules/nhanvien/nhanvien/xoa.php");
+                            include("modules/nhanvien/xoa.php");
                             break;
                         default:
-                            include("modules/nhanvien/nhanvien/lietke.php");
+                            include("modules/nhanvien/lietke.php");
                     }
                 } else {
-                    include("modules/nhanvien/nhanvien/lietke.php");
+                    include("modules/nhanvien/lietke.php");
                 }
                 break;
             case 'delivery':
