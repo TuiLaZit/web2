@@ -14,6 +14,6 @@
                 <li><a href="index.php?action=imports">Nhập hàng</a></li>
             </ul>
         </li>
-        <li><a href="index.php?action=orders">Quản lý hóa đơn</a></li>
+        <li><a href="index.php?action=orders">Quản lý đơn hàng</a></li>
     </ul>
 </div> 

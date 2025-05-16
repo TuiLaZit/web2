@@ -129,7 +129,7 @@ $result = $mysqli->query($sql);
 </div>
 
 <div class="container-fluid" >
-    <h2 class="mb-4">Quản lý đơn hàng</h2>
+    <h2>Quản lý đơn hàng</h2>
 
     <form method="GET" action="" class="mb-3 row gx-3 gy-2 align-items-center filter-form">
         <?php

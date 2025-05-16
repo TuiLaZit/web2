@@ -30,11 +30,10 @@ if (!$query_get_groups) {
 
     <!-- Body page -->
     <div
-      class="bg-color"
       style="height: 100vh; width: 100%; overflow-y: auto; position: relative;">
       <!-- Title page -->
       <div style="display: flex">
-        <p class="title-page">Nhóm</p>
+        <h2>Quản lý nhóm</h2>
 
         <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
           <div style="margin: auto; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">

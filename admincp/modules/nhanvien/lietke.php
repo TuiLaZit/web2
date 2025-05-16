@@ -16,7 +16,7 @@
         unset($_SESSION['message_type']);
     }
     ?>
-    <h2>Danh sách nhân viên</h2>
+    <h2>Quản lý nhân viên</h2>
     <a href="index.php?action=staff&query=them" class="btn-add">Thêm nhân viên mới</a>
     
     <table class="data-table">

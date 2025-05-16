@@ -108,11 +108,10 @@ $listStatus =  [
 
     <!-- Body page -->
     <div
-      class="bg-color"
       style="height: 100vh; width: 100%; overflow-y: auto; position: relative;">
       <!-- Title page -->
       <div style="display: flex">
-        <p class="title-page">Sản phẩm</p>
+        <h2>Quản lý sản phẩm</h2>
 
         <div style="margin-left: auto; padding: 20px">
           <button class="button-style" id="add-product">

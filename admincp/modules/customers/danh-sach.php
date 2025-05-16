@@ -96,11 +96,10 @@ $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
 
         <!-- Body page -->
         <div
-            class="bg-color"
             style="height: 100vh; width: 100%; overflow-y: auto; position: relative;">
             <!-- Title page -->
             <div style="display: flex">
-                <p class="title-page">Khách hàng</p>
+                <h2>Quản lý khách hàng</h2>
 
                 <div style="margin-left: auto; padding: 20px">
                     <button class="button-style" id="add-product">
