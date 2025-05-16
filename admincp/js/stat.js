@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadStatistics(null, dateTo.value, sortOrder.value);
 
     searchStat.addEventListener("click", function () {
-        const fromDate = dateFrom.value || null; // Nếu rỗng thì gửi null
+        const fromDate = dateFrom.value || "1970-01-01"; // Nếu rỗng thì gửi null
         const toDate = dateTo.value || new Date().toISOString().split("T")[0];
         const order = sortOrder.value;
 

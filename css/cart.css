@@ -594,3 +594,18 @@
         min-width: auto;
     }
 }
+
+.back-btn {
+    background: #666;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+.back-btn:hover {
+    background: #555;
+}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2025 at 12:04 PM
+-- Generation Time: May 16, 2025 at 06:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -75,7 +75,10 @@ INSERT INTO `chitiethoadon` (`IdCTHD`, `IdHD`, `IdSP`, `Quantity`, `Price`, `Sum
 (32, 27, 15, 1, 150000, 150000),
 (33, 28, 26, 1, 450000, 450000),
 (34, 29, 26, 1, 450000, 450000),
-(35, 30, 49, 1, 1800000, 1800000);
+(35, 30, 49, 1, 1800000, 1800000),
+(36, 31, 15, 1, 150000, 150000),
+(37, 32, 14, 1, 240000, 240000),
+(38, 33, 40, 1, 1500000, 1500000);
 
 -- --------------------------------------------------------
 
@@ -102,36 +105,39 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`IdHD`, `IdKH`, `Total`, `Date`, `ExpectDate`, `Status`, `PTTT`, `AddressLine`, `Ward`, `Provinces`, `District`) VALUES
-(1, 1, 1740000, '2025-03-02', '2025-05-05', 1, 2, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(2, 1, 2550000, '2024-05-16', '2024-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(1, 1, 1740000, '2025-03-02', '2025-05-05', 3, 2, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(2, 1, 2550000, '2024-05-16', '2024-05-19', 2, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
 (3, 1, 585000, '2024-05-16', '2024-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
 (4, 1, 1260000, '2024-05-16', '2024-05-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(5, 1, 5700000, '2025-02-16', '2025-02-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(6, 1, 1500000, '2025-02-16', '2025-02-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(7, 1, 2700000, '2025-01-16', '2025-01-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(8, 1, 450000, '2025-05-02', '2025-05-05', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(9, 1, 225000, '2025-05-12', '2025-05-15', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(10, 1, 0, '2025-04-16', '2025-04-19', 1, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(11, 2, 1800000, '2025-04-16', '2025-04-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
-(12, 2, 450000, '2025-01-16', '2025-01-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
+(5, 1, 5700000, '2025-02-16', '2025-02-19', 3, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(6, 1, 1500000, '2025-02-16', '2025-02-19', 3, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(7, 1, 2700000, '2025-01-16', '2025-01-19', 3, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(8, 1, 450000, '2025-05-02', '2025-05-05', 3, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(9, 1, 225000, '2025-05-12', '2025-05-15', 3, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(10, 1, 525000, '2025-04-16', '2025-04-19', 3, 1, 'abc', 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
+(11, 2, 1800000, '2025-04-16', '2025-04-19', 3, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
+(12, 2, 450000, '2025-01-16', '2025-01-19', 3, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
 (13, 2, 450000, '2024-05-16', '2024-05-19', 1, 1, 'cda', 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
-(14, 3, 900000, '2025-03-16', '2025-03-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(15, 3, 2700000, '2025-02-16', '2025-02-19', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(16, 3, 1200000, '2025-05-10', '2025-05-13', 1, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(17, 4, 960000, '2025-05-10', '2025-05-13', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(18, 4, 1500000, '2025-03-16', '2025-03-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(19, 4, 0, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(20, 4, 390000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(21, 4, 420000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(22, 4, 560000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(23, 4, 1260000, '2024-12-16', '2024-12-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(24, 4, 1800000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
-(25, 5, 600000, '2025-05-16', '2025-05-19', 1, 1, '888', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(26, 5, 1800000, '2025-05-16', '2025-05-19', 1, 1, '888', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
-(27, 6, 150000, '2025-05-16', '2025-05-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
+(14, 3, 900000, '2025-03-16', '2025-03-19', 3, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(15, 3, 2700000, '2025-02-16', '2025-02-19', 3, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(16, 3, 1200000, '2025-05-10', '2025-05-13', 3, 1, '123', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(17, 4, 960000, '2025-05-10', '2025-05-13', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(18, 4, 1500000, '2025-03-16', '2025-03-19', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(19, 4, 1500000, '2025-05-16', '2025-05-19', 1, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(20, 4, 390000, '2025-05-16', '2025-05-19', 2, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(21, 4, 420000, '2025-05-16', '2025-05-19', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(22, 4, 560000, '2025-05-16', '2025-05-19', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(23, 4, 1260000, '2024-12-16', '2024-12-19', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(24, 4, 1800000, '2025-05-16', '2025-05-19', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(25, 5, 600000, '2025-05-16', '2025-05-19', 2, 1, '888', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(26, 5, 1800000, '2025-05-16', '2025-05-19', 2, 1, '888', 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
+(27, 6, 150000, '2025-05-16', '2025-05-19', 2, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
 (28, 6, 450000, '2025-05-16', '2025-05-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
-(29, 6, 450000, '2025-01-16', '2025-01-19', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
-(30, 6, 1800000, '2025-03-20', '2025-03-23', 1, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh');
+(29, 6, 450000, '2025-01-16', '2025-01-19', 3, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
+(30, 6, 1800000, '2025-03-20', '2025-03-23', 3, 1, 'u i a ', 'Phường 11', 'Thành phố Hồ Chí Minh', 'Quận Bình Thạnh'),
+(31, 4, 150000, '2025-05-16', '2025-05-19', 3, 1, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(32, 4, 240000, '2025-05-16', '2025-05-19', 3, 2, '220 Thoại Ngọc Hầu', 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
+(33, 2, 1500000, '2025-05-16', '2025-05-19', 1, 1, '123', 'Phường Phúc Xá', 'Thành phố Hà Nội', 'Quận Ba Đình');
 
 -- --------------------------------------------------------
 
@@ -159,7 +165,7 @@ CREATE TABLE `khachhang` (
 
 INSERT INTO `khachhang` (`IdKH`, `Account`, `Email`, `Password`, `Name`, `PNumber`, `AddressLine`, `Status`, `Ward`, `Provinces`, `District`) VALUES
 (1, 'vitcovandinh', 'toibingu@gmail.com', 'p929OPCGNyoQVusMGw2bxg==', 'Đặng Thế Vinh', '0912345678', 'abc', 1, 'Phường Phổ Văn', 'Tỉnh Quảng Ngãi', 'Thị xã Đức Phổ'),
-(2, 'pt287', 'pt287@gmail.com', 'nVH9/MxCX9cVAUvDlkY7bg==', 'Trần Đăng Phát', '0909999000', 'cda', 1, 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
+(2, 'pt287', 'pt2874@gmail.com', 'nVH9/MxCX9cVAUvDlkY7bg==', 'Trần Đăng Phát', '0909999001', 'cda', 1, 'Thị trấn Dầu Giây', 'Tỉnh Đồng Nai', 'Huyện Thống Nhất'),
 (3, 'kendrick', 'nnt@gmail.com', 'JIPA509Qw/3mZGGQPku/Sw==', 'Nguyễn Ngọc Tuấn', '0990000888', '123', 1, 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
 (4, 'TuiLaZit', 'tr.trungviet04@gmail.com', 'uBo61muTndRb6cPD0J50JQ==', 'Trần Trung Việt', '0937024435', '220 Thoại Ngọc Hầu', 1, 'Phường Phú Thạnh', 'Thành phố Hồ Chí Minh', 'Quận Tân Phú'),
 (5, 'ainuhukhong', 'ndq@gmail.com', '/0Bx0JmsBD7j/+vcVEsG5A==', 'Nguyễn Đại Quốc', '0888888888', '888', 1, 'Xã Bà Điểm', 'Thành phố Hồ Chí Minh', 'Huyện Hóc Môn'),
@@ -350,8 +356,8 @@ INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Ratio`, `Price`, `IMG`,
 (11, 1, '[SIZE XL] BUNNIES CAMP 2024 TOKYO DOME T-SHIRTS (BLUE)', 'Collab', 140, 560000, 'bunniescampshirt.png', 50, 'BUNNIES CAMP 2024 TOKYO DOME T-SHIRTS (BLUE) là mẫu áo chính thức của sự kiện fan meeting Bunnies Camp 2024 của NewJeans tại Tokyo Dome.\r\n', '2024-07-02', 1),
 (12, 1, 'Bunnies MEMBERSHIP', 'Membership', 150, 1350000, 'membership.png', 10, 'Bunnies MEMBERSHIP là fanclub chính thức của NewJeans, mang đến nhiều quyền lợi đặc biệt cho người hâm mộ.\r\n', '2024-07-27', 1),
 (13, 1, 'NewJeans 2025 SEASON\'S GREETINGS', 'Seasons Greetings', 150, 1500000, 'ssgtnjs.jpg', 7, 'NewJeans 2025 SEASON\'S GREETINGS là bộ sản phẩm đặc biệt dành cho người hâm mộ, mang chủ đề \"The Fairy Association\", hé lộ những câu chuyện thú vị về các thành viên.\r\n', '2025-01-15', 1),
-(14, 1, 'Dazed & Confused (2024.11 / B type)', 'Magazine', 120, 240000, 'dazedminji.png', 6, 'Dazed & Confused (2024.11 / B type) là phiên bản tạp chí đặc biệt có sự xuất hiện của NewJeans, mang đến những hình ảnh và nội dung độc quyền.\r\n', '2024-10-30', 1),
-(15, 1, 'Dazed & Confused (2024.11 / C type)', 'Magazine', 150, 150000, 'dazedminjiC.png', 9, 'Dazed & Confused (2024.11 / C type) là phiên bản tạp chí đặc biệt có sự xuất hiện của NewJeans, mang đến những hình ảnh và nội dung độc quyền.\r\n', '2024-10-30', 1),
+(14, 1, 'Dazed & Confused (2024.11 / B type)', 'Magazine', 120, 240000, 'dazedminji.png', 5, 'Dazed & Confused (2024.11 / B type) là phiên bản tạp chí đặc biệt có sự xuất hiện của NewJeans, mang đến những hình ảnh và nội dung độc quyền.\r\n', '2024-10-30', 1),
+(15, 1, 'Dazed & Confused (2024.11 / C type)', 'Magazine', 150, 150000, 'dazedminjiC.png', 8, 'Dazed & Confused (2024.11 / C type) là phiên bản tạp chí đặc biệt có sự xuất hiện của NewJeans, mang đến những hình ảnh và nội dung độc quyền.\r\n', '2024-10-30', 1),
 (16, 1, 'NewJeans \'Supernatural\' Weverse Albums ver. (Set)', 'Album', 150, 750000, 'supnaweverse.png', 40, 'NewJeans \'Supernatural\' Weverse Albums ver. (Set) là phiên bản đặc biệt của đĩa đơn Nhật Bản đầu tiên của nhóm, gồm 3 phiên bản album Weverse.\r\n', '2024-06-21', 1),
 (17, 1, 'NewJeans Supernatural Fan Minji ver', 'Collab', 120, 120000, 'minji fan.png', 15, 'Supernatural fan make for the Tokyo Dome Fan Tour', '2024-07-12', 1),
 (18, 1, 'Dazed & Confused (2024.11 / D type)', 'Magazine', 150, 225000, 'dazedminji D.png', 9, 'Dazed & Confused (2024.11 / D type) là phiên bản tạp chí đặc biệt có sự xuất hiện của NewJeans, mang đến những hình ảnh và nội dung độc quyền.', '2024-10-30', 1),
@@ -376,7 +382,7 @@ INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Ratio`, `Price`, `IMG`,
 (37, 2, 'IVE \'LOVE DIVE\' (Ver. 1)', 'Album', 150, 450000, 'lovedive1.jpg', 20, 'IVE \'LOVE DIVE\' (Ver. 1) là phiên bản đầu tiên của single album thứ hai của nhóm nhạc nữ IVE, mang đến phong cách âm nhạc đầy cuốn hút.\r\n', '2022-04-06', 1),
 (38, 2, 'IVE \'LOVE DIVE\' (Ver. 2)', 'Album', 150, 450000, 'lovedive2.jpg', 20, 'IVE \'LOVE DIVE\' (Ver. 2) là phiên bản thứ hai của single album thứ hai của nhóm nhạc nữ IVE, mang đến phong cách âm nhạc đầy cuốn hút.\r\n- \r\n', '2022-04-06', 1),
 (39, 2, 'IVE \'LOVE DIVE\' (Ver. 3)', 'Album', 130, 390000, 'lovedive3.jpeg', 30, 'IVE \'LOVE DIVE\' (Ver. 3) là phiên bản thứ ba của single album thứ hai của nhóm nhạc nữ IVE, mang đến phong cách âm nhạc đầy cuốn hút.\r\n', '2022-06-04', 1),
-(40, 2, 'IVE - THE 1ST WORLD TOUR [SHOW WHAT I HAVE] ENCORE BLU-RAY', 'Bluray', 150, 1500000, 'swihencorebluray.jpg', 8, 'IVE - THE 1ST WORLD TOUR [SHOW WHAT I HAVE] ENCORE BLU-RAY là phiên bản Blu-ray đặc biệt ghi lại các buổi diễn encore của nhóm tại KSPO Dome, Seoul vào ngày 10-11 tháng 8, 2024\r\n', '2025-04-30', 1),
+(40, 2, 'IVE - THE 1ST WORLD TOUR [SHOW WHAT I HAVE] ENCORE BLU-RAY', 'Bluray', 150, 1500000, 'swihencorebluray.jpg', 7, 'IVE - THE 1ST WORLD TOUR [SHOW WHAT I HAVE] ENCORE BLU-RAY là phiên bản Blu-ray đặc biệt ghi lại các buổi diễn encore của nhóm tại KSPO Dome, Seoul vào ngày 10-11 tháng 8, 2024\r\n', '2025-04-30', 1),
 (41, 2, 'IVE \'SWITCH\' Digipack GAEUL Ver.', 'Digipack', 150, 225000, 'gaeuldigiswitch.jpg', 30, 'IVE \'SWITCH\' Digipack GAEUL Ver. là phiên bản đặc biệt của EP thứ hai của nhóm nhạc nữ IVE, tập trung vào thành viên Gaeul.\r\n', '2024-04-30', 1),
 (42, 2, 'IVE \'SWITCH\' Digipack Yujin Ver', 'Digipack', 150, 225000, 'yujinswitch.png', 59, 'IVE \'SWITCH\' Digipack Yujin Ver. là phiên bản đặc biệt của EP thứ hai của nhóm nhạc nữ IVE, tập trung vào thành viên An Yujin.\r\n', '2024-04-29', 1),
 (43, 2, 'IVE \'SWITCH\' Digipack Rei Ver', 'Digipack', 150, 225000, 'ReiSwitch.jpg', 50, 'IVE \'SWITCH\' Digipack Rei Ver. là phiên bản đặc biệt của EP thứ hai của nhóm nhạc nữ IVE, tập trung vào thành viên Rei.\r\n', '2024-04-30', 1),
@@ -412,7 +418,8 @@ INSERT INTO `sanpham` (`IdSP`, `IdGRP`, `Name`, `Type`, `Ratio`, `Price`, `IMG`,
 (73, 5, 'BLACKPINK \'BLACKPINK 2021 The Show DVD\'', 'DVD', 150, 600000, '61f44a5c-e5f3-49b9-b79d-02edc2963716-global-town-1628674480472.jpeg', 10, 'DVD ghi lại concert trực tuyến đặc biệt của nhóm.', '2021-02-21', 1),
 (74, 5, 'BLACKPINK \'BLACKPINK Summer Diary in Hawaii\'', 'DVD', 150, 600000, 'b2762a8b24004a0a337dde3ff7af9a08.jpg', 10, 'Photobook và DVD ghi lại chuyến đi của nhóm tại Hawaii.', '2019-09-12', 1),
 (75, 5, 'BLACKPINK \'BLACKPINK Welcoming Collection 2022\'', 'Welcoming Collection', 150, 1800000, 'BLACKPINK2022WelcomeCollection1.jpg', 10, 'Bộ sưu tập đặc biệt dành cho fan với photobook, DVD và nhiều vật phẩm khác.', '2022-03-02', 1),
-(76, 5, 'BLACKPINK \'BLACKPINK Welcoming Collection 2019\'', 'Welcoming Collection', 150, 1500000, '5f8a18d27bdf4cd4758a195a81b69e71.jpg', 10, 'Bộ sưu tập đặc biệt dành cho fan với photobook, DVD và nhiều vật phẩm khác.', '2019-03-02', 1);
+(76, 5, 'BLACKPINK \'BLACKPINK Welcoming Collection 2019\'', 'Welcoming Collection', 150, 1500000, '5f8a18d27bdf4cd4758a195a81b69e71.jpg', 10, 'Bộ sưu tập đặc biệt dành cho fan với photobook, DVD và nhiều vật phẩm khác.', '2019-03-02', 1),
+(77, 3, 'Test', 'Test', 110, 0, 'UIA.png', 0, 'Testing', '2025-05-16', 1);
 
 --
 -- Indexes for dumped tables
@@ -476,13 +483,13 @@ ALTER TABLE `sanpham`
 -- AUTO_INCREMENT for table `chitiethoadon`
 --
 ALTER TABLE `chitiethoadon`
-  MODIFY `IdCTHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `IdCTHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `IdHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `IdHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `khachhang`
@@ -512,7 +519,7 @@ ALTER TABLE `nhom`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `IdSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- Constraints for dumped tables
