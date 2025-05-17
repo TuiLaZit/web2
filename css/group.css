@@ -1,6 +1,6 @@
 #group {
     width: 100%;
-    background-color: #8ACCD5;
+    background-color: rgb(203, 237, 252);
     display: flex;
     justify-content: center; /* Căn giữa các phần tử */
     align-items: center; /* Căn giữa theo chiều dọc */
